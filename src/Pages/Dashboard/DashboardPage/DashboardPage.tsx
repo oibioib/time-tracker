@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 
 import { PagesRoutingNames } from '../../../Constants/Constants';
 import './Dashboard.css';
@@ -11,19 +11,23 @@ const DashboardPage = () => {
         <div className="dashboardNavigation">
           Navigation
           <button className="dashboardButton" type="button">
-            <Link to={`/${PagesRoutingNames.DASHBOARD}`}>Time Tracker</Link>
+            <NavLink to={`/${PagesRoutingNames.DASHBOARD}`}>
+              Time Tracker
+            </NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <Link to={PagesRoutingNames.PROJECTS_VIEW}>Projects view</Link>
+            <NavLink to={PagesRoutingNames.PROJECTS_VIEW}>
+              Projects view
+            </NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <Link to={PagesRoutingNames.CLIENTS_VIEW}>Clients view</Link>
+            <NavLink to={PagesRoutingNames.CLIENTS_VIEW}>Clients view</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <Link to={PagesRoutingNames.STATISTICS_VIEW}>Statistics</Link>
+            <NavLink to={PagesRoutingNames.STATISTICS_VIEW}>Statistics</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <Link to={PagesRoutingNames.SETTINGS_VIEW}>Settings</Link>
+            <NavLink to={PagesRoutingNames.SETTINGS_VIEW}>Settings</NavLink>
           </button>
         </div>
         <Outlet />
