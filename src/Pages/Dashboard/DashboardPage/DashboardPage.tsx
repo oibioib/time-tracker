@@ -9,7 +9,7 @@ import {
 } from '../../../Constants/Constants';
 import './Dashboard.css';
 
-const Dashboard = () => {
+const DashboardPage = () => {
   return (
     <>
       <h3>Dashboard</h3>
@@ -38,4 +38,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

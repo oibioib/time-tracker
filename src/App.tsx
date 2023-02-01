@@ -8,15 +8,17 @@ import {
   SETTINGS_VIEW,
   STATISTICS_VIEW,
 } from './Constants/Constants';
-import ClientsPage from './Pages/Dashboard/ClientsPage/ClientsPage';
-import Dashboard from './Pages/Dashboard/DashboardPage/DashboardPage';
-import ProjectsPage from './Pages/Dashboard/ProjectsPage/ProjectsPage';
-import StatisticsPage from './Pages/Dashboard/StatisticsPage/Statistics';
-import TrackerPage from './Pages/Dashboard/TrackerPage/TrackerPage';
-import FakeNavigation from './Pages/FakeNavigation/FakeNavigation';
-import LoginPage from './Pages/Login/LoginPage';
-import MainPage from './Pages/MainPage/MainPage';
-import SettingsPage from './Pages/SettingsPage/SettingsPage';
+import {
+  ClientsPage,
+  DashboardPage,
+  FakeNavigation,
+  LoginPage,
+  MainPage,
+  ProjectsPage,
+  SettingsPage,
+  StatisticsPage,
+  TrackerPage,
+} from './Pages';
 
 const router = createBrowserRouter([
   {
@@ -33,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: DASHBOARD,
-        element: <Dashboard />,
+        element: <DashboardPage />,
         children: [
           {
             path: '',
