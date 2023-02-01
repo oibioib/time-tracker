@@ -4,6 +4,7 @@ import { PagesRoutingNames } from './Constants/Constants';
 import {
   ClientsPage,
   DashboardPage,
+  ErrorPage,
   FakeNavigation,
   LoginPage,
   MainPage,
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
   {
     path: '',
     element: <FakeNavigation />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '',

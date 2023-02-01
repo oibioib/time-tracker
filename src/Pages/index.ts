@@ -3,6 +3,7 @@ import DashboardPage from './Dashboard/DashboardPage/DashboardPage';
 import ProjectsPage from './Dashboard/ProjectsPage/ProjectsPage';
 import StatisticsPage from './Dashboard/StatisticsPage/Statistics';
 import TrackerPage from './Dashboard/TrackerPage/TrackerPage';
+import ErrorPage from './ErrorPage/ErrorPage';
 import FakeNavigation from './FakeNavigation/FakeNavigation';
 import LoginPage from './Login/LoginPage';
 import MainPage from './MainPage/MainPage';
@@ -18,4 +19,5 @@ export {
   LoginPage,
   MainPage,
   SettingsPage,
+  ErrorPage,
 };
