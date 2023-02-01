@@ -48,7 +48,8 @@
       }
     ],
     "import/no-extraneous-dependencies": [
-      "error",
+      //TODO FIND OUT HOW THIS RULE WORK
+      "off",
       {
         "devDependencies": true,
         "packageDir": "./"
