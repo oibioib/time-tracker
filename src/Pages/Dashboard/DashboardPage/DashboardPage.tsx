@@ -2,6 +2,7 @@ import { Link, Outlet } from 'react-router-dom';
 
 import {
   CLIENTS_VIEW,
+  DASHBOARD,
   PROJECTS_VIEW,
   SETTINGS_VIEW,
   STATISTICS_VIEW,
@@ -16,7 +17,7 @@ const Dashboard = () => {
         <div className="dashboardNavigation">
           Navigation
           <button className="dashboardButton" type="button">
-            <Link to=" ">Time Tracker</Link>
+            <Link to={`/${DASHBOARD}`}>Time Tracker</Link>
           </button>
           <button className="dashboardButton" type="button">
             <Link to={PROJECTS_VIEW}>Projects view</Link>
