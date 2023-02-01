@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
+import ProtectedRoute from './Components/ProtectedRoute';
 import { PagesRoutingNames } from './Constants/Constants';
 import {
   ClientsPage,
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: PagesRoutingNames.DASHBOARD,
-        element: <DashboardPage />,
+        element: <ProtectedRoute outlet={<DashboardPage />} />,
         children: [
           {
             path: '',
