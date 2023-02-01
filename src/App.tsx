@@ -18,11 +18,11 @@ const router = createBrowserRouter([
   {
     path: '',
     element: <FakeNavigation />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '',
         element: <MainPage />,
-        errorElement: <ErrorPage />,
       },
       {
         path: PagesRoutingNames.LOGIN,
