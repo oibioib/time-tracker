@@ -1,0 +1,14 @@
+.dashboard {
+  display: flex;
+}
+
+.dashboardNavigation {
+  display: flex;
+  flex-direction: column;
+  max-width: 10rem;
+  margin-right: 1rem;
+}
+
+.dashboardButton {
+  margin: 0.5rem;
+}
