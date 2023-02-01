@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
 
-import { DASHBOARD, LOGIN } from '../../Constants/Constants';
+import { PagesRoutingNames } from '../../Constants/Constants';
 import styles from './FakeNavigation.module.css';
 
 const FakeNavigation = () => {
@@ -11,11 +11,11 @@ const FakeNavigation = () => {
       </button>
 
       <button type="button" className={styles.button}>
-        <Link to={LOGIN}>Login page</Link>
+        <Link to={PagesRoutingNames.LOGIN}>Login page</Link>
       </button>
 
       <button type="button" className={styles.button}>
-        <Link to={DASHBOARD}>Dashboard/timer view</Link>
+        <Link to={PagesRoutingNames.DASHBOARD}>Dashboard/timer view</Link>
       </button>
       <Outlet />
     </>

@@ -1,13 +1,6 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import {
-  CLIENTS_VIEW,
-  DASHBOARD,
-  LOGIN,
-  PROJECTS_VIEW,
-  SETTINGS_VIEW,
-  STATISTICS_VIEW,
-} from './Constants/Constants';
+import { PagesRoutingNames } from './Constants/Constants';
 import {
   ClientsPage,
   DashboardPage,
@@ -30,25 +23,25 @@ const router = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: LOGIN,
+        path: PagesRoutingNames.LOGIN,
         element: <LoginPage />,
       },
       {
-        path: DASHBOARD,
+        path: PagesRoutingNames.DASHBOARD,
         element: <DashboardPage />,
         children: [
           {
             path: '',
             element: <TrackerPage />,
           },
-          { path: PROJECTS_VIEW, element: <ProjectsPage /> },
-          { path: CLIENTS_VIEW, element: <ClientsPage /> },
+          { path: PagesRoutingNames.PROJECTS_VIEW, element: <ProjectsPage /> },
+          { path: PagesRoutingNames.CLIENTS_VIEW, element: <ClientsPage /> },
           {
-            path: STATISTICS_VIEW,
+            path: PagesRoutingNames.STATISTICS_VIEW,
             element: <StatisticsPage />,
           },
           {
-            path: SETTINGS_VIEW,
+            path: PagesRoutingNames.SETTINGS_VIEW,
             element: <SettingsPage />,
           },
         ],
