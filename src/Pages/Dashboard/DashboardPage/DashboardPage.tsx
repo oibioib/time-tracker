@@ -5,7 +5,7 @@ import './Dashboard.css';
 
 const DashboardPage = () => {
   return (
-    <>
+    <div>
       <h3>Dashboard</h3>
       <div className="dashboard">
         <div className="dashboardNavigation">
@@ -32,7 +32,7 @@ const DashboardPage = () => {
         </div>
         <Outlet />
       </div>
-    </>
+    </div>
   );
 };
 
