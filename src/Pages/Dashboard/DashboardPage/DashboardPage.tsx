@@ -23,9 +23,11 @@ const DashboardPage = () => {
         },
       });
       const data = await response.json();
-      setUserId(data.id);
-      setAvatarUrl(data.avatar_url);
-      setUserName(data.login);
+      if (data) {
+        setUserId(data.id);
+        setAvatarUrl(data.avatar_url);
+        setUserName(data.login);
+      }
     })();
   }, [token]);
 

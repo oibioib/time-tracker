@@ -13,8 +13,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (gitHubCode && localStorageToken === null) {
-      console.log('here');
+    if (gitHubCode && !localStorageToken) {
       (async () => {
         const result = await fetch(
           `${BASE_PROXY_SERVER_URL}/getAccessToken?code=${gitHubCode}`,
