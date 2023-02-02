@@ -1,16 +1,15 @@
 import { Navigate } from 'react-router-dom';
 
-import { PagesRoutingNames } from '../Constants/Constants';
+import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
 
 interface ProtectedRouteProps {
   outlet: JSX.Element;
 }
-const LOCAL_STORAGE_KEY = 'GitHubToken';
 
 const ProtectedRoute = ({ outlet }: ProtectedRouteProps) => {
   const isLoggedIn = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (!isLoggedIn) {
-    return <Navigate to={`/${PagesRoutingNames.LOGIN}`} replace />;
+    return <Navigate to={`/${ROUTES.LOGIN}`} replace />;
   }
   return outlet;
 };

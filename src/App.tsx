@@ -1,24 +1,26 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import ProtectedRoute from './Components/ProtectedRoute';
-import { PagesRoutingNames } from './Constants/Constants';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import { ROUTES } from './constants';
 import {
-  ClientsPage,
   DashboardPage,
   ErrorPage,
-  FakeNavigation,
+  FakeNavigationPage,
   LoginPage,
   MainPage,
-  ProjectsPage,
-  SettingsPage,
-  StatisticsPage,
-  TrackerPage,
-} from './Pages';
+} from './pages';
+import {
+  ClientsView,
+  ProjectsView,
+  SettingsView,
+  StatisticsView,
+  TrackerView,
+} from './pages/DashboardPage/DashboardViews';
 
 const router = createBrowserRouter([
   {
     path: '',
-    element: <FakeNavigation />,
+    element: <FakeNavigationPage />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -26,26 +28,26 @@ const router = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: PagesRoutingNames.LOGIN,
+        path: ROUTES.LOGIN,
         element: <LoginPage />,
       },
       {
-        path: PagesRoutingNames.DASHBOARD,
+        path: ROUTES.DASHBOARD,
         element: <ProtectedRoute outlet={<DashboardPage />} />,
         children: [
           {
             path: '',
-            element: <TrackerPage />,
+            element: <TrackerView />,
           },
-          { path: PagesRoutingNames.PROJECTS_VIEW, element: <ProjectsPage /> },
-          { path: PagesRoutingNames.CLIENTS_VIEW, element: <ClientsPage /> },
+          { path: ROUTES.PROJECTS_VIEW, element: <ProjectsView /> },
+          { path: ROUTES.CLIENTS_VIEW, element: <ClientsView /> },
           {
-            path: PagesRoutingNames.STATISTICS_VIEW,
-            element: <StatisticsPage />,
+            path: ROUTES.STATISTICS_VIEW,
+            element: <StatisticsView />,
           },
           {
-            path: PagesRoutingNames.SETTINGS_VIEW,
-            element: <SettingsPage />,
+            path: ROUTES.SETTINGS_VIEW,
+            element: <SettingsView />,
           },
         ],
       },

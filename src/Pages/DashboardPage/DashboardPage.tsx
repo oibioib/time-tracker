@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
-import { PagesRoutingNames } from '../../../Constants/Constants';
-import { BASE_PROXY_SERVER_URL } from '../../Login/utilfFunction';
-import './Dashboard.css';
-
-const LOCAL_STORAGE_KEY = 'GitHubToken';
+import { GITHUB_AUTH, LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
+import './DashboardPage.css';
 
 const DashboardPage = () => {
   const token = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -16,7 +13,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(`${BASE_PROXY_SERVER_URL}/getUserData`, {
+      const response = await fetch(`${GITHUB_AUTH.PROXY_URL}/getUserData`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -43,23 +40,19 @@ const DashboardPage = () => {
         <div className="dashboardNavigation">
           Navigation
           <button className="dashboardButton" type="button">
-            <NavLink to={`/${PagesRoutingNames.DASHBOARD}`}>
-              Time Tracker
-            </NavLink>
+            <NavLink to={`/${ROUTES.DASHBOARD}`}>Time Tracker</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.PROJECTS_VIEW}>
-              Projects view
-            </NavLink>
+            <NavLink to={ROUTES.PROJECTS_VIEW}>Projects view</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.CLIENTS_VIEW}>Clients view</NavLink>
+            <NavLink to={ROUTES.CLIENTS_VIEW}>Clients view</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.STATISTICS_VIEW}>Statistics</NavLink>
+            <NavLink to={ROUTES.STATISTICS_VIEW}>Statistics</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.SETTINGS_VIEW}>Settings</NavLink>
+            <NavLink to={ROUTES.SETTINGS_VIEW}>Settings</NavLink>
           </button>
           <button type="button" onClick={logoutHandler}>
             Logout

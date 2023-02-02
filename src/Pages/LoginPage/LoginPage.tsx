@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { BASE_PROXY_SERVER_URL, GitHubConst } from './utilfFunction';
-
-const LOCAL_STORAGE_KEY = 'GitHubToken';
+import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
 
 const LoginPage = () => {
   const [searchParams] = useSearchParams();
-  const gitHubCode = searchParams.get('code');
+  const gitHubCode = searchParams.get(GITHUB_AUTH.URL_PARAM);
   const localStorageToken = localStorage.getItem(LOCAL_STORAGE_KEY);
   const [render, setRender] = useState(true);
   const navigate = useNavigate();
@@ -16,7 +14,7 @@ const LoginPage = () => {
     if (gitHubCode && !localStorageToken) {
       (async () => {
         const result = await fetch(
-          `${BASE_PROXY_SERVER_URL}/getAccessToken?code=${gitHubCode}`,
+          `${GITHUB_AUTH.PROXY_URL}/getAccessToken?code=${gitHubCode}`,
           {
             method: 'GET',
           }
@@ -36,7 +34,7 @@ const LoginPage = () => {
       Login Page
       <button type="button">
         <a
-          href={`https://github.com/login/oauth/authorize?scope=user&client_id=${GitHubConst.REACT_APP_CLIENT_ID}&redirect_uri=${GitHubConst.REACT_APP_REDIRECT_URI}`}>
+          href={`https://github.com/login/oauth/authorize?scope=user&client_id=${GITHUB_AUTH.CLIENT_ID}&redirect_uri=${GITHUB_AUTH.REDIRECT_URI}`}>
           GitHub Login
         </a>
       </button>
