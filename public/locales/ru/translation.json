@@ -1,0 +1,8 @@
+{
+  "buttons": {
+    "loginPage": "Авторизация",
+    "mainPage": "Главная",
+    "dashboardPage": "Панель управления",
+    "gitHubLogin": "GitHub авторизация"
+  }
+}
