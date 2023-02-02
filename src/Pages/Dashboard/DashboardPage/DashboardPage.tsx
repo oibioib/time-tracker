@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import { PagesRoutingNames } from '../../../Constants/Constants';
 import { BASE_PROXY_SERVER_URL } from '../../Login/utilfFunction';
@@ -12,6 +12,7 @@ const DashboardPage = () => {
   const [userId, setUserId] = useState(0);
   const [avatarUrl, setAvatarUrl] = useState('');
   const [userName, setUserName] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -27,6 +28,11 @@ const DashboardPage = () => {
       setUserName(data.login);
     })();
   }, [token]);
+
+  const logoutHandler = () => {
+    localStorage.clear();
+    navigate('/');
+  };
 
   return (
     <div>
@@ -52,6 +58,9 @@ const DashboardPage = () => {
           </button>
           <button className="dashboardButton" type="button">
             <NavLink to={PagesRoutingNames.SETTINGS_VIEW}>Settings</NavLink>
+          </button>
+          <button type="button" onClick={logoutHandler}>
+            Logout
           </button>
         </div>
         <div>
