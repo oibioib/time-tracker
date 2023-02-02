@@ -61,6 +61,17 @@
         "namedComponents": "arrow-function",
         "unnamedComponents": "arrow-function"
       }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "enum",
+        "format": ["PascalCase", "UPPER_CASE"]
+      },
+      {
+        "selector": "enumMember",
+        "format": ["PascalCase", "UPPER_CASE"]
+      }
     ]
   },
   "settings": {
