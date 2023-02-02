@@ -5,10 +5,11 @@ import { PagesRoutingNames } from '../Constants/Constants';
 interface ProtectedRouteProps {
   outlet: JSX.Element;
 }
+const LOCAL_STORAGE_KEY = 'GitHubToken';
 
 const ProtectedRoute = ({ outlet }: ProtectedRouteProps) => {
-  const user = true;
-  if (!user) {
+  const isLoggedIn = localStorage.getItem(LOCAL_STORAGE_KEY);
+  if (!isLoggedIn) {
     return <Navigate to={`/${PagesRoutingNames.LOGIN}`} replace />;
   }
   return outlet;
