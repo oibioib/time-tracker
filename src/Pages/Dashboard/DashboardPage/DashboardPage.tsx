@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import { PagesRoutingNames } from '../../../Constants/Constants';
@@ -8,6 +9,7 @@ import './Dashboard.css';
 const LOCAL_STORAGE_KEY = 'GitHubToken';
 
 const DashboardPage = () => {
+  const { t } = useTranslation();
   const token = localStorage.getItem(LOCAL_STORAGE_KEY);
   const [userId, setUserId] = useState(0);
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -41,28 +43,34 @@ const DashboardPage = () => {
       <h3>Dashboard</h3>
       <div className="dashboard">
         <div className="dashboardNavigation">
-          Navigation
+          {t('dashboard.navigation')}
           <button className="dashboardButton" type="button">
             <NavLink to={`/${PagesRoutingNames.DASHBOARD}`}>
-              Time Tracker
+              {t('dashboard.timeTracker')}
             </NavLink>
           </button>
           <button className="dashboardButton" type="button">
             <NavLink to={PagesRoutingNames.PROJECTS_VIEW}>
-              Projects view
+              {t('dashboard.projectsView')}
             </NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.CLIENTS_VIEW}>Clients view</NavLink>
+            <NavLink to={PagesRoutingNames.CLIENTS_VIEW}>
+              {t('dashboard.clientsView')}
+            </NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.STATISTICS_VIEW}>Statistics</NavLink>
+            <NavLink to={PagesRoutingNames.STATISTICS_VIEW}>
+              {t('dashboard.statistics')}
+            </NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.SETTINGS_VIEW}>Settings</NavLink>
+            <NavLink to={PagesRoutingNames.SETTINGS_VIEW}>
+              {t('dashboard.settings')}
+            </NavLink>
           </button>
           <button type="button" onClick={logoutHandler}>
-            Logout
+            {t('buttons.logout')}
           </button>
         </div>
         <div>

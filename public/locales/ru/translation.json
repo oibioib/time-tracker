@@ -3,6 +3,15 @@
     "loginPage": "Авторизация",
     "mainPage": "Главная",
     "dashboardPage": "Панель управления",
-    "gitHubLogin": "GitHub авторизация"
+    "gitHubLogin": "GitHub авторизация",
+    "logout": "Выйти"
+  },
+  "dashboard": {
+    "navigation": "Навигация",
+    "timeTracker": "Таймер",
+    "projectsView": "Проекты",
+    "clientsView": "Клиенты",
+    "statistics": "Статистика",
+    "settings": "Настройки"
   }
 }
