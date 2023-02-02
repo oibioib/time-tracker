@@ -1,15 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
-import { PagesRoutingNames } from '../../../Constants/Constants';
-import { BASE_PROXY_SERVER_URL } from '../../Login/utilfFunction';
-import './Dashboard.css';
-
-const LOCAL_STORAGE_KEY = 'GitHubToken';
+import { GITHUB_AUTH, LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
+import './DashboardPage.css';
 
 const DashboardPage = () => {
-  const { t } = useTranslation();
   const token = localStorage.getItem(LOCAL_STORAGE_KEY);
   const [userId, setUserId] = useState(0);
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -18,7 +13,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(`${BASE_PROXY_SERVER_URL}/getUserData`, {
+      const response = await fetch(`${GITHUB_AUTH.PROXY_URL}/getUserData`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -43,34 +38,24 @@ const DashboardPage = () => {
       <h3>Dashboard</h3>
       <div className="dashboard">
         <div className="dashboardNavigation">
-          {t('dashboard.navigation')}
+          Navigation
           <button className="dashboardButton" type="button">
-            <NavLink to={`/${PagesRoutingNames.DASHBOARD}`}>
-              {t('dashboard.timeTracker')}
-            </NavLink>
+            <NavLink to={`/${ROUTES.DASHBOARD}`}>Time Tracker</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.PROJECTS_VIEW}>
-              {t('dashboard.projectsView')}
-            </NavLink>
+            <NavLink to={ROUTES.PROJECTS_VIEW}>Projects view</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.CLIENTS_VIEW}>
-              {t('dashboard.clientsView')}
-            </NavLink>
+            <NavLink to={ROUTES.CLIENTS_VIEW}>Clients view</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.STATISTICS_VIEW}>
-              {t('dashboard.statistics')}
-            </NavLink>
+            <NavLink to={ROUTES.STATISTICS_VIEW}>Statistics</NavLink>
           </button>
           <button className="dashboardButton" type="button">
-            <NavLink to={PagesRoutingNames.SETTINGS_VIEW}>
-              {t('dashboard.settings')}
-            </NavLink>
+            <NavLink to={ROUTES.SETTINGS_VIEW}>Settings</NavLink>
           </button>
           <button type="button" onClick={logoutHandler}>
-            {t('buttons.logout')}
+            Logout
           </button>
         </div>
         <div>
