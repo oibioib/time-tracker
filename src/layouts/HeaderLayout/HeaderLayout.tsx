@@ -1,13 +1,26 @@
 import { useTranslation } from 'react-i18next';
-import { Link as LinkRouter } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as LinkRouter, useNavigate } from 'react-router-dom';
 
 import { Button, Grid } from '@mui/material';
 
 import LangSwitch from '../../components/LangSwitch';
-import { ROUTES } from '../../constants';
+import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
+import { RootState } from '../../store';
+import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
 const HeaderLayout = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
+  const gitHubID = useSelector((state: RootState) => state.gitHubFetch.id);
+  const token = localStorage.getItem(LOCAL_STORAGE_KEY);
+  const isLoggedIn = gitHubID || token;
+  const logoutHandler = () => {
+    localStorage.clear();
+    dispatch(setGitHubUserData({ login: 'login', id: 0, avatar_url: 'url' }));
+    navigate('/');
+  };
   return (
     <Grid
       container
@@ -21,13 +34,19 @@ const HeaderLayout = () => {
       </Grid>
       <Grid item container spacing={1} sx={{ width: 'auto' }}>
         <Grid item>
-          <Button
-            size="large"
-            variant="contained"
-            component={LinkRouter}
-            to={ROUTES.LOGIN}>
-            {t('buttons.loginPage')}
-          </Button>
+          {isLoggedIn ? (
+            <Button size="large" variant="contained" onClick={logoutHandler}>
+              {t('buttons.logout')}
+            </Button>
+          ) : (
+            <Button
+              size="large"
+              variant="contained"
+              component={LinkRouter}
+              to={ROUTES.LOGIN}>
+              {t('buttons.loginPage')}
+            </Button>
+          )}
         </Grid>
         <Grid item>
           <Button

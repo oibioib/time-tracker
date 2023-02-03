@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { Button, Grid } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
-import { setToken } from '../../store/gitHubFetchSlice';
+import gitHutFetchFunc from '../../helpers/gitHubFetchFunc';
+import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -17,10 +18,12 @@ const LoginPage = () => {
   const [refresh, setRefresh] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (gitHubCode && !localStorageToken) {
       (async () => {
+        setIsLoading(true);
         const result = await fetch(
           `${GITHUB_AUTH.PROXY_URL}/getAccessToken?code=${gitHubCode}`,
           {
@@ -37,22 +40,16 @@ const LoginPage = () => {
   useEffect(() => {
     if (localStorageToken) {
       (async () => {
-        const token = localStorage.getItem(LOCAL_STORAGE_KEY);
-        const response = await fetch(`${GITHUB_AUTH.PROXY_URL}/getUserData`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
+        const data = await gitHutFetchFunc();
         dispatch(
-          setToken({
+          setGitHubUserData({
             login: data.login,
             id: data.id,
             avatar_url: data.avatar_url,
           })
         );
         navigate('/tracker');
+        setIsLoading(false);
       })();
     }
   }, [localStorageToken, dispatch, navigate]);
@@ -63,6 +60,11 @@ const LoginPage = () => {
         <Typography variant="h4" component="h1">
           Login via Github
         </Typography>
+        {isLoading && (
+          <Box sx={{ fontSize: 16, fontStyle: 'italic' }}>
+            Please wait it can take up to some minutes...
+          </Box>
+        )}
       </Grid>
       <Grid item>
         <Button
