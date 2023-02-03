@@ -1,21 +1,33 @@
-import { useSelector } from 'react-redux';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, Outlet } from 'react-router-dom';
 
 import { ROUTES } from '../../constants';
+import gitHutFetchFunc from '../../helpers/gitHubFetchFunc';
 import { RootState } from '../../store';
+import { setGitHubUserData } from '../../store/gitHubFetchSlice';
+
 import './DashboardPage.css';
-import { useTranslation } from 'react-i18next';
 
 const DashboardPage = () => {
-  const navigate = useNavigate();
-  const data = useSelector((state: RootState) => state.gitHubFetch);
+  const userData = useSelector((state: RootState) => state.gitHubFetch);
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  console.log(data)
-
-  const logoutHandler = () => {
-    localStorage.clear();
-    navigate('/');
-  };
+  useEffect(() => {
+    if (!userData.id) {
+      (async () => {
+        const data = await gitHutFetchFunc();
+        dispatch(
+          setGitHubUserData({
+            login: data.login,
+            id: data.id,
+            avatar_url: data.avatar_url,
+          })
+        );
+      })();
+    }
+  }, [userData, dispatch]);
 
   return (
     <div>
@@ -47,15 +59,19 @@ const DashboardPage = () => {
               {t('dashboard.settings')}
             </NavLink>
           </button>
-          <button type="button" onClick={logoutHandler}>
-            {t('buttons.logout')}
-          </button>
         </div>
-        {/* <div>
-          <img className="avatar" src={`${avatarUrl}`} alt="" />
+        <div>
+          <div>
+            <img
+              className="avatar"
+              src={`${userData && userData.avatar_url}`}
+              alt=""
+            />
+          </div>
+          <div>Name: {userData && userData.login}</div>
+          <div>ID {userData && userData.id}</div>
         </div>
-        <div>Name: {userName}</div>
-        <div>ID {userId}</div> */}
+
         <Outlet />
       </div>
     </div>

@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../constants';
-
 const gitHubFetchSlice = createSlice({
   name: 'gitHubFetchSlice',
   initialState: {
@@ -10,7 +8,7 @@ const gitHubFetchSlice = createSlice({
     id: 0,
   },
   reducers: {
-    setToken(state, action) {
+    setGitHubUserData(state, action) {
       state.login = action.payload.login;
       state.avatar_url = action.payload.avatar_url;
       state.id = action.payload.id;
@@ -18,7 +16,7 @@ const gitHubFetchSlice = createSlice({
   },
 });
 
-export const { setToken } = gitHubFetchSlice.actions;
+export const { setGitHubUserData } = gitHubFetchSlice.actions;
 export default gitHubFetchSlice.reducer;
 // const sendGitHubCode = (code: string) => {
 //   return async (dispatch: Function) => {
