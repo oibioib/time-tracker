@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Outlet } from 'react-router-dom';
 
+import githubUserData from '../../api/githubApi';
 import { ROUTES } from '../../constants';
-import gitHutFetchFunc from '../../helpers/gitHubFetchFunc';
 import { RootState } from '../../store';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
@@ -17,7 +17,7 @@ const DashboardPage = () => {
   useEffect(() => {
     if (!userData.id) {
       (async () => {
-        const data = await gitHutFetchFunc();
+        const data = await githubUserData();
         dispatch(
           setGitHubUserData({
             login: data.login,

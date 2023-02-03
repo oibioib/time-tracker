@@ -6,8 +6,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, Button, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
+import githubUserData from '../../api/githubApi';
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
-import gitHutFetchFunc from '../../helpers/gitHubFetchFunc';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
 const LoginPage = () => {
@@ -40,7 +40,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (localStorageToken) {
       (async () => {
-        const data = await gitHutFetchFunc();
+        const data = await githubUserData();
         dispatch(
           setGitHubUserData({
             login: data.login,
@@ -61,8 +61,10 @@ const LoginPage = () => {
           Login via Github
         </Typography>
         {isLoading && (
-          <Box sx={{ fontSize: 16, fontStyle: 'italic' }}>
-            Please wait it can take up to some minutes...
+          <Box>
+            <Typography variant="body1" component="span">
+              <i>Please wait it can take up to some minutes...</i>
+            </Typography>
           </Box>
         )}
       </Grid>
