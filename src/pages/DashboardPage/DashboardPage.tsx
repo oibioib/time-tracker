@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
+
 import './DashboardPage.css';
 
 const DashboardPage = () => {
@@ -37,7 +38,6 @@ const DashboardPage = () => {
 
   return (
     <div>
-      <h3>Dashboard</h3>
       <div className="dashboard">
         <div className="dashboardNavigation">
           {t('dashboard.navigation')}
