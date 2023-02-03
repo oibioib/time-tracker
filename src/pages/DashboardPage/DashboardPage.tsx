@@ -1,35 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
-import { GITHUB_AUTH, LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
-
+import { ROUTES } from '../../constants';
+import { RootState } from '../../store';
 import './DashboardPage.css';
+import { useTranslation } from 'react-i18next';
 
 const DashboardPage = () => {
-  const { t } = useTranslation();
-  const token = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const [userId, setUserId] = useState(0);
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [userName, setUserName] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    (async () => {
-      const response = await fetch(`${GITHUB_AUTH.PROXY_URL}/getUserData`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      if (data) {
-        setUserId(data.id);
-        setAvatarUrl(data.avatar_url);
-        setUserName(data.login);
-      }
-    })();
-  }, [token]);
+  const data = useSelector((state: RootState) => state.gitHubFetch);
+  const { t } = useTranslation();
+  console.log(data)
 
   const logoutHandler = () => {
     localStorage.clear();
@@ -70,11 +51,11 @@ const DashboardPage = () => {
             {t('buttons.logout')}
           </button>
         </div>
-        <div>
+        {/* <div>
           <img className="avatar" src={`${avatarUrl}`} alt="" />
         </div>
         <div>Name: {userName}</div>
-        <div>ID {userId}</div>
+        <div>ID {userId}</div> */}
         <Outlet />
       </div>
     </div>
