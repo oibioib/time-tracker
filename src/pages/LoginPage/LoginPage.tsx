@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { Button, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
+import { setToken } from '../../store/gitHubFetchSlice';
 
 const LoginPage = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const gitHubCode = searchParams.get(GITHUB_AUTH.URL_PARAM);
   const localStorageToken = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const [render, setRender] = useState(true);
+  const [refresh, setRefresh] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (gitHubCode && !localStorageToken) {
@@ -26,13 +29,33 @@ const LoginPage = () => {
         );
         const data = await result.json();
         localStorage.setItem(LOCAL_STORAGE_KEY, data.access_token);
-        setRender(!render);
+        setRefresh(!refresh);
       })();
     }
+  }, [gitHubCode, localStorageToken, navigate, dispatch, refresh]);
+
+  useEffect(() => {
     if (localStorageToken) {
-      navigate('/tracker');
+      (async () => {
+        const token = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const response = await fetch(`${GITHUB_AUTH.PROXY_URL}/getUserData`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        dispatch(
+          setToken({
+            login: data.login,
+            id: data.id,
+            avatar_url: data.avatar_url,
+          })
+        );
+        navigate('/tracker');
+      })();
     }
-  }, [gitHubCode, localStorageToken, render, navigate]);
+  }, [localStorageToken, dispatch, navigate]);
 
   return (
     <Grid container direction="column" alignItems="center">
