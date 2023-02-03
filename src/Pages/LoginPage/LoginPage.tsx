@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants/'
+import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
+
 const LoginPage = () => {
   const [searchParams] = useSearchParams();
   const gitHubCode = searchParams.get(GITHUB_AUTH.URL_PARAM);
