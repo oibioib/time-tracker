@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const gitHubCode = searchParams.get(GITHUB_AUTH.URL_PARAM);
   const localStorageToken = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -35,7 +37,7 @@ const LoginPage = () => {
       <button type="button">
         <a
           href={`https://github.com/login/oauth/authorize?scope=user&client_id=${GITHUB_AUTH.CLIENT_ID}&redirect_uri=${GITHUB_AUTH.REDIRECT_URI}`}>
-          GitHub Login
+          {t('buttons.gitHubLogin')}
         </a>
       </button>
     </div>

@@ -1,0 +1,17 @@
+{
+  "buttons": {
+    "loginPage": "Login page",
+    "mainPage": "Main Page",
+    "dashboardPage": "Dashboard/timer view",
+    "gitHubLogin": "GitHub Login",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "navigation": "Navigation",
+    "timeTracker": "Time Tracker",
+    "projectsView": "Projects view",
+    "clientsView": "Clients view",
+    "statistics": "Statistics",
+    "settings": "Settings"
+  }
+}
