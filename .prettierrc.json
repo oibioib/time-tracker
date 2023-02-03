@@ -5,7 +5,14 @@
   "tabWidth": 2,
   "arrowParens": "always",
   "bracketSameLine": true,
-  "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  "importOrder": [
+    "^@core/(.*)$",
+    "^@server/(.*)$",
+    "^@mui/(.*)$",
+    "^@ui/(.*)$",
+    "^[./](?!.*?\\.css$).*$",
+    "(.*)css$"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }
