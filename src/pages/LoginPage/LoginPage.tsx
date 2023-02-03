@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { Button, Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
+
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
 
 const LoginPage = () => {
@@ -32,15 +35,21 @@ const LoginPage = () => {
   }, [gitHubCode, localStorageToken, render, navigate]);
 
   return (
-    <div>
-      Login Page
-      <button type="button">
-        <a
+    <Grid container direction="column" alignItems="center">
+      <Grid item pb={5} pt={5}>
+        <Typography variant="h4" component="h1">
+          Login via Github
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Button
+          size="large"
+          variant="contained"
           href={`https://github.com/login/oauth/authorize?scope=user&client_id=${GITHUB_AUTH.CLIENT_ID}&redirect_uri=${GITHUB_AUTH.REDIRECT_URI}`}>
           {t('buttons.gitHubLogin')}
-        </a>
-      </button>
-    </div>
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 

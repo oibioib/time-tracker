@@ -1,14 +1,14 @@
+import { useMemo, useState } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
+import { PaletteMode, ThemeProvider, createTheme } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import IconButton from '@mui/material/IconButton';
 
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { ROUTES } from './constants';
-import {
-  DashboardPage,
-  ErrorPage,
-  FakeNavigationPage,
-  LoginPage,
-  MainPage,
-} from './pages';
+import PageLayout from './layouts/PageLayout/PageLayout';
+import { DashboardPage, ErrorPage, LoginPage, MainPage } from './pages';
 import {
   ClientsView,
   ProjectsView,
@@ -16,11 +16,13 @@ import {
   StatisticsView,
   TrackerView,
 } from './pages/DashboardPage/DashboardViews';
+import { Brightness4Icon, Brightness7Icon } from './theme/appIcons';
+import getThemeTokens from './theme/appTheme';
 
 const router = createBrowserRouter([
   {
     path: '',
-    element: <FakeNavigationPage />,
+    element: <PageLayout />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -56,7 +58,37 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  // TODO need to move to global state
+  const [mode, setMode] = useState<PaletteMode>('light');
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode: PaletteMode) =>
+          prevMode === 'light' ? 'dark' : 'light'
+        );
+      },
+    }),
+    []
+  );
+
+  const theme = useMemo(() => createTheme(getThemeTokens(mode)), [mode]);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <RouterProvider router={router} />
+      <IconButton
+        sx={{ ml: 1 }}
+        onClick={colorMode.toggleColorMode}
+        color="inherit">
+        {theme.palette.mode === 'light' ? (
+          <Brightness7Icon />
+        ) : (
+          <Brightness4Icon />
+        )}
+      </IconButton>
+      <CssBaseline />
+    </ThemeProvider>
+  );
 };
 
 export default App;
