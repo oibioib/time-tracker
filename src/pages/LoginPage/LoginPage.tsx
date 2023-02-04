@@ -1,23 +1,29 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { Button, Grid } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
+import githubUserData from '../../api/githubApi';
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
+import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
 const LoginPage = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const gitHubCode = searchParams.get(GITHUB_AUTH.URL_PARAM);
   const localStorageToken = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const [render, setRender] = useState(true);
+  const [refresh, setRefresh] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (gitHubCode && !localStorageToken) {
       (async () => {
+        setIsLoading(true);
         const result = await fetch(
           `${GITHUB_AUTH.PROXY_URL}/getAccessToken?code=${gitHubCode}`,
           {
@@ -26,13 +32,27 @@ const LoginPage = () => {
         );
         const data = await result.json();
         localStorage.setItem(LOCAL_STORAGE_KEY, data.access_token);
-        setRender(!render);
+        setRefresh(!refresh);
       })();
     }
+  }, [gitHubCode, localStorageToken, navigate, dispatch, refresh]);
+
+  useEffect(() => {
     if (localStorageToken) {
-      navigate('/tracker');
+      (async () => {
+        const data = await githubUserData();
+        dispatch(
+          setGitHubUserData({
+            login: data.login,
+            id: data.id,
+            avatar_url: data.avatar_url,
+          })
+        );
+        navigate('/tracker');
+        setIsLoading(false);
+      })();
     }
-  }, [gitHubCode, localStorageToken, render, navigate]);
+  }, [localStorageToken, dispatch, navigate]);
 
   return (
     <Grid container direction="column" alignItems="center">
@@ -40,6 +60,13 @@ const LoginPage = () => {
         <Typography variant="h4" component="h1">
           Login via Github
         </Typography>
+        {isLoading && (
+          <Box>
+            <Typography variant="body1" component="span">
+              <i>Please wait it can take up to some minutes...</i>
+            </Typography>
+          </Box>
+        )}
       </Grid>
       <Grid item>
         <Button

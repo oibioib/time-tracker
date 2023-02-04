@@ -1,40 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, Outlet } from 'react-router-dom';
 
-import { GITHUB_AUTH, LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
+import githubUserData from '../../api/githubApi';
+import { ROUTES } from '../../constants';
+import { RootState } from '../../store';
+import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
 import './DashboardPage.css';
 
 const DashboardPage = () => {
+  const userData = useSelector((state: RootState) => state.gitHubFetch);
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const token = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const [userId, setUserId] = useState(0);
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [userName, setUserName] = useState('');
-  const navigate = useNavigate();
-
   useEffect(() => {
-    (async () => {
-      const response = await fetch(`${GITHUB_AUTH.PROXY_URL}/getUserData`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
-      if (data) {
-        setUserId(data.id);
-        setAvatarUrl(data.avatar_url);
-        setUserName(data.login);
-      }
-    })();
-  }, [token]);
-
-  const logoutHandler = () => {
-    localStorage.clear();
-    navigate('/');
-  };
+    if (!userData.id) {
+      (async () => {
+        const data = await githubUserData();
+        dispatch(
+          setGitHubUserData({
+            login: data.login,
+            id: data.id,
+            avatar_url: data.avatar_url,
+          })
+        );
+      })();
+    }
+  }, [userData, dispatch]);
 
   return (
     <div>
@@ -66,15 +59,19 @@ const DashboardPage = () => {
               {t('dashboard.settings')}
             </NavLink>
           </button>
-          <button type="button" onClick={logoutHandler}>
-            {t('buttons.logout')}
-          </button>
         </div>
         <div>
-          <img className="avatar" src={`${avatarUrl}`} alt="" />
+          <div>
+            <img
+              className="avatar"
+              src={`${userData && userData.avatar_url}`}
+              alt=""
+            />
+          </div>
+          <div>Name: {userData && userData.login}</div>
+          <div>ID {userData && userData.id}</div>
         </div>
-        <div>Name: {userName}</div>
-        <div>ID {userId}</div>
+
         <Outlet />
       </div>
     </div>
