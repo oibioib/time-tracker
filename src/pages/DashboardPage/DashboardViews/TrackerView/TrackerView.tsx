@@ -68,29 +68,30 @@ const TrackerView = () => {
           {' '}
         </Box>
       </Grid>
-      {tasksArr.length > 0
-        ? tasksArr.map((task) => {
-            return (
-              <Grid key={task.id} item xs={12} my={3}>
-                <Paper>
-                  <Box
-                    sx={{ justifyContent: 'space-between', display: 'flex' }}>
-                    <Box>
+      {tasksArr.length
+        ? tasksArr.map(
+            ({ id, taskName, year, month, date, hours, min, sec }) => {
+              return (
+                <Grid key={id} item xs={12} my={3}>
+                  <Paper>
+                    <Box
+                      sx={{ justifyContent: 'space-between', display: 'flex' }}>
                       <Box>
-                        Task date:
-                        {task.year}.{task.month}.{task.date}
+                        <Box>
+                          Task date:
+                          {year}.{month}.{date}
+                        </Box>
+                        <Box>{taskName}</Box>
                       </Box>
-                      <Box>{task.taskName}</Box>
+                      <Box>
+                        Time spend {hours}: {min}: {sec}
+                      </Box>
                     </Box>
-                    <Box>
-                      {' '}
-                      Time spend {task.hours}: {task.min}: {task.sec}
-                    </Box>
-                  </Box>
-                </Paper>
-              </Grid>
-            );
-          })
+                  </Paper>
+                </Grid>
+              );
+            }
+          )
         : ''}
     </Grid>
   );
