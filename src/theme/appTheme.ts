@@ -1,5 +1,7 @@
-import { PaletteMode, ThemeOptions } from '@mui/material';
+import { PaletteMode, ThemeOptions, createTheme } from '@mui/material';
 import { TypographyOptions } from '@mui/material/styles/createTypography';
+
+import { useAppSelector } from '../hooks/hooks';
 
 export const lightTheme: ThemeOptions = {
   palette: {
@@ -58,4 +60,9 @@ const getThemeTokens = (mode: PaletteMode) => ({
   },
 });
 
-export default getThemeTokens;
+const Theme = () => {
+  const storeColorTheme = useAppSelector((state) => state.themeMode.themeColor);
+  return createTheme(getThemeTokens(storeColorTheme));
+};
+
+export default Theme;

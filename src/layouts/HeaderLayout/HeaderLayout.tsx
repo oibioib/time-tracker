@@ -1,19 +1,22 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link as LinkRouter, useNavigate } from 'react-router-dom';
 
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, IconButton, PaletteMode } from '@mui/material';
 
 import LangSwitch from '../../components/LangSwitch';
 import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
-import { RootState } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
+import { changeTheme } from '../../store/themeModeSlice';
+import { Brightness4Icon, Brightness7Icon } from '../../theme/appIcons';
 
 const HeaderLayout = () => {
-  const dispatch = useDispatch();
+  const [mode, setMode] = useState<PaletteMode>('dark');
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const gitHubID = useSelector((state: RootState) => state.gitHubFetch.id);
+  const gitHubID = useAppSelector((state) => state.gitHubFetch.id);
   const token = localStorage.getItem(LOCAL_STORAGE_KEY);
   const isLoggedIn = gitHubID || token;
   const logoutHandler = () => {
@@ -21,6 +24,14 @@ const HeaderLayout = () => {
     dispatch(setGitHubUserData({ login: 'login', id: 0, avatar_url: 'url' }));
     navigate('/');
   };
+
+  const toggleColorMode = () => {
+    setMode((prevMode: PaletteMode) =>
+      prevMode === 'light' ? 'dark' : 'light'
+    );
+    dispatch(changeTheme(mode));
+  };
+
   return (
     <Grid
       container
@@ -57,6 +68,11 @@ const HeaderLayout = () => {
             {t('buttons.dashboardPage')}
           </Button>
         </Grid>
+      </Grid>
+      <Grid item>
+        <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+          {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
       </Grid>
       <Grid item>
         <LangSwitch />
