@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { Box, Button, Grid } from '@mui/material';
@@ -8,6 +7,7 @@ import Typography from '@mui/material/Typography';
 
 import githubUserData from '../../api/githubApi';
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
+import { useAppDispatch } from '../../hooks/hooks';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
 const LoginPage = () => {
@@ -17,7 +17,7 @@ const LoginPage = () => {
   const localStorageToken = localStorage.getItem(LOCAL_STORAGE_KEY);
   const [refresh, setRefresh] = useState(true);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

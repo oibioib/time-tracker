@@ -1,18 +1,17 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import githubUserData from '../../api/githubApi';
 import { ROUTES } from '../../constants';
-import { RootState } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
 import './DashboardPage.css';
 
 const DashboardPage = () => {
-  const userData = useSelector((state: RootState) => state.gitHubFetch);
-  const dispatch = useDispatch();
+  const userData = useAppSelector((state) => state.gitHubFetch);
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   useEffect(() => {
     if (!userData.id) {
