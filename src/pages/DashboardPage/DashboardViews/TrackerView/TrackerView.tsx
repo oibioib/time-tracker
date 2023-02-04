@@ -14,18 +14,16 @@ interface TaskArr {
 }
 
 const TrackerView = () => {
-  const [taskName, setTaskName] = useState('');
+  const [taskNamePrinted, setTaskNamePrinted] = useState('');
   const [tasksArr, setTasksArr] = useState<TaskArr[]>([]);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskName(event.target.value);
+    setTaskNamePrinted(event.target.value);
   };
   const addTaskHandler = () => {
-    const tasksArrHelper = [...tasksArr];
     const time = new Date();
-
-    tasksArrHelper.push({
-      taskName,
+    const newTask = {
+      taskName: taskNamePrinted,
       sec: time.getSeconds(),
       min: time.getMinutes(),
       hours: time.getHours(),
@@ -33,8 +31,9 @@ const TrackerView = () => {
       month: time.getMonth(),
       year: time.getFullYear(),
       id: Date.now(),
-    });
-    setTasksArr(tasksArrHelper);
+    };
+
+    setTasksArr([...tasksArr, newTask]);
   };
   return (
     <Grid container>
@@ -44,7 +43,7 @@ const TrackerView = () => {
             <Box>
               <TextField
                 placeholder="What are you working on"
-                value={taskName}
+                value={taskNamePrinted}
                 onChange={onChangeHandler}
               />
             </Box>
