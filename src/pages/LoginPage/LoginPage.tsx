@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, CircularProgress, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import githubUserData from '../../api/githubApi';
@@ -54,19 +54,26 @@ const LoginPage = () => {
     }
   }, [localStorageToken, dispatch, navigate]);
 
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Grid container direction="column" alignItems="center">
       <Grid item pb={5} pt={5}>
         <Typography variant="h4" component="h1">
           Login via Github
         </Typography>
-        {isLoading && (
-          <Box>
-            <Typography variant="body1" component="span">
-              <i>Please wait it can take up to some minutes...</i>
-            </Typography>
-          </Box>
-        )}
       </Grid>
       <Grid item>
         <Button
