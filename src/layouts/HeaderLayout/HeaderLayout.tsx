@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as LinkRouter, useNavigate } from 'react-router-dom';
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Button, Grid, IconButton, PaletteMode } from '@mui/material';
 
 import LangSwitch from '../../components/LangSwitch';
@@ -10,7 +9,11 @@ import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 import { changeTheme } from '../../store/themeModeSlice';
-import { Brightness4Icon, Brightness7Icon } from '../../theme/appIcons';
+import {
+  Brightness4Icon,
+  Brightness7Icon,
+  DashboardIcon,
+} from '../../theme/appIcons';
 
 const HeaderLayout = () => {
   const [mode, setMode] = useState<PaletteMode>('dark');

@@ -1,5 +1,6 @@
-import GitHubIcon from '@mui/icons-material/GitHub';
 import { Button, Link as LinkMui } from '@mui/material';
+
+import { GitHubIcon } from '../../theme/appIcons';
 
 interface ITeamMember {
   gitHubProfile: string;
