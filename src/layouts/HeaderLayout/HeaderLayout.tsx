@@ -9,7 +9,11 @@ import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 import { changeTheme } from '../../store/themeModeSlice';
-import { Brightness4Icon, Brightness7Icon } from '../../theme/appIcons';
+import {
+  Brightness4Icon,
+  Brightness7Icon,
+  DashboardIcon,
+} from '../../theme/appIcons';
 
 const HeaderLayout = () => {
   const [mode, setMode] = useState<PaletteMode>('dark');
@@ -63,19 +67,22 @@ const HeaderLayout = () => {
           <Button
             size="large"
             variant="contained"
+            startIcon={<DashboardIcon />}
             component={LinkRouter}
             to={ROUTES.DASHBOARD}>
             {t('buttons.dashboardPage')}
           </Button>
         </Grid>
       </Grid>
-      <Grid item>
-        <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-          {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
-      </Grid>
-      <Grid item>
-        <LangSwitch />
+      <Grid container spacing={1} sx={{ width: 'auto' }}>
+        <Grid item>
+          <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+            {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+        </Grid>
+        <Grid item>
+          <LangSwitch />
+        </Grid>
       </Grid>
     </Grid>
   );
