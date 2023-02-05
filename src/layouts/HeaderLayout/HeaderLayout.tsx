@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as LinkRouter, useNavigate } from 'react-router-dom';
 
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Button, Grid, IconButton, PaletteMode } from '@mui/material';
 
 import LangSwitch from '../../components/LangSwitch';
@@ -63,19 +64,22 @@ const HeaderLayout = () => {
           <Button
             size="large"
             variant="contained"
+            startIcon={<DashboardIcon />}
             component={LinkRouter}
             to={ROUTES.DASHBOARD}>
             {t('buttons.dashboardPage')}
           </Button>
         </Grid>
       </Grid>
-      <Grid item>
-        <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-          {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
-      </Grid>
-      <Grid item>
-        <LangSwitch />
+      <Grid container spacing={1} sx={{ width: 'auto' }}>
+        <Grid item>
+          <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+            {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+        </Grid>
+        <Grid item>
+          <LangSwitch />
+        </Grid>
       </Grid>
     </Grid>
   );
