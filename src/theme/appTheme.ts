@@ -12,6 +12,9 @@ export const lightTheme: ThemeOptions = {
     secondary: {
       main: '#f50057',
     },
+    info: {
+      main: '#3e2852',
+    },
   },
 };
 
@@ -23,6 +26,9 @@ export const darkTheme: ThemeOptions = {
     },
     secondary: {
       main: '#f50057',
+    },
+    info: {
+      main: '#3e2852',
     },
   },
 };
