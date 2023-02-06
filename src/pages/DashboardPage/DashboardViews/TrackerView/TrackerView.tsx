@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { Box, Button, Grid, Paper, TextField } from '@mui/material';
 
+import AddedTask from '../../../../components/AddedTask/AddedTask';
+
 interface TaskArr {
   taskName: string;
   sec: number;
@@ -73,19 +75,15 @@ const TrackerView = () => {
               return (
                 <Grid key={id} item xs={12} my={3}>
                   <Paper>
-                    <Box
-                      sx={{ justifyContent: 'space-between', display: 'flex' }}>
-                      <Box>
-                        <Box>
-                          Task date:
-                          {year}.{month}.{date}
-                        </Box>
-                        <Box>{taskName}</Box>
-                      </Box>
-                      <Box>
-                        Time spend {hours}: {min}: {sec}
-                      </Box>
-                    </Box>
+                    <AddedTask
+                      taskName={taskName}
+                      year={year}
+                      month={month}
+                      date={date}
+                      hours={hours}
+                      min={min}
+                      sec={sec}
+                    />
                   </Paper>
                 </Grid>
               );
