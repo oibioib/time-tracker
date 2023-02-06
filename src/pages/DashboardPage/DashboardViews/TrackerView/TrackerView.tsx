@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Box, Button, Grid, Paper, TextField } from '@mui/material';
 
 import AddedTask from '../../../../components/AddedTask/AddedTask';
+import Timer from '../../../../components/Timer/Timer';
 
 interface TaskArr {
   taskName: string;
@@ -37,6 +38,17 @@ const TrackerView = () => {
 
     setTasksArr([...tasksArr, newTask]);
   };
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(
+        'https://react-http-d76ff-default-rtdb.europe-west1.firebasedatabase.app/addedTask.json'
+      );
+      const data = await response.json();
+      console.log(data);
+    })();
+  }, []);
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -49,9 +61,12 @@ const TrackerView = () => {
                 onChange={onChangeHandler}
               />
             </Box>
-            <Button onClick={addTaskHandler} variant="contained">
-              Add
-            </Button>
+            <Box sx={{ display: 'flex' }}>
+              <Timer />
+              <Button onClick={addTaskHandler} variant="contained">
+                Add
+              </Button>
+            </Box>
           </Box>
         </Paper>
       </Grid>
