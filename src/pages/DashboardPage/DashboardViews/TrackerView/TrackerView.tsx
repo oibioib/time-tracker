@@ -4,6 +4,7 @@ import { Box, Button, Grid, Paper, TextField } from '@mui/material';
 
 import AddedTask from '../../../../components/AddedTask/AddedTask';
 import Timer from '../../../../components/Timer/Timer';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 interface TaskArr {
   taskName: string;
@@ -23,20 +24,22 @@ const TrackerView = () => {
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskNamePrinted(event.target.value);
   };
-  const addTaskHandler = () => {
-    const time = new Date();
-    const newTask = {
-      taskName: taskNamePrinted,
-      sec: time.getSeconds(),
-      min: time.getMinutes(),
-      hours: time.getHours(),
-      date: time.getDate(),
-      month: time.getMonth(),
-      year: time.getFullYear(),
-      id: Date.now(),
-    };
+  const timesStamps = useAppSelector((state) => state.timeTracker);
+  console.log(timesStamps);
 
-    setTasksArr([...tasksArr, newTask]);
+  const addTaskHandler = async () => {
+    const response = await fetch(
+      'https://react-http-d76ff-default-rtdb.europe-west1.firebasedatabase.app/addedTask.json',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          name: taskNamePrinted,
+          timeStart: timesStamps.startTime,
+          endTime: timesStamps.endTime,
+        }),
+      }
+    );
+    console.log(response);
   };
 
   useEffect(() => {
