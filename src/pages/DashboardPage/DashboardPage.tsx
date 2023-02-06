@@ -55,7 +55,6 @@ const DashboardPage = () => {
   const [open, setOpen] = useState(false);
   const userData = useAppSelector((state) => state.gitHubFetch);
   const dispatch = useAppDispatch();
-  // const open = useAppSelector((state) => state.themeMode.isOpen);
   const { t } = useTranslation();
   useEffect(() => {
     if (!userData.id) {
@@ -144,7 +143,6 @@ const DashboardPage = () => {
         <Box
           sx={{
             width: 200,
-            // height: '100vh',
             height: 'calc(100vh - 100px)',
             ml: -2,
             mt: -2.5,

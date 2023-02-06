@@ -64,7 +64,6 @@ const HeaderLayout = () => {
               sx={{ display: { xs: 'none', sm: 'block' } }}>
               {t('buttons.mainPage')}
             </Typography>
-            {/* {t('buttons.mainPage')} */}
           </Button>
         </Grid>
         <Grid item>
