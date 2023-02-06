@@ -1,8 +1,8 @@
 {
   "buttons": {
-    "loginPage": "Login page",
-    "mainPage": "Main Page",
-    "dashboardPage": "Dashboard/timer view",
+    "loginPage": "Login",
+    "mainPage": "Main",
+    "dashboardPage": "Dashboard",
     "gitHubLogin": "GitHub Login",
     "logout": "Logout"
   },
