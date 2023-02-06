@@ -72,7 +72,7 @@ const DashboardPage = () => {
   }, [userData, dispatch]);
 
   return (
-    <Grid container>
+    <Grid container wrap="nowrap" spacing={2}>
       <Grid item sx={{ display: { xs: 'block', sm: 'none' } }}>
         <Box component="span">
           <Button onClick={() => setOpen(!open)}>

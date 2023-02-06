@@ -36,7 +36,7 @@ const TrackerView = () => {
     setTasksArr([...tasksArr, newTask]);
   };
   return (
-    <Grid container>
+    <Grid item container>
       <Grid item xs={12}>
         <Paper>
           <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>
