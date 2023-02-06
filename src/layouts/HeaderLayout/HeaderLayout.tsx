@@ -2,7 +2,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as LinkRouter, useNavigate } from 'react-router-dom';
 
-import { Button, Grid, IconButton, PaletteMode } from '@mui/material';
+import {
+  Button,
+  Grid,
+  IconButton,
+  PaletteMode,
+  Typography,
+} from '@mui/material';
 
 import LangSwitch from '../../components/LangSwitch';
 import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
@@ -13,6 +19,9 @@ import {
   Brightness4Icon,
   Brightness7Icon,
   DashboardIcon,
+  HomeIcon,
+  LoginIcon,
+  LogoutIcon,
 } from '../../theme/appIcons';
 
 const HeaderLayout = () => {
@@ -42,26 +51,21 @@ const HeaderLayout = () => {
       direction="row"
       alignItems="center"
       justifyContent="space-between">
-      <Grid item>
-        <Button size="large" variant="contained" component={LinkRouter} to="/">
-          {t('buttons.mainPage')}
-        </Button>
-      </Grid>
       <Grid item container spacing={1} sx={{ width: 'auto' }}>
         <Grid item>
-          {isLoggedIn ? (
-            <Button size="large" variant="contained" onClick={logoutHandler}>
-              {t('buttons.logout')}
-            </Button>
-          ) : (
-            <Button
-              size="large"
-              variant="contained"
-              component={LinkRouter}
-              to={ROUTES.LOGIN}>
-              {t('buttons.loginPage')}
-            </Button>
-          )}
+          <Button
+            size="large"
+            variant="contained"
+            startIcon={<HomeIcon />}
+            component={LinkRouter}
+            to="/">
+            <Typography
+              color="white"
+              sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {t('buttons.mainPage')}
+            </Typography>
+            {/* {t('buttons.mainPage')} */}
+          </Button>
         </Grid>
         <Grid item>
           <Button
@@ -70,17 +74,55 @@ const HeaderLayout = () => {
             startIcon={<DashboardIcon />}
             component={LinkRouter}
             to={ROUTES.DASHBOARD}>
-            {t('buttons.dashboardPage')}
+            <Typography
+              color="white"
+              sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {t('buttons.dashboardPage')}
+            </Typography>
           </Button>
         </Grid>
       </Grid>
-      <Grid container spacing={1} sx={{ width: 'auto' }}>
+      <Grid
+        container
+        spacing={1}
+        sx={{ width: 'auto' }}
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between">
+        <Grid item>
+          {isLoggedIn ? (
+            <Button
+              size="large"
+              variant="contained"
+              startIcon={<LogoutIcon />}
+              onClick={logoutHandler}>
+              <Typography
+                color="white"
+                sx={{ display: { xs: 'none', sm: 'block' } }}>
+                {t('buttons.logout')}
+              </Typography>
+            </Button>
+          ) : (
+            <Button
+              size="large"
+              variant="contained"
+              startIcon={<LoginIcon />}
+              component={LinkRouter}
+              to={ROUTES.LOGIN}>
+              <Typography
+                color="white"
+                sx={{ display: { xs: 'none', sm: 'block' } }}>
+                {t('buttons.loginPage')}
+              </Typography>
+            </Button>
+          )}
+        </Grid>
         <Grid item>
           <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
             {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Grid>
-        <Grid item>
+        <Grid item alignItems="center">
           <LangSwitch />
         </Grid>
       </Grid>
