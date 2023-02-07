@@ -13,7 +13,7 @@ export const lightTheme: ThemeOptions = {
       main: '#f50057',
     },
     info: {
-      main: '#3e2852',
+      main: '#5e407a',
     },
   },
 };
