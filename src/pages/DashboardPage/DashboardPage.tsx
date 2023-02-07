@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, Outlet } from 'react-router-dom';
+
+import { Box, CircularProgress } from '@mui/material';
 
 import githubUserData from '../../api/githubApi';
 import { ROUTES } from '../../constants';
@@ -13,9 +15,12 @@ const DashboardPage = () => {
   const userData = useAppSelector((state) => state.gitHubFetch);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (!userData.id) {
       (async () => {
+        setIsLoading(true);
         const data = await githubUserData();
         dispatch(
           setGitHubUserData({
@@ -24,9 +29,24 @@ const DashboardPage = () => {
             avatar_url: data.avatar_url,
           })
         );
+        setIsLoading(false);
       })();
     }
   }, [userData, dispatch]);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <div>
