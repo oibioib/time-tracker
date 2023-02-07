@@ -1,4 +1,5 @@
 import ROUTES from './appConstants';
+import DASHBOARD_NAVIGATION from './dashBoardNavigation';
 import GithubMembers from './gitHubMembers';
 import GITHUB_AUTH from './githubAuthConstants';
 import MAIN_PAGE_CARDS from './mainPageCards';
@@ -10,4 +11,5 @@ export {
   LOCAL_STORAGE_KEY,
   GithubMembers,
   MAIN_PAGE_CARDS,
+  DASHBOARD_NAVIGATION,
 };
