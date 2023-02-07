@@ -78,7 +78,7 @@ const TrackerView = () => {
   }, [refreshPage]);
 
   return (
-    <Grid container>
+    <Grid item container pt={2}>
       <Grid item xs={12}>
         <Paper>
           <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>

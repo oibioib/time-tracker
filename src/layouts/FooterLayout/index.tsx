@@ -9,7 +9,6 @@ const FooterLayout = () => {
     <Grid
       container
       alignItems="center"
-      mt={0.5}
       mb={0.5}
       fontWeight="600"
       color="white"

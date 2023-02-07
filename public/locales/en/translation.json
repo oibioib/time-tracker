@@ -1,17 +1,33 @@
 {
   "buttons": {
-    "loginPage": "Login page",
-    "mainPage": "Main Page",
-    "dashboardPage": "Dashboard/timer view",
+    "loginPage": "Login",
+    "mainPage": "Main",
+    "dashboardPage": "Dashboard",
     "gitHubLogin": "GitHub Login",
     "logout": "Logout"
   },
   "dashboard": {
     "navigation": "Navigation",
     "timeTracker": "Time Tracker",
-    "projectsView": "Projects view",
-    "clientsView": "Clients view",
+    "projectsView": "Projects",
+    "clientsView": "Clients",
     "statistics": "Statistics",
     "settings": "Settings"
+  },
+  "description": {
+    "timer":"Control your time. It will help you increase your productivity. Improve your time management skills",
+    "projects": "Keep a list of projects. This can help you stay organized and prioritize. Our brains are better at sorted toDO lists",
+    "clients":"Keep a list of clients. Create client cards, know who trusts you. Important information in one place",
+    "statistics": "Analyze your productivity by day, week. Make conclusions. Time is not just quantity; it's quality"
+  },
+  "titleCard":{
+    "timer": "Timer",
+    "projects": "Projects",
+    "clients": "Clients",
+    "statistics": "Statistics"
+  },
+  "mainPage":{
+    "title":"Time Tracker is app that lets you easily track your time",
+    "subtitle":"There are only 24 hours in a day, you can`t change that, but you can spend your time usefully"
   }
 }

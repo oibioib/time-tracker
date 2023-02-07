@@ -1,80 +1,77 @@
-import { Grid, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Grid,
+  Typography,
+} from '@mui/material';
+
+import AboutUs from '../../components/AboutUs';
+import { MAIN_PAGE_CARDS } from '../../constants';
 
 const MainPage = () => {
+  const { t } = useTranslation();
   return (
-    <Grid
-      container
-      direction="column"
-      alignItems="center"
-      justifyContent="center">
-      <Grid item pb={5} pt={5}>
-        <Typography variant="h4" component="h1">
-          Main page
-        </Typography>
+    <Grid container alignItems="center" justifyContent="center" mb={12}>
+      <Grid item container pb={3} pt={3} justifyContent="center">
+        <Grid maxWidth={800}>
+          <Typography
+            variant="h2"
+            component="h1"
+            align="center"
+            sx={{ color: 'primary.info' }}>
+            {t('mainPage.title')}
+          </Typography>
+          <Typography
+            variant="h5"
+            component="h5"
+            sx={{ color: 'primary.main' }}
+            align="center">
+            {t('mainPage.subtitle')}
+          </Typography>
+        </Grid>
+        <Card sx={{ maxWidth: 550, mr: 2, mb: 2, ml: 2 }}>
+          <CardActionArea>
+            <CardMedia
+              component="img"
+              height="350"
+              image="./images/hourglass.jpg"
+              alt="hourglass"
+            />
+          </CardActionArea>
+        </Card>
       </Grid>
-      <Grid item container direction="row" justifyContent="space-between">
-        <Grid item sx={{ width: '30%' }}>
-          <Typography variant="body1" component="p">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-            molestiae eligendi distinctio, vitae dolores voluptatibus sint
-            laborum illum fugiat veritatis quo, iste nemo libero recusandae illo
-            facilis accusantium sed explicabo qui fugit tempora voluptatem rem.
-            Consequatur eligendi fuga repellat reiciendis vel iusto optio
-            nostrum, natus ipsum perspiciatis minus laudantium repudiandae
-            velit, doloribus asperiores. Facere soluta dolorem ad illo
-            perspiciatis nesciunt culpa. Deserunt hic dolor ullam veritatis quod
-            quibusdam sed quo, voluptates porro nulla expedita provident
-            aspernatur perspiciatis nihil, similique laudantium et ducimus
-            quidem quas delectus non accusantium. Adipisci, explicabo!
-            Perspiciatis deleniti dolorum ipsa quasi facilis, enim quidem. Culpa
-            assumenda dicta id quo asperiores dolorum optio odit earum voluptas
-            amet quasi, eius, beatae quae provident cum iusto perspiciatis,
-            adipisci fuga? Error neque excepturi ratione reiciendis optio nemo
-            totam.
-          </Typography>
-        </Grid>
-        <Grid item sx={{ width: '30%' }}>
-          <Typography variant="body1" component="p">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-            molestiae eligendi distinctio, vitae dolores voluptatibus sint
-            laborum illum fugiat veritatis quo, iste nemo libero recusandae illo
-            facilis accusantium sed explicabo qui fugit tempora voluptatem rem.
-            Consequatur eligendi fuga repellat reiciendis vel iusto optio
-            nostrum, natus ipsum perspiciatis minus laudantium repudiandae
-            velit, doloribus asperiores. Facere soluta dolorem ad illo
-            perspiciatis nesciunt culpa. Deserunt hic dolor ullam veritatis quod
-            quibusdam sed quo, voluptates porro nulla expedita provident
-            aspernatur perspiciatis nihil, similique laudantium et ducimus
-            quidem quas delectus non accusantium. Adipisci, explicabo!
-            Perspiciatis deleniti dolorum ipsa quasi facilis, enim quidem. Culpa
-            assumenda dicta id quo asperiores dolorum optio odit earum voluptas
-            amet quasi, eius, beatae quae provident cum iusto perspiciatis,
-            adipisci fuga? Error neque excepturi ratione reiciendis optio nemo
-            totam.
-          </Typography>
-        </Grid>
-        <Grid item sx={{ width: '30%' }}>
-          <Typography variant="body1" component="p">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-            molestiae eligendi distinctio, vitae dolores voluptatibus sint
-            laborum illum fugiat veritatis quo, iste nemo libero recusandae illo
-            facilis accusantium sed explicabo qui fugit tempora voluptatem rem.
-            Consequatur eligendi fuga repellat reiciendis vel iusto optio
-            nostrum, natus ipsum perspiciatis minus laudantium repudiandae
-            velit, doloribus asperiores. Facere soluta dolorem ad illo
-            perspiciatis nesciunt culpa. Deserunt hic dolor ullam veritatis quod
-            quibusdam sed quo, voluptates porro nulla expedita provident
-            aspernatur perspiciatis nihil, similique laudantium et ducimus
-            quidem quas delectus non accusantium. Adipisci, explicabo!
-            Perspiciatis deleniti dolorum ipsa quasi facilis, enim quidem. Culpa
-            assumenda dicta id quo asperiores dolorum optio odit earum voluptas
-            amet quasi, eius, beatae quae provident cum iusto perspiciatis,
-            adipisci fuga? Error neque excepturi ratione reiciendis optio nemo
-            totam.
-          </Typography>
-        </Grid>
+      <Grid
+        item
+        container
+        alignItems="center"
+        justifyContent="center"
+        columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
+        {MAIN_PAGE_CARDS.map((card) => (
+          <Card sx={{ maxWidth: 335, m: 2 }} key={card.title}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="240"
+                image={card.image}
+                alt="card of app"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h4" component="div">
+                  {t(`titleCard.${card.title}`)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {t(`description.${card.title}`)}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        ))}
       </Grid>
-      <Grid item>About us footer</Grid>
+      <AboutUs />
     </Grid>
   );
 };

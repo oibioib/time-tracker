@@ -1,20 +1,26 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
-import { Box, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Drawer from '@mui/material/Drawer';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 
 import githubUserData from '../../api/githubApi';
-import { ROUTES } from '../../constants';
+import DashboardSidebar from '../../components/DashboardSidebar';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
+import { KeyboardArrowLeftIcon, MenuIcon } from '../../theme/appIcons';
 
 import './DashboardPage.css';
 
 const DashboardPage = () => {
   const userData = useAppSelector((state) => state.gitHubFetch);
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -49,51 +55,62 @@ const DashboardPage = () => {
   }
 
   return (
-    <div>
-      <div className="dashboard">
-        <div className="dashboardNavigation">
-          {t('dashboard.navigation')}
-          <button className="dashboardButton" type="button">
-            <NavLink to={`/${ROUTES.DASHBOARD}`}>
-              {t('dashboard.timeTracker')}
-            </NavLink>
-          </button>
-          <button className="dashboardButton" type="button">
-            <NavLink to={ROUTES.PROJECTS_VIEW}>
-              {t('dashboard.projectsView')}
-            </NavLink>
-          </button>
-          <button className="dashboardButton" type="button">
-            <NavLink to={ROUTES.CLIENTS_VIEW}>
-              {t('dashboard.clientsView')}
-            </NavLink>
-          </button>
-          <button className="dashboardButton" type="button">
-            <NavLink to={ROUTES.STATISTICS_VIEW}>
-              {t('dashboard.statistics')}
-            </NavLink>
-          </button>
-          <button className="dashboardButton" type="button">
-            <NavLink to={ROUTES.SETTINGS_VIEW}>
-              {t('dashboard.settings')}
-            </NavLink>
-          </button>
-        </div>
-        <div>
-          <div>
-            <img
-              className="avatar"
-              src={`${userData && userData.avatar_url}`}
-              alt=""
-            />
-          </div>
-          <div>Name: {userData && userData.login}</div>
-          <div>ID {userData && userData.id}</div>
-        </div>
-
-        <Outlet />
-      </div>
-    </div>
+    <Grid container wrap="nowrap">
+      <Grid item sx={{ display: { xs: 'block', sm: 'none' } }}>
+        <Box component="span">
+          <Button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+            <MenuIcon />
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            maxWidth: 200,
+            bgcolor: 'primary.main',
+            position: 'absolute',
+            zIndex: '100',
+          }}>
+          <List>
+            <Drawer
+              sx={{
+                '& .MuiDrawer-paper': {
+                  height: '100%',
+                  width: 200,
+                  boxSizing: 'border-box',
+                  bgcolor: 'primary.main',
+                },
+              }}
+              variant="persistent"
+              anchor="left"
+              open={isSidebarOpen}>
+              <IconButton
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                }}>
+                <KeyboardArrowLeftIcon />
+              </IconButton>
+              <DashboardSidebar />
+            </Drawer>
+          </List>
+        </Box>
+      </Grid>
+      <Grid item sx={{ display: { xs: 'none', sm: 'block' } }} mr={2}>
+        <Box
+          sx={{
+            width: 200,
+            height: '100%',
+            minHeight: 'calc(100vh - 130px)',
+            ml: -2,
+            pb: 8,
+            bgcolor: 'primary.main',
+          }}>
+          <DashboardSidebar />
+        </Box>
+      </Grid>
+      <Outlet />
+    </Grid>
   );
 };
 
