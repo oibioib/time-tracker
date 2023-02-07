@@ -24,7 +24,6 @@ const PageLayout = () => {
           backgroundColor: 'primary.main',
           width: '100%',
           bottom: 0,
-          position: 'fixed',
         }}
         p={1}
         mt={1}>

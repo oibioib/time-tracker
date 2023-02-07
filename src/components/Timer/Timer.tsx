@@ -40,11 +40,7 @@ const Timer = ({ setDisableAdd }: TimerProps) => {
     } else {
       dispatch(setEndTime({ endTime: Date.now() }));
     }
-    if (isTimerOn) {
-      setDisableAdd(false);
-    } else {
-      setDisableAdd(true);
-    }
+    setDisableAdd(!isTimerOn);
     setIsTimerOn(!isTimerOn);
   };
 
