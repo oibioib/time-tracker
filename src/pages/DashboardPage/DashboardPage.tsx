@@ -20,8 +20,9 @@ import './DashboardPage.css';
 const DashboardPage = () => {
   const userData = useAppSelector((state) => state.gitHubFetch);
   const dispatch = useAppDispatch();
-  const [open, setOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (!userData.id) {
       (async () => {
@@ -57,7 +58,7 @@ const DashboardPage = () => {
     <Grid container wrap="nowrap" spacing={2}>
       <Grid item sx={{ display: { xs: 'block', sm: 'none' } }}>
         <Box component="span">
-          <Button onClick={() => setOpen(!open)}>
+          <Button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             <MenuIcon />
           </Button>
         </Box>
@@ -80,9 +81,9 @@ const DashboardPage = () => {
               }}
               variant="persistent"
               anchor="left"
-              open={open}>
+              open={isSidebarOpen}>
               <IconButton
-                onClick={() => setOpen(!open)}
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
