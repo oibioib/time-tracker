@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
+import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
@@ -8,13 +9,49 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 
+import githubUserData from '../../api/githubApi';
 import DashboardSidebar from '../../components/DashboardSidebar';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 import { KeyboardArrowLeftIcon, MenuIcon } from '../../theme/appIcons';
 
 import './DashboardPage.css';
 
 const DashboardPage = () => {
+  const userData = useAppSelector((state) => state.gitHubFetch);
+  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    if (!userData.id) {
+      (async () => {
+        setIsLoading(true);
+        const data = await githubUserData();
+        dispatch(
+          setGitHubUserData({
+            login: data.login,
+            id: data.id,
+            avatar_url: data.avatar_url,
+          })
+        );
+        setIsLoading(false);
+      })();
+    }
+  }, [userData, dispatch]);
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Grid container wrap="nowrap" spacing={2}>

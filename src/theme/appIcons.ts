@@ -13,7 +13,9 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SettingsIcon from '@mui/icons-material/Settings';
+import StopIcon from '@mui/icons-material/Stop';
 
 export {
   Brightness4Icon,
@@ -32,4 +34,6 @@ export {
   SettingsIcon,
   KeyboardArrowDown,
   ExpandMoreIcon,
+  PlayArrowIcon,
+  StopIcon,
 };

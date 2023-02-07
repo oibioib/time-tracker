@@ -56,6 +56,9 @@ const typography: TypographyOptions = {
   h6: {
     fontWeight: 600,
   },
+  body2: {
+    fontSize: 12,
+  },
 };
 
 const getThemeTokens = (mode: PaletteMode) => ({
