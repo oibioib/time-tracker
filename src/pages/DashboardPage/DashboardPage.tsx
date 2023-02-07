@@ -55,7 +55,7 @@ const DashboardPage = () => {
   }
 
   return (
-    <Grid container wrap="nowrap" spacing={2}>
+    <Grid container wrap="nowrap">
       <Grid item sx={{ display: { xs: 'block', sm: 'none' } }}>
         <Box component="span">
           <Button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
@@ -96,13 +96,14 @@ const DashboardPage = () => {
           </List>
         </Box>
       </Grid>
-      <Grid item sx={{ display: { xs: 'none', sm: 'block' } }}>
+      <Grid item sx={{ display: { xs: 'none', sm: 'block' } }} mr={2}>
         <Box
           sx={{
             width: 200,
             height: '100%',
+            minHeight: 'calc(100vh - 130px)',
             ml: -2,
-            mt: -2.5,
+            pb: 8,
             bgcolor: 'primary.main',
           }}>
           <DashboardSidebar />

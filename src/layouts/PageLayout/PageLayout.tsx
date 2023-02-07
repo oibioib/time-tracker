@@ -6,7 +6,11 @@ import HeaderLayout from '../HeaderLayout/HeaderLayout';
 
 const PageLayout = () => {
   return (
-    <Grid container direction="column">
+    <Grid
+      container
+      direction="column"
+      justifyContent="space-between"
+      minHeight="100vh">
       <Grid
         item
         container
@@ -14,7 +18,7 @@ const PageLayout = () => {
         p={2}>
         <HeaderLayout />
       </Grid>
-      <Grid item p={2}>
+      <Grid item pl={2} pr={2} minHeight="80vh">
         <ContainerLayout />
       </Grid>
       <Grid
@@ -25,8 +29,7 @@ const PageLayout = () => {
           width: '100%',
           bottom: 0,
         }}
-        p={1}
-        mt={1}>
+        p={1}>
         <FooterLayout />
       </Grid>
     </Grid>
