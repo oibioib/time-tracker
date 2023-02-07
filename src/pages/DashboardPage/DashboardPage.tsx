@@ -72,7 +72,7 @@ const DashboardPage = () => {
             <Drawer
               sx={{
                 '& .MuiDrawer-paper': {
-                  height: 'calc(100% - 130px)',
+                  height: '100%',
                   width: 200,
                   boxSizing: 'border-box',
                   bgcolor: 'primary.main',
@@ -99,7 +99,7 @@ const DashboardPage = () => {
         <Box
           sx={{
             width: 200,
-            height: 'calc(100vh - 100px)',
+            height: '100%',
             ml: -2,
             mt: -2.5,
             bgcolor: 'primary.main',
