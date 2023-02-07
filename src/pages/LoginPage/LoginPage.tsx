@@ -79,7 +79,7 @@ const LoginPage = () => {
         <Button
           size="large"
           variant="contained"
-          href={`https://github.com/login/oauth/authorize?scope=user&client_id=${GITHUB_AUTH.CLIENT_ID}&redirect_uri=${GITHUB_AUTH.REDIRECT_URI}`}>
+          href={`https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`}>
           {t('buttons.gitHubLogin')}
         </Button>
       </Grid>
