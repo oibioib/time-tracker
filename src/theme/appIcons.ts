@@ -4,6 +4,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FolderIcon from '@mui/icons-material/Folder';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import HomeIcon from '@mui/icons-material/Home';
@@ -30,4 +31,5 @@ export {
   BarChartIcon,
   SettingsIcon,
   KeyboardArrowDown,
+  ExpandMoreIcon,
 };
