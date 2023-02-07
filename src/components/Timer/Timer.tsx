@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, IconButton } from '@mui/material';
 
@@ -6,7 +6,11 @@ import { useAppDispatch } from '../../hooks/hooks';
 import { setEndTime, setStartTime } from '../../store/timeTrackerSlice';
 import { PlayArrowIcon, StopIcon } from '../../theme/appIcons';
 
-const Timer = () => {
+interface TimerProps {
+  setDisableAdd: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Timer = ({ setDisableAdd }: TimerProps) => {
   const [isTimerOn, setIsTimerOn] = useState(false);
   const [sec, setSec] = useState(0);
   const [min, setMin] = useState(0);
@@ -21,6 +25,7 @@ const Timer = () => {
           setSec(0);
           setHours(hours + 1);
         } else if (sec === 59) {
+          setSec(0);
           setMin(min + 1);
         } else setSec(sec + 1);
       }, 1000);
@@ -34,6 +39,11 @@ const Timer = () => {
       dispatch(setStartTime({ startTime: Date.now() }));
     } else {
       dispatch(setEndTime({ endTime: Date.now() }));
+    }
+    if (isTimerOn) {
+      setDisableAdd(false);
+    } else {
+      setDisableAdd(true);
     }
     setIsTimerOn(!isTimerOn);
   };

@@ -8,24 +8,31 @@ import { useAppSelector } from '../../../../hooks/hooks';
 
 interface TaskArr {
   taskName: string;
-  sec: number;
-  min: number;
-  hours: number;
-  date: number;
-  month: number;
-  year: number;
-  id: number;
+  taskStart: string;
+  taskTimeSec: number;
+  id: string;
+}
+
+interface TaskData {
+  startTime: number;
+  endTime: number;
+  name: string;
+}
+
+interface FetchingTrackerData {
+  id: TaskData;
 }
 
 const TrackerView = () => {
   const [taskNamePrinted, setTaskNamePrinted] = useState('');
   const [tasksArr, setTasksArr] = useState<TaskArr[]>([]);
+  const [disabledAdd, setDisableAdd] = useState(true);
+  const [refreshPage, setRefreshPage] = useState(true);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskNamePrinted(event.target.value);
   };
   const timesStamps = useAppSelector((state) => state.timeTracker);
-  console.log(timesStamps);
 
   const addTaskHandler = async () => {
     const response = await fetch(
@@ -34,12 +41,15 @@ const TrackerView = () => {
         method: 'POST',
         body: JSON.stringify({
           name: taskNamePrinted,
-          timeStart: timesStamps.startTime,
+          startTime: timesStamps.startTime,
           endTime: timesStamps.endTime,
         }),
       }
     );
-    console.log(response);
+    if (!response.ok) {
+      throw new Error('Could not POST data to DB');
+    }
+    setRefreshPage(!refreshPage);
   };
 
   useEffect(() => {
@@ -47,10 +57,25 @@ const TrackerView = () => {
       const response = await fetch(
         'https://react-http-d76ff-default-rtdb.europe-west1.firebasedatabase.app/addedTask.json'
       );
-      const data = await response.json();
-      console.log(data);
+      const data: FetchingTrackerData = await response.json();
+      const dataArr: TaskArr[] = Object.entries(data).map(
+        (el: [string, TaskData]) => {
+          return {
+            id: el[0],
+            taskName: el[1].name,
+            taskStart: new Date(el[1].startTime).toLocaleDateString('en-US', {
+              weekday: 'short',
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }),
+            taskTimeSec: el[1].endTime - el[1].startTime,
+          };
+        }
+      );
+      setTasksArr(dataArr);
     })();
-  }, []);
+  }, [refreshPage]);
 
   return (
     <Grid container>
@@ -65,8 +90,11 @@ const TrackerView = () => {
               />
             </Box>
             <Box sx={{ display: 'flex' }}>
-              <Timer />
-              <Button onClick={addTaskHandler} variant="contained">
+              <Timer setDisableAdd={setDisableAdd} />
+              <Button
+                onClick={addTaskHandler}
+                variant="contained"
+                disabled={disabledAdd}>
                 Add
               </Button>
             </Box>
@@ -88,25 +116,19 @@ const TrackerView = () => {
         </Box>
       </Grid>
       {tasksArr.length
-        ? tasksArr.map(
-            ({ id, taskName, year, month, date, hours, min, sec }) => {
-              return (
-                <Grid key={id} item xs={12} my={3}>
-                  <Paper>
-                    <AddedTask
-                      taskName={taskName}
-                      year={year}
-                      month={month}
-                      date={date}
-                      hours={hours}
-                      min={min}
-                      sec={sec}
-                    />
-                  </Paper>
-                </Grid>
-              );
-            }
-          )
+        ? tasksArr.map(({ id, taskName, taskStart, taskTimeSec }) => {
+            return (
+              <Grid key={id} item xs={12} my={3}>
+                <Paper>
+                  <AddedTask
+                    taskName={taskName}
+                    taskStart={taskStart}
+                    taskTimeSec={taskTimeSec}
+                  />
+                </Paper>
+              </Grid>
+            );
+          })
         : ''}
     </Grid>
   );
