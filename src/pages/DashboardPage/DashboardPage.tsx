@@ -11,7 +11,9 @@ import List from '@mui/material/List';
 
 import githubUserData from '../../api/githubApi';
 import DashboardSidebar from '../../components/DashboardSidebar';
+import { BASE_URL, FLY_ROUTES } from '../../constants/apiFly';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { setFlyUserLogin } from '../../store/flyUserDataSlice';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 import { KeyboardArrowLeftIcon, MenuIcon } from '../../theme/appIcons';
 
@@ -39,6 +41,28 @@ const DashboardPage = () => {
       })();
     }
   }, [userData, dispatch]);
+
+  useEffect(() => {
+    if (userData.id) {
+      (async () => {
+        const response = await fetch(`${BASE_URL}/${FLY_ROUTES.USERS}`, {
+          method: 'POST',
+          body: JSON.stringify({
+            githubId: userData.id,
+            githubName: userData.login,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch id From IO');
+        }
+        const data = await response.json();
+        dispatch(setFlyUserLogin(data.id));
+      })();
+    }
+  }, [userData.id, userData.login, dispatch]);
 
   if (isLoading) {
     return (

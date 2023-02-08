@@ -4,6 +4,7 @@ import { Box, Button, Grid, Paper, TextField } from '@mui/material';
 
 import AddedTask from '../../../../components/AddedTask/AddedTask';
 import Timer from '../../../../components/Timer/Timer';
+import { BASE_URL, FLY_ROUTES } from '../../../../constants/apiFly';
 import { useAppSelector } from '../../../../hooks/hooks';
 
 interface TaskArr {
@@ -16,7 +17,7 @@ interface TaskArr {
 interface TaskData {
   startTime: number;
   endTime: number;
-  name: string;
+  title: string;
 }
 
 interface FetchingTrackerData {
@@ -28,6 +29,9 @@ const TrackerView = () => {
   const [tasksArr, setTasksArr] = useState<TaskArr[]>([]);
   const [disabledAdd, setDisableAdd] = useState(true);
   const [refreshPage, setRefreshPage] = useState(true);
+  const flyUserId = useAppSelector((state) => state.flyUserData.id);
+
+  console.log(flyUserId);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskNamePrinted(event.target.value);
@@ -35,17 +39,18 @@ const TrackerView = () => {
   const timesStamps = useAppSelector((state) => state.timeTracker);
 
   const addTaskHandler = async () => {
-    const response = await fetch(
-      'https://react-http-d76ff-default-rtdb.europe-west1.firebasedatabase.app/addedTask.json',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          name: taskNamePrinted,
-          startTime: timesStamps.startTime,
-          endTime: timesStamps.endTime,
-        }),
-      }
-    );
+    const response = await fetch(`${BASE_URL}/${FLY_ROUTES.TIMERS}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        title: taskNamePrinted,
+        startTime: timesStamps.startTime,
+        endTime: timesStamps.endTime,
+        userId: flyUserId,
+      }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    });
     if (!response.ok) {
       throw new Error('Could not POST data to DB');
     }
@@ -53,29 +58,31 @@ const TrackerView = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const response = await fetch(
-        'https://react-http-d76ff-default-rtdb.europe-west1.firebasedatabase.app/addedTask.json'
-      );
-      const data: FetchingTrackerData = await response.json();
-      const dataArr: TaskArr[] = Object.entries(data).map(
-        (el: [string, TaskData]) => {
-          return {
-            id: el[0],
-            taskName: el[1].name,
-            taskStart: new Date(el[1].startTime).toLocaleDateString('en-US', {
-              weekday: 'short',
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            }),
-            taskTimeSec: el[1].endTime - el[1].startTime,
-          };
-        }
-      );
-      setTasksArr(dataArr);
-    })();
-  }, [refreshPage]);
+    if (flyUserId) {
+      (async () => {
+        const response = await fetch(
+          `${BASE_URL}/${FLY_ROUTES.TIMERS}/${flyUserId}`
+        );
+        const data: FetchingTrackerData = await response.json();
+        const dataArr: TaskArr[] = Object.entries(data).map(
+          (el: [string, TaskData]) => {
+            return {
+              id: el[0],
+              taskName: el[1].title,
+              taskStart: new Date(el[1].startTime).toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              }),
+              taskTimeSec: el[1].endTime - el[1].startTime,
+            };
+          }
+        );
+        setTasksArr(dataArr);
+      })();
+    }
+  }, [refreshPage, flyUserId]);
 
   return (
     <Grid item container pt={2}>

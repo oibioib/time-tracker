@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import flyUserDataSlice from './flyUserDataSlice';
 import gitHubFetchReducer from './gitHubFetchSlice';
 import themeModeReducer from './themeModeSlice';
 import timeTrackerSlice from './timeTrackerSlice';
@@ -9,6 +10,7 @@ const store = configureStore({
     gitHubFetch: gitHubFetchReducer,
     themeMode: themeModeReducer,
     timeTracker: timeTrackerSlice,
+    flyUserData: flyUserDataSlice,
   },
 });
 
