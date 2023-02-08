@@ -30,7 +30,6 @@ const UserAvatar = () => {
       <Typography variant="body1">
         Name: {userData && userData.login}
       </Typography>
-      <Typography variant="body1">ID {userData && userData.id}</Typography>
     </Grid>
   );
 };

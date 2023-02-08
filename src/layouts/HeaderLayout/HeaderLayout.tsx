@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as LinkRouter, useNavigate } from 'react-router-dom';
+import { Link as LinkRouter } from 'react-router-dom';
 
 import {
   Button,
@@ -13,7 +13,6 @@ import {
 import LangSwitch from '../../components/LangSwitch';
 import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 import { changeTheme } from '../../store/themeModeSlice';
 import {
   Brightness4Icon,
@@ -21,22 +20,15 @@ import {
   DashboardIcon,
   HomeIcon,
   LoginIcon,
-  LogoutIcon,
 } from '../../theme/appIcons';
 
 const HeaderLayout = () => {
   const [mode, setMode] = useState<PaletteMode>('dark');
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const gitHubID = useAppSelector((state) => state.gitHubFetch.id);
   const token = localStorage.getItem(LOCAL_STORAGE_KEY);
   const isLoggedIn = gitHubID || token;
-  const logoutHandler = () => {
-    localStorage.clear();
-    dispatch(setGitHubUserData({ login: 'login', id: 0, avatar_url: 'url' }));
-    navigate('/');
-  };
 
   const toggleColorMode = () => {
     setMode((prevMode: PaletteMode) =>
@@ -89,19 +81,7 @@ const HeaderLayout = () => {
         alignItems="center"
         justifyContent="space-between">
         <Grid item>
-          {isLoggedIn ? (
-            <Button
-              size="large"
-              variant="contained"
-              startIcon={<LogoutIcon />}
-              onClick={logoutHandler}>
-              <Typography
-                color="white"
-                sx={{ display: { xs: 'none', sm: 'block' } }}>
-                {t('buttons.logout')}
-              </Typography>
-            </Button>
-          ) : (
+          {!isLoggedIn && (
             <Button
               size="large"
               variant="contained"
