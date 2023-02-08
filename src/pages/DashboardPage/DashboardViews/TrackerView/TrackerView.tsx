@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { Box, Button, Grid, Paper, TextField } from '@mui/material';
 
 import AddedTask from '../../../../components/AddedTask/AddedTask';
 import Timer from '../../../../components/Timer/Timer';
+import { LOCAL_TIMER } from '../../../../constants';
 import { BASE_URL, FLY_ROUTES } from '../../../../constants/apiFly';
-import { useAppSelector } from '../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { setStartTime } from '../../../../store/timeTrackerSlice';
 
 interface TaskArr {
   taskName: string;
@@ -30,8 +33,8 @@ const TrackerView = () => {
   const [disabledAdd, setDisableAdd] = useState(true);
   const [refreshPage, setRefreshPage] = useState(true);
   const flyUserId = useAppSelector((state) => state.flyUserData.id);
-
-  console.log(flyUserId);
+  const dispatch = useAppDispatch();
+  const total = useAppSelector((state) => state.timeTracker.totalTime);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskNamePrinted(event.target.value);
@@ -44,7 +47,7 @@ const TrackerView = () => {
       body: JSON.stringify({
         title: taskNamePrinted,
         startTime: timesStamps.startTime,
-        endTime: timesStamps.endTime,
+        // endTime: timesStamps.endTime,
         userId: flyUserId,
       }),
       headers: {
@@ -54,6 +57,10 @@ const TrackerView = () => {
     if (!response.ok) {
       throw new Error('Could not POST data to DB');
     }
+    setDisableAdd(true);
+    dispatch(setStartTime({ startTime: 0 }));
+    localStorage.removeItem(LOCAL_TIMER);
+    setTaskNamePrinted('');
     setRefreshPage(!refreshPage);
   };
 
@@ -63,18 +70,24 @@ const TrackerView = () => {
         const response = await fetch(
           `${BASE_URL}/${FLY_ROUTES.TIMERS}/${flyUserId}`
         );
+        if (!response.ok) {
+          throw new Error('Could not get new User id');
+        }
         const data: FetchingTrackerData = await response.json();
         const dataArr: TaskArr[] = Object.entries(data).map(
           (el: [string, TaskData]) => {
             return {
               id: el[0],
               taskName: el[1].title,
-              taskStart: new Date(el[1].startTime).toLocaleDateString('en-US', {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              }),
+              taskStart: new Date(+el[1].startTime).toLocaleDateString(
+                'en-US',
+                {
+                  weekday: 'short',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                }
+              ),
               taskTimeSec: el[1].endTime - el[1].startTime,
             };
           }

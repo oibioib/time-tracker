@@ -59,18 +59,20 @@ const HeaderLayout = () => {
           </Button>
         </Grid>
         <Grid item>
-          <Button
-            size="large"
-            variant="contained"
-            startIcon={<DashboardIcon />}
-            component={LinkRouter}
-            to={ROUTES.DASHBOARD}>
-            <Typography
-              color="white"
-              sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {t('buttons.dashboardPage')}
-            </Typography>
-          </Button>
+          {isLoggedIn && (
+            <Button
+              size="large"
+              variant="contained"
+              startIcon={<DashboardIcon />}
+              component={LinkRouter}
+              to={ROUTES.DASHBOARD}>
+              <Typography
+                color="white"
+                sx={{ display: { xs: 'none', sm: 'block' } }}>
+                {t('buttons.dashboardPage')}
+              </Typography>
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Grid

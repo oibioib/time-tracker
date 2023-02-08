@@ -3,7 +3,7 @@ import DASHBOARD_NAVIGATION from './dashBoardNavigation';
 import GithubMembers from './gitHubMembers';
 import GITHUB_AUTH from './githubAuthConstants';
 import MAIN_PAGE_CARDS from './mainPageCards';
-import LOCAL_STORAGE_KEY from './storageConstants';
+import { LOCAL_STORAGE_KEY, LOCAL_TIMER } from './storageConstants';
 
 export {
   ROUTES,
@@ -12,4 +12,5 @@ export {
   GithubMembers,
   MAIN_PAGE_CARDS,
   DASHBOARD_NAVIGATION,
+  LOCAL_TIMER,
 };

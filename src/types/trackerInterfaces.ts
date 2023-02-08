@@ -3,3 +3,9 @@ export interface TaskArrReduced {
   taskStart: string;
   taskTimeSec: number;
 }
+
+export interface LocalStorageTimer {
+  isTimerOn: boolean;
+  startStamp: number;
+  totalTime: number;
+}
