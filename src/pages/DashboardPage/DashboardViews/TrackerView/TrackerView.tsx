@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Box, Button, Grid, Paper, TextField } from '@mui/material';
 
 import AddedTask from '../../../../components/AddedTask/AddedTask';
+import EmptyView from '../../../../components/EmptyView/EmptyView';
 import Timer from '../../../../components/Timer/Timer';
 import { LOCAL_TIMER } from '../../../../constants';
 import { BASE_URL, FLY_ROUTES } from '../../../../constants/apiFly';
@@ -137,24 +138,26 @@ const TrackerView = () => {
           {' '}
         </Box>
       </Grid>
-      {tasksArr.length
-        ? tasksArr.map(({ id, taskName, taskStart, taskTimeSec }) => {
-            return (
-              <Grid key={id} item xs={12} my={3}>
-                <Paper>
-                  <AddedTask
-                    taskName={taskName}
-                    taskStart={taskStart}
-                    taskTimeSec={taskTimeSec}
-                    id={id}
-                    setRefreshPage={setRefreshPage}
-                    refreshPage={refreshPage}
-                  />
-                </Paper>
-              </Grid>
-            );
-          })
-        : ''}
+      {tasksArr.length ? (
+        tasksArr.map(({ id, taskName, taskStart, taskTimeSec }) => {
+          return (
+            <Grid key={id} item xs={12} my={3}>
+              <Paper>
+                <AddedTask
+                  taskName={taskName}
+                  taskStart={taskStart}
+                  taskTimeSec={taskTimeSec}
+                  id={id}
+                  setRefreshPage={setRefreshPage}
+                  refreshPage={refreshPage}
+                />
+              </Paper>
+            </Grid>
+          );
+        })
+      ) : (
+        <EmptyView />
+      )}
     </Grid>
   );
 };

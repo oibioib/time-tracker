@@ -45,6 +45,7 @@ const typography: TypographyOptions = {
     fontWeight: 600,
   },
   h3: {
+    fontSize: 22,
     fontWeight: 600,
   },
   h4: {
