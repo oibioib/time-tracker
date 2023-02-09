@@ -21,6 +21,7 @@ interface TaskData {
   startTime: number;
   endTime: number;
   title: string;
+  id: string;
 }
 
 interface FetchingTrackerData {
@@ -74,10 +75,11 @@ const TrackerView = () => {
           throw new Error('Could not get new User id');
         }
         const data: FetchingTrackerData = await response.json();
+        console.log(data);
         const dataArr: TaskArr[] = Object.entries(data).map(
           (el: [string, TaskData]) => {
             return {
-              id: el[0],
+              id: el[1].id,
               taskName: el[1].title,
               taskStart: new Date(+el[1].startTime).toLocaleDateString(
                 'en-US',
@@ -144,6 +146,9 @@ const TrackerView = () => {
                     taskName={taskName}
                     taskStart={taskStart}
                     taskTimeSec={taskTimeSec}
+                    id={id}
+                    setRefreshPage={setRefreshPage}
+                    refreshPage={refreshPage}
                   />
                 </Paper>
               </Grid>
