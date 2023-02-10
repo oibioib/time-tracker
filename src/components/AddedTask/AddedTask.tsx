@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 
 import { BASE_URL, FLY_ROUTES } from '../../constants/apiFly';
 import { TaskArrReduced } from '../../types/trackerInterfaces';
+import SmallTimer from '../SmallTimer/SmallTimer';
 
 const AddedTask = ({
   taskStart,
@@ -12,6 +13,7 @@ const AddedTask = ({
   refreshPage,
 }: TaskArrReduced) => {
   const helperDate = new Date(taskTimeSec);
+
   const hours = helperDate.getUTCHours() || 0;
   const min = helperDate.getMinutes() || 0;
   const sec = helperDate.getSeconds() || 0;
@@ -44,13 +46,22 @@ const AddedTask = ({
         <Box mr={2}>
           <Typography variant="body2">Time spend: {timeString}</Typography>
         </Box>
-        <Box
-          onClick={onClickHandler}
-          mr={2}
-          sx={{ ':hover': { cursor: 'pointer' } }}>
-          <Typography variant="body2" sx={{ color: 'coral' }}>
-            del
-          </Typography>
+        <Box mr={3}>
+          <Box
+            onClick={onClickHandler}
+            ml={1}
+            sx={{ ':hover': { cursor: 'pointer' } }}>
+            <Typography variant="body2" sx={{ color: 'coral' }}>
+              del
+            </Typography>
+          </Box>
+          <Box>
+            <SmallTimer
+              timerTitle={taskName}
+              timerId={id}
+              totalTime={taskTimeSec}
+            />
+          </Box>
         </Box>
       </Box>
     </Box>
