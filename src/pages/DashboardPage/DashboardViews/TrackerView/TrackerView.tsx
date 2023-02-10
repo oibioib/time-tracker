@@ -49,7 +49,6 @@ const TrackerView = () => {
           throw new Error('Could not get new User id');
         }
         const data: TaskData[] = await response.json();
-        console.log(data);
         const dataArr: TaskArr[] = data
           .sort((a, b) => b.startTime - a.startTime)
           .map((el: TaskData) => {

@@ -29,7 +29,6 @@ const SmallTimer = ({ timerId, timerTitle, totalTime }: SmallTimerProps) => {
       })
     );
     dispatch(setPreviousTimeStamp(Date.now()));
-    console.log(totalTime);
     (async () => {
       const response = await fetch(
         `${BASE_URL}/${FLY_ROUTES.TIMERS}/${timerId}`,
