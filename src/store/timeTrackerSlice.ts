@@ -3,18 +3,27 @@ import { createSlice } from '@reduxjs/toolkit';
 const timeTrackerSlice = createSlice({
   name: 'timeTrackerSlice',
   initialState: {
-    startTime: 0,
+    isTimerOn: false,
+    timerId: '',
     totalTime: 0,
+    timerTitle: '',
+    previousTimeStamp: 0,
   },
   reducers: {
-    setStartTime(state, action) {
-      state.startTime = action.payload.startTime;
+    setIsTimerOn(state, action) {
+      state.isTimerOn = action.payload;
     },
-    setTotalTime(state, action) {
-      state.totalTime = action.payload;
+    setTimerData(state, action) {
+      state.timerId = action.payload.timerId;
+      state.totalTime = action.payload.totalTime;
+      state.timerTitle = action.payload.timerTitle;
+    },
+    setPreviousTimeStamp(state, action) {
+      state.previousTimeStamp = action.payload;
     },
   },
 });
 
-export const { setStartTime, setTotalTime } = timeTrackerSlice.actions;
+export const { setIsTimerOn, setTimerData, setPreviousTimeStamp } =
+  timeTrackerSlice.actions;
 export default timeTrackerSlice.reducer;
