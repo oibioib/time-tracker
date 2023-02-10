@@ -2,95 +2,139 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, IconButton } from '@mui/material';
 
-import { LOCAL_TIMER } from '../../constants';
+import { BASE_URL, FLY_ROUTES } from '../../constants/apiFly';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { setStartTime, setTotalTime } from '../../store/timeTrackerSlice';
+import {
+  setIsTimerOn,
+  setPreviousTimeStamp,
+  setTimerData,
+} from '../../store/timeTrackerSlice';
 import { PlayArrowIcon, StopIcon } from '../../theme/appIcons';
 
 interface TimerProps {
-  setDisableAdd: React.Dispatch<React.SetStateAction<boolean>>;
+  setRefreshPage: React.Dispatch<React.SetStateAction<boolean>>;
+  refreshPage: boolean;
+  flyUserId: string;
 }
 
-const Timer = ({ setDisableAdd }: TimerProps) => {
+const Timer = ({ setRefreshPage, refreshPage, flyUserId }: TimerProps) => {
+  const timerData = useAppSelector((state) => state.timeTracker);
+  const { isTimerOn } = timerData;
+  const [sec, setSec] = useState(0);
+  const [min, setMin] = useState(0);
+  const [hours, setHours] = useState(0);
   const dispatch = useAppDispatch();
-  const localData = JSON.parse(localStorage.getItem(LOCAL_TIMER) || '{}');
-  console.log(localData);
-  const total = localData?.total;
-  const [isTimerOn, setIsTimerOn] = useState(localData.isTimerOn || false);
-  const storedTime = new Date(localData.total * 1000);
-  const [sec, setSec] = useState(storedTime.getUTCSeconds() || 0);
-  const [min, setMin] = useState(storedTime.getUTCMinutes() || 0);
-  const [hours, setHours] = useState(storedTime.getUTCHours() || 0);
-  const startStamp =
-    useAppSelector((state) => state.timeTracker.startTime) ||
-    localData.startStamp;
+  const [timerTitle, setTimerTitle] = useState('');
+  const [timerId, setTimerId] = useState('');
+  const { totalTime } = timerData;
 
   useEffect(() => {
-    if (localData.startStamp) {
-      dispatch(setStartTime(localData.startStamp));
+    const timeSpent = new Date(timerData.totalTime);
+    setSec(timeSpent.getSeconds());
+    setMin(timeSpent.getMinutes());
+    setHours(timeSpent.getUTCHours());
+    if (timerData.timerId) {
+      setTimerId(timerData.timerId);
     }
-    if (!startStamp) {
-      setSec(0);
-      setMin(0);
-      setHours(0);
-    }
-    if (startStamp) {
-      setDisableAdd(false);
-    }
-  }, [
-    localData.startStamp,
-    setDisableAdd,
-    startStamp,
-    isTimerOn,
-    total,
-    localData,
-    dispatch,
-  ]);
+    setTimerTitle(timerData.timerTitle);
+  }, [timerData.totalTime, timerData.timerId, timerData.timerTitle]);
 
   useEffect(() => {
     if (isTimerOn) {
       const interval = setInterval(() => {
-        localStorage.setItem(
-          LOCAL_TIMER,
-          JSON.stringify({ ...localData, total: total + 1 })
+        dispatch(
+          setTimerData({
+            ...timerData,
+            totalTime:
+              totalTime +
+              Date.now() -
+              (timerData.previousTimeStamp || Date.now()),
+          })
         );
-        dispatch(setTotalTime(total + 1));
-        if (min === 59 && sec === 59) {
-          setMin(0);
-          setSec(0);
-          setHours(hours + 1);
-        } else if (sec === 59) {
-          setSec(0);
-          setMin(min + 1);
-        } else setSec(sec + 1);
+        dispatch(setPreviousTimeStamp(Date.now()));
       }, 1000);
       return () => clearInterval(interval);
     }
     return undefined;
-  }, [isTimerOn, hours, min, sec, localData, total, dispatch]);
+  }, [isTimerOn, totalTime, timerData, dispatch]);
 
-  const onClickHandler = () => {
-    if (!isTimerOn && sec === 0 && min === 0 && hours === 0) {
-      dispatch(setStartTime({ startTime: Date.now() }));
-      localStorage.setItem(
-        LOCAL_TIMER,
-        JSON.stringify({
-          isTimerOn: !isTimerOn,
-          startStamp: Date.now(),
-          total: 0,
-        })
-      );
-    } else {
-      localStorage.setItem(
-        LOCAL_TIMER,
-        JSON.stringify({
-          ...localData,
-          isTimerOn: !isTimerOn,
-        })
-      );
+  useEffect(() => {
+    if (isTimerOn && sec % 10 === 0 && sec !== 0) {
+      (async () => {
+        const response = await fetch(
+          `${BASE_URL}/${FLY_ROUTES.TIMERS}/${timerId}`,
+          {
+            method: 'PATCH',
+            body: JSON.stringify({
+              title: timerTitle,
+              isActive: 1,
+              totalTime,
+            }),
+            headers: {
+              'Content-type': 'application/json',
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error('Could not PATCH data to DB');
+        }
+      })();
     }
-    setDisableAdd(!isTimerOn);
-    setIsTimerOn(!isTimerOn);
+  }, [timerTitle, totalTime, isTimerOn, timerId, sec]);
+
+  const onClickHandler = async () => {
+    if (!isTimerOn && sec === 0 && min === 0 && hours === 0) {
+      const response = await fetch(`${BASE_URL}/${FLY_ROUTES.TIMERS}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          title: timerTitle,
+          startTime: Date.now(),
+          userId: flyUserId,
+        }),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Could not POST data to DB');
+      }
+
+      const data = await response.json();
+      setTimerId(data.id);
+      dispatch(setPreviousTimeStamp(Date.now()));
+    }
+    if (isTimerOn) {
+      const response = await fetch(
+        `${BASE_URL}/${FLY_ROUTES.TIMERS}/${timerId}`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({
+            title: timerTitle,
+            isActive: 0,
+            totalTime,
+          }),
+          headers: {
+            'Content-type': 'application/json',
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Could not PATCH data to DB');
+      }
+      setSec(0);
+      setMin(0);
+      setHours(0);
+      dispatch(
+        setTimerData({
+          ...timerData,
+          timerTitle: '',
+          timerId: '',
+          totalTime: 0,
+        })
+      );
+      setRefreshPage(!refreshPage);
+    }
+    dispatch(setIsTimerOn(!isTimerOn));
   };
 
   return (
