@@ -35,6 +35,7 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "chart.js": "^4.2.0",
+    "chartjs": "^0.3.24",
     "i18next": "^22.4.9",
     "i18next-http-backend": "^2.1.1",
     "react": "^18.2.0",
