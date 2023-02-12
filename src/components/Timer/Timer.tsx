@@ -28,6 +28,8 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
   const [timerTitle, setTimerTitle] = useState('');
   const [timerId, setTimerId] = useState('');
   const { totalTime } = timerData;
+  const [isError, setIsError] = useState(false);
+  const [errorStatus, setErrorStatus] = useState('');
 
   useEffect(() => {
     if (isTimerOn) {
@@ -74,14 +76,16 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
   useEffect(() => {
     if (isTimerOn && sec % 10 === 0 && sec !== 0) {
       (async () => {
-        const response = await updateTimer(
-          timerTitle,
-          TIMER_ACTIVE.ACTIVE,
-          totalTime,
-          timerId
-        );
-        if (!response.ok) {
-          throw new Error('Could not PATCH data to DB');
+        try {
+          await updateTimer(
+            timerTitle,
+            TIMER_ACTIVE.ACTIVE,
+            totalTime,
+            timerId
+          );
+        } catch {
+          setIsError(true);
+          setErrorStatus('Failed to update timer, please refresh the page');
         }
       })();
     }
@@ -89,39 +93,46 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
 
   const onClickHandler = async () => {
     if (!isTimerOn && sec === 0 && min === 0 && hours === 0) {
-      const response = await createTimer(timerTitle, serverUserId);
-      if (!response.ok) {
-        throw new Error('Could not POST data to DB');
+      try {
+        const data = await createTimer(timerTitle, serverUserId);
+        setTimerId(data.id);
+        dispatch(setPreviousTimeStamp(Date.now()));
+      } catch (error) {
+        setIsError(true);
+        setErrorStatus('Failed to create timer, please refresh the page');
       }
-      const data = await response.json();
-      setTimerId(data.id);
-      dispatch(setPreviousTimeStamp(Date.now()));
     }
     if (isTimerOn) {
-      const response = await updateTimer(
-        timerTitle,
-        TIMER_ACTIVE.INACTIVE,
-        totalTime,
-        timerId
-      );
-      if (!response.ok) {
-        throw new Error('Could not PATCH data to DB');
+      try {
+        await updateTimer(
+          timerTitle,
+          TIMER_ACTIVE.INACTIVE,
+          totalTime,
+          timerId
+        );
+        setSec(0);
+        setMin(0);
+        setHours(0);
+        dispatch(
+          setTimerData({
+            ...timerData,
+            timerTitle: '',
+            timerId: '',
+            totalTime: 0,
+          })
+        );
+        setRefreshPage(!refreshPage);
+      } catch (error) {
+        setIsError(true);
+        setErrorStatus('Failed to update timer, please refresh the page');
       }
-      setSec(0);
-      setMin(0);
-      setHours(0);
-      dispatch(
-        setTimerData({
-          ...timerData,
-          timerTitle: '',
-          timerId: '',
-          totalTime: 0,
-        })
-      );
-      setRefreshPage(!refreshPage);
     }
     dispatch(setIsTimerOn(!isTimerOn));
   };
+
+  if (isError) {
+    return <Box color="red">{errorStatus}</Box>;
+  }
 
   return (
     <Box

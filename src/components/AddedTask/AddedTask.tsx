@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Box, Typography } from '@mui/material';
 
 import { deleteTimer } from '../../api/serverApi';
@@ -14,8 +16,8 @@ const AddedTask = ({
   setRefreshPage,
   refreshPage,
 }: TaskArrReduced) => {
+  const [isError, setIsError] = useState(false);
   const helperDate = new Date(taskTimeSec);
-
   const hours = helperDate.getUTCHours() || 0;
   const min = helperDate.getMinutes() || 0;
   const sec = helperDate.getSeconds() || 0;
@@ -23,9 +25,17 @@ const AddedTask = ({
   const timeString = timeStringView(sec, min, hours);
 
   const onClickHandler = async () => {
-    await deleteTimer(id);
-    setRefreshPage(!refreshPage);
+    try {
+      await deleteTimer(id);
+      setRefreshPage(!refreshPage);
+    } catch (error) {
+      setIsError(true);
+    }
   };
+
+  if (isError) {
+    return <Box>Failed to delete, please try again latter</Box>;
+  }
 
   return (
     <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>

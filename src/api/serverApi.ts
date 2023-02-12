@@ -20,7 +20,9 @@ export const updateTimer = async (
       },
     }
   );
-  return response;
+  if (!response.ok) {
+    throw new Error('Could not PATCH data to DB');
+  }
 };
 
 export const createTimer = async (timerTitle: string, serverUserId: string) => {
@@ -35,21 +37,33 @@ export const createTimer = async (timerTitle: string, serverUserId: string) => {
       'Content-type': 'application/json',
     },
   });
-  return response;
+  if (!response.ok) {
+    throw new Error('Could not POST data to DB');
+  }
+  const data = await response.json();
+  return data;
 };
 
 export const getUserTimers = async (serverUserId: string) => {
   const response = await fetch(
     `${BASE_URL}/${SERVER_ROUTES.USER_TIMERS}/${serverUserId}`
   );
-  return response;
+  if (!response.ok) {
+    throw new Error('Could not get server User id');
+  }
+  const data = await response.json();
+  return data;
 };
 
 export const getActiveTimer = async (serverUserId: string) => {
   const response = await fetch(
     `${BASE_URL}/${SERVER_ROUTES.USER_TIMERS}/${serverUserId}${SERVER_ROUTES.IS_ACTIVE_TIMERS}`
   );
-  return response;
+  if (!response.ok) {
+    throw new Error('Could not get information about User active Timers');
+  }
+  const data = await response.json();
+  return data;
 };
 
 export const createServerUserId = async (
@@ -66,7 +80,11 @@ export const createServerUserId = async (
       'Content-Type': 'application/json',
     },
   });
-  return response;
+  if (!response.ok) {
+    throw new Error('Failed to fetch id From IO');
+  }
+  const data = await response.json();
+  return data;
 };
 
 export const deleteTimer = async (id: string) => {

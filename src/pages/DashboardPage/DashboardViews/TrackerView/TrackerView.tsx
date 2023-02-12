@@ -31,6 +31,8 @@ const TrackerView = () => {
   const [refreshPage, setRefreshPage] = useState(true);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
   const dispatch = useAppDispatch();
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
       let acc = total;
@@ -73,27 +75,28 @@ const TrackerView = () => {
   useEffect(() => {
     if (serverUserId) {
       (async () => {
-        const response = await getUserTimers(serverUserId);
-        if (!response.ok) {
-          throw new Error('Could not get server User id');
+        try {
+          const data = await getUserTimers(serverUserId);
+          const dataArr: AddedTaskData[] = data.map(
+            ({ startTime, id, title, totalTime }: TimerData) => {
+              return {
+                id,
+                taskName: title,
+                taskStart: new Date(+startTime).toLocaleDateString('en-US', {
+                  weekday: 'short',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                }),
+                taskTimeSec: +totalTime,
+              };
+            }
+          );
+          setTasksArr(dataArr);
+        } catch (error) {
+          setIsError(true);
+          setErrorMessage('Failed to get timers data, please try again latter');
         }
-        const data: TimerData[] = await response.json();
-        const dataArr: AddedTaskData[] = data.map(
-          ({ startTime, id, title, totalTime }: TimerData) => {
-            return {
-              id,
-              taskName: title,
-              taskStart: new Date(+startTime).toLocaleDateString('en-US', {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              }),
-              taskTimeSec: +totalTime,
-            };
-          }
-        );
-        setTasksArr(dataArr);
       })();
     }
   }, [refreshPage, serverUserId]);
@@ -101,25 +104,43 @@ const TrackerView = () => {
   useEffect(() => {
     if (serverUserId) {
       (async () => {
-        const response = await getActiveTimer(serverUserId);
-        if (!response.ok) {
-          throw new Error('Could not get information about User active Timers');
-        }
-        const data = await response.json();
-        if (data[0]?.isActive) {
-          dispatch(
-            setTimerData({
-              timerId: data[0].id,
-              timerTitle: data[0].title,
-              totalTime: +data[0].totalTime || 0,
-              startTime: data[0].startTime,
-            })
-          );
-          dispatch(setIsTimerOn(true));
+        try {
+          const data = await getActiveTimer(serverUserId);
+          if (data[0]?.isActive) {
+            dispatch(
+              setTimerData({
+                timerId: data[0].id,
+                timerTitle: data[0].title,
+                totalTime: +data[0].totalTime || 0,
+                startTime: data[0].startTime,
+              })
+            );
+            dispatch(setIsTimerOn(true));
+          }
+        } catch (error) {
+          setIsError(true);
+          setErrorMessage('Failed to get active, please try again latter');
         }
       })();
     }
   }, [serverUserId, dispatch]);
+
+  if (isError) {
+    if (isError) {
+      return (
+        <Box
+          color="red"
+          sx={{
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {errorMessage}
+        </Box>
+      );
+    }
+  }
 
   return (
     <Grid item container pt={2}>

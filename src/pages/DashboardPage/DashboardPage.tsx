@@ -26,20 +26,27 @@ const DashboardPage = () => {
   const dispatch = useAppDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (!userData.id) {
       (async () => {
         setIsLoading(true);
-        const data = await getGithubUserData();
-        dispatch(
-          setGitHubUserData({
-            login: data.login,
-            id: data.id,
-            avatar_url: data.avatar_url,
-          })
-        );
-        setIsLoading(false);
+        try {
+          const data = await getGithubUserData();
+          dispatch(
+            setGitHubUserData({
+              login: data.login,
+              id: data.id,
+              avatar_url: data.avatar_url,
+            })
+          );
+          setIsLoading(false);
+        } catch (error) {
+          setIsError(true);
+          setErrorMessage('Failed to get data from gitHub. Try later');
+        }
       })();
     }
   }, [userData, dispatch]);
@@ -47,12 +54,13 @@ const DashboardPage = () => {
   useEffect(() => {
     if (userData.id) {
       (async () => {
-        const response = await createServerUserId(userData.id, userData.login);
-        if (!response.ok) {
-          throw new Error('Failed to fetch id From IO');
+        try {
+          const data = await createServerUserId(userData.id, userData.login);
+          dispatch(setServerUserLogin(data.id));
+        } catch (error) {
+          setIsError(true);
+          setErrorMessage('Failed to create user. Please try again letter');
         }
-        const data = await response.json();
-        dispatch(setServerUserLogin(data.id));
       })();
     }
   }, [userData.id, userData.login, dispatch]);
@@ -67,6 +75,21 @@ const DashboardPage = () => {
           alignItems: 'center',
         }}>
         <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Box
+        color="red"
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {errorMessage}
       </Box>
     );
   }
