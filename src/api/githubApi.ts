@@ -1,6 +1,6 @@
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../constants';
 
-const githubUserData = async () => {
+export const getGithubUserData = async () => {
   const token = localStorage.getItem(LOCAL_STORAGE_KEY);
   const response = await fetch(`${GITHUB_AUTH.PROXY_URL}/getUserData`, {
     method: 'GET',
@@ -12,4 +12,13 @@ const githubUserData = async () => {
   return data;
 };
 
-export default githubUserData;
+export const getGitHubToken = async (gitHubCode: string) => {
+  const result = await fetch(
+    `${GITHUB_AUTH.PROXY_URL}/getAccessToken?code=${gitHubCode}`,
+    {
+      method: 'GET',
+    }
+  );
+  const data = await result.json();
+  return data;
+};
