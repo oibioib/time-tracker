@@ -1,6 +1,7 @@
 import { IconButton } from '@mui/material';
 
-import { BASE_URL, FLY_ROUTES } from '../../constants/apiFly';
+import { updateTimer } from '../../api/serverApi';
+import { TIMER_ACTIVE } from '../../constants/serverConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
   setIsTimerOn,
@@ -19,7 +20,7 @@ const SmallTimer = ({ timerId, timerTitle, totalTime }: SmallTimerProps) => {
   const isTimerOn = useAppSelector((state) => state.timeTracker.isTimerOn);
   const dispatch = useAppDispatch();
 
-  const onClickHandler = () => {
+  const onClickHandler = async () => {
     dispatch(setIsTimerOn(true));
     dispatch(
       setTimerData({
@@ -29,25 +30,16 @@ const SmallTimer = ({ timerId, timerTitle, totalTime }: SmallTimerProps) => {
       })
     );
     dispatch(setPreviousTimeStamp(Date.now()));
-    (async () => {
-      const response = await fetch(
-        `${BASE_URL}/${FLY_ROUTES.TIMERS}/${timerId}`,
-        {
-          method: 'PATCH',
-          body: JSON.stringify({
-            title: timerTitle,
-            isActive: 1,
-            totalTime,
-          }),
-          headers: {
-            'Content-type': 'application/json',
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error('Could not PATCH data to DB');
-      }
-    })();
+
+    const response = await updateTimer(
+      timerTitle,
+      TIMER_ACTIVE.ACTIVE,
+      totalTime,
+      timerId
+    );
+    if (!response.ok) {
+      throw new Error('Could not PATCH data to DB');
+    }
   };
   return (
     <IconButton onClick={onClickHandler} disabled={isTimerOn}>
