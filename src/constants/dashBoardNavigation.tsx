@@ -5,7 +5,7 @@ import {
   FolderIcon,
   SettingsIcon,
 } from '../theme/appIcons';
-import ROUTES from './appConstants';
+import { ROUTES } from './appConstants';
 
 const DASHBOARD_NAVIGATION = [
   {

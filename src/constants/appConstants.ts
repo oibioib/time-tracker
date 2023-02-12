@@ -1,4 +1,4 @@
-enum ROUTES {
+export enum ROUTES {
   LOGIN = 'login',
   DASHBOARD = 'tracker',
   PROJECTS_VIEW = 'projects',
@@ -7,4 +7,4 @@ enum ROUTES {
   SETTINGS_VIEW = 'settings',
 }
 
-export default ROUTES;
+export const HOURS_IN_MILISEC = 1000 * 60 * 60;

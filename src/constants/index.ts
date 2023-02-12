@@ -1,4 +1,4 @@
-import ROUTES from './appConstants';
+import { ROUTES } from './appConstants';
 import DASHBOARD_NAVIGATION from './dashBoardNavigation';
 import GithubMembers from './gitHubMembers';
 import GITHUB_AUTH from './githubAuthConstants';
