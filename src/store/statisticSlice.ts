@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import getAlltimers from '../api/getTimers';
 import { createProjectUserData } from '../api/projectUserData';
@@ -12,6 +12,7 @@ export interface timerData {
 }
 
 export interface statisticsState {
+  timePeriod: [number, number];
   createProjectUserData: {
     githubId: number;
     githubName: string;
@@ -32,6 +33,7 @@ const initialState: statisticsState = {
   timersStatus: '',
   timersError: '',
   timersData: [],
+  timePeriod: [new Date().getTime(), new Date().getTime() + 86399000],
 };
 
 export const createProjectUser = createAsyncThunk(
@@ -47,7 +49,11 @@ export const getAllTime = createAsyncThunk(
 export const statisticsSlice = createSlice({
   name: 'statistics',
   initialState,
-  reducers: {},
+  reducers: {
+    addTimePeriod: (state, action: PayloadAction<[number, number]>) => {
+      state.timePeriod = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createProjectUser.pending, (state) => {
@@ -56,7 +62,6 @@ export const statisticsSlice = createSlice({
       .addCase(createProjectUser.fulfilled, (state, { payload }) => {
         state.createProjectUserStatus = 'fulfilled';
         if (payload) {
-          console.log(payload);
           state.createProjectUserData = payload;
         }
       })
@@ -74,7 +79,7 @@ export const statisticsSlice = createSlice({
       .addCase(getAllTime.fulfilled, (state, { payload }) => {
         state.timersStatus = 'fulfilled';
         if (payload) {
-          console.log(payload);
+          // console.log(payload);
           state.timersData = payload;
         }
       })
@@ -86,5 +91,7 @@ export const statisticsSlice = createSlice({
       });
   },
 });
+
+export const { addTimePeriod } = statisticsSlice.actions;
 
 export default statisticsSlice.reducer;
