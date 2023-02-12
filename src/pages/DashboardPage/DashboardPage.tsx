@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { CircularProgress } from '@mui/material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Drawer from '@mui/material/Drawer';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Drawer,
+  Grid,
+  IconButton,
+  List,
+} from '@mui/material';
 
-import githubUserData from '../../api/githubApi';
+import { getGithubUserData } from '../../api/githubApi';
+import { createServerUserId } from '../../api/serverApi';
 import DashboardSidebar from '../../components/DashboardSidebar';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { setErrorMessage } from '../../store/errorHandler';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
+import { setServerUserLogin } from '../../store/serverUserDataSlice';
 import { KeyboardArrowLeftIcon, MenuIcon } from '../../theme/appIcons';
 
 import './DashboardPage.css';
@@ -27,18 +32,39 @@ const DashboardPage = () => {
     if (!userData.id) {
       (async () => {
         setIsLoading(true);
-        const data = await githubUserData();
-        dispatch(
-          setGitHubUserData({
-            login: data.login,
-            id: data.id,
-            avatar_url: data.avatar_url,
-          })
-        );
-        setIsLoading(false);
+        try {
+          const data = await getGithubUserData();
+          dispatch(
+            setGitHubUserData({
+              login: data.login,
+              id: data.id,
+              avatar_url: data.avatar_url,
+            })
+          );
+          setIsLoading(false);
+        } catch (error) {
+          dispatch(
+            setErrorMessage('Failed to get data from gitHub. Try later')
+          );
+        }
       })();
     }
   }, [userData, dispatch]);
+
+  useEffect(() => {
+    if (userData.id) {
+      (async () => {
+        try {
+          const data = await createServerUserId(userData.id, userData.login);
+          dispatch(setServerUserLogin(data.id));
+        } catch (error) {
+          dispatch(
+            setErrorMessage('Failed to create user. Please try again letter')
+          );
+        }
+      })();
+    }
+  }, [userData.id, userData.login, dispatch]);
 
   if (isLoading) {
     return (
