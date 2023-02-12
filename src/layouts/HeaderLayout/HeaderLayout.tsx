@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Link as LinkRouter } from 'react-router-dom';
 
 import {
-  Box,
   Button,
   Grid,
   IconButton,
