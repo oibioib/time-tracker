@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Grid, Paper, TextField } from '@mui/material';
+import { Box, Grid, Paper, TextField, Typography } from '@mui/material';
 
+import { getActiveTimer, getUserTimers } from '../../../../api/serverApi';
 import AddedTask from '../../../../components/AddedTask/AddedTask';
 import EmptyView from '../../../../components/EmptyView/EmptyView';
 import Timer from '../../../../components/Timer/Timer';
-import { BASE_URL, FLY_ROUTES } from '../../../../constants/apiFly';
+import { HOURS_IN_MILISEC } from '../../../../constants/appConstants';
+import timeStringView from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setIsTimerOn, setTimerData } from '../../../../store/timeTrackerSlice';
 
-interface TaskArr {
+interface AddedTaskData {
   taskName: string;
   taskStart: string;
   taskTimeSec: number;
   id: string;
 }
 
-interface TaskData {
+interface TimerData {
   startTime: number;
   totalTime: number;
   title: string;
@@ -25,10 +27,39 @@ interface TaskData {
 
 const TrackerView = () => {
   const timerData = useAppSelector((state) => state.timeTracker);
-  const [tasksArr, setTasksArr] = useState<TaskArr[]>([]);
+  const [tasksArr, setTasksArr] = useState<AddedTaskData[]>([]);
   const [refreshPage, setRefreshPage] = useState(true);
-  const flyUserId = useAppSelector((state) => state.flyUserData.id);
+  const serverUserId = useAppSelector((state) => state.serverUserData.id);
   const dispatch = useAppDispatch();
+  const taskArrReducer = (arr: AddedTaskData[]) => {
+    const result = arr.reduce((total, task) => {
+      let acc = total;
+      acc += task.taskTimeSec;
+      return acc;
+    }, 0);
+    return result;
+  };
+  const totalWeek = taskArrReducer(tasksArr);
+  const totalWeekHours = Math.floor(totalWeek / HOURS_IN_MILISEC);
+  const totalWeekMin = new Date(totalWeek).getMinutes();
+  const totalWeekSec = new Date(totalWeek).getSeconds();
+  const timeStringWeek = timeStringView(
+    totalWeekSec,
+    totalWeekMin,
+    totalWeekHours
+  );
+  const totalToday = taskArrReducer(
+    tasksArr.filter(({ taskStart }) => {
+      const today = new Date();
+      const taskDate = new Date(taskStart);
+      return today.getDay() === taskDate.getDay();
+    })
+  );
+
+  const totalDayHours = Math.floor(totalToday / HOURS_IN_MILISEC);
+  const totalDayMin = new Date(totalToday).getMinutes();
+  const totalDaySec = new Date(totalToday).getSeconds();
+  const timeStringDay = timeStringView(totalDaySec, totalDayMin, totalDayHours);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
@@ -40,41 +71,37 @@ const TrackerView = () => {
   };
 
   useEffect(() => {
-    if (flyUserId) {
+    if (serverUserId) {
       (async () => {
-        const response = await fetch(
-          `${BASE_URL}/${FLY_ROUTES.USER_TIMERS}/${flyUserId}`
-        );
+        const response = await getUserTimers(serverUserId);
         if (!response.ok) {
-          throw new Error('Could not get new User id');
+          throw new Error('Could not get server User id');
         }
-        const data: TaskData[] = await response.json();
-        const dataArr: TaskArr[] = data
-          .sort((a, b) => b.startTime - a.startTime)
-          .map((el: TaskData) => {
+        const data: TimerData[] = await response.json();
+        const dataArr: AddedTaskData[] = data.map(
+          ({ startTime, id, title, totalTime }: TimerData) => {
             return {
-              id: el.id,
-              taskName: el.title,
-              taskStart: new Date(+el.startTime).toLocaleDateString('en-US', {
+              id,
+              taskName: title,
+              taskStart: new Date(+startTime).toLocaleDateString('en-US', {
                 weekday: 'short',
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
               }),
-              taskTimeSec: +el.totalTime,
+              taskTimeSec: +totalTime,
             };
-          });
+          }
+        );
         setTasksArr(dataArr);
       })();
     }
-  }, [refreshPage, flyUserId]);
+  }, [refreshPage, serverUserId]);
 
   useEffect(() => {
-    if (flyUserId) {
+    if (serverUserId) {
       (async () => {
-        const response = await fetch(
-          `${BASE_URL}/${FLY_ROUTES.USER_TIMERS}/${flyUserId}${FLY_ROUTES.IS_ACTIVE_TIMERS}`
-        );
+        const response = await getActiveTimer(serverUserId);
         if (!response.ok) {
           throw new Error('Could not get information about User active Timers');
         }
@@ -92,7 +119,7 @@ const TrackerView = () => {
         }
       })();
     }
-  }, [flyUserId, dispatch]);
+  }, [serverUserId, dispatch]);
 
   return (
     <Grid item container pt={2}>
@@ -110,18 +137,30 @@ const TrackerView = () => {
               <Timer
                 setRefreshPage={setRefreshPage}
                 refreshPage={refreshPage}
-                flyUserId={flyUserId}
+                serverUserId={serverUserId}
               />
             </Box>
           </Box>
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>
-          <Box>Period: this week/this month?/choose period</Box>
+        <Box mt={2} sx={{ justifyContent: 'space-between', display: 'flex' }}>
+          <Box>
+            <Typography variant="body2">This Week</Typography>
+          </Box>
           <Box sx={{ display: 'flex' }}>
-            <Box mr={1}>Period: total</Box>
-            <Box>Today: total</Box>
+            <Box mr={1}>
+              <Typography variant="body2">
+                week total:
+                <b> {timeStringWeek}</b>
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="body2">
+                today total:
+                <b> {timeStringDay}</b>
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Grid>
