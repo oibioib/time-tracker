@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { CircularProgress } from '@mui/material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Drawer from '@mui/material/Drawer';
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Drawer,
+  Grid,
+  IconButton,
+  List,
+} from '@mui/material';
 
-import githubUserData from '../../api/githubApi';
+import { getGithubUserData } from '../../api/githubApi';
+import { createServerUserId } from '../../api/serverApi';
 import DashboardSidebar from '../../components/DashboardSidebar';
-import { BASE_URL, FLY_ROUTES } from '../../constants/apiFly';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { setFlyUserLogin } from '../../store/flyUserDataSlice';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
+import { setServerUserLogin } from '../../store/serverUserDataSlice';
 import { KeyboardArrowLeftIcon, MenuIcon } from '../../theme/appIcons';
 
 import './DashboardPage.css';
@@ -29,7 +31,7 @@ const DashboardPage = () => {
     if (!userData.id) {
       (async () => {
         setIsLoading(true);
-        const data = await githubUserData();
+        const data = await getGithubUserData();
         dispatch(
           setGitHubUserData({
             login: data.login,
@@ -45,21 +47,12 @@ const DashboardPage = () => {
   useEffect(() => {
     if (userData.id) {
       (async () => {
-        const response = await fetch(`${BASE_URL}/${FLY_ROUTES.USERS}`, {
-          method: 'POST',
-          body: JSON.stringify({
-            githubId: userData.id,
-            githubName: userData.login,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await createServerUserId(userData.id, userData.login);
         if (!response.ok) {
           throw new Error('Failed to fetch id From IO');
         }
         const data = await response.json();
-        dispatch(setFlyUserLogin(data.id));
+        dispatch(setServerUserLogin(data.id));
       })();
     }
   }, [userData.id, userData.login, dispatch]);
