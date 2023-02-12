@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 
-import { BASE_URL, FLY_ROUTES } from '../../constants/apiFly';
+import { BASE_URL, SERVER_ROUTES } from '../../constants/serverConstants';
+import timeStringView from '../../helpers/timeString';
 import { TaskArrReduced } from '../../types/trackerInterfaces';
 import SmallTimer from '../SmallTimer/SmallTimer';
 
@@ -18,12 +19,10 @@ const AddedTask = ({
   const min = helperDate.getMinutes() || 0;
   const sec = helperDate.getSeconds() || 0;
 
-  const timeString = `${hours > 9 ? hours : `0${hours}`}: ${
-    hours > 9 ? min : `0${min}`
-  }: ${sec > 9 ? sec : `0${sec}`}`;
+  const timeString = timeStringView(sec, min, hours);
 
   const onClickHandler = async () => {
-    const response = await fetch(`${BASE_URL}/${FLY_ROUTES.TIMERS}/${id}`, {
+    const response = await fetch(`${BASE_URL}/${SERVER_ROUTES.TIMERS}/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {
@@ -43,24 +42,27 @@ const AddedTask = ({
         <Box>{taskName}</Box>
       </Box>
       <Box sx={{ display: 'flex' }}>
-        <Box mr={2}>
-          <Typography variant="body2">Time spend: {timeString}</Typography>
-        </Box>
         <Box mr={3}>
-          <Box
-            onClick={onClickHandler}
-            ml={1}
-            sx={{ ':hover': { cursor: 'pointer' } }}>
-            <Typography variant="body2" sx={{ color: 'coral' }}>
-              del
-            </Typography>
+          <Box mr={2} sx={{ display: 'flex' }}>
+            <Typography variant="body2">Time spend: {timeString}</Typography>
+            <Box
+              onClick={onClickHandler}
+              ml={1}
+              sx={{ ':hover': { cursor: 'pointer' } }}>
+              <Typography variant="body2" sx={{ color: 'coral' }}>
+                del
+              </Typography>
+            </Box>
           </Box>
-          <Box>
-            <SmallTimer
-              timerTitle={taskName}
-              timerId={id}
-              totalTime={taskTimeSec}
-            />
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }} mt={1}>
+            <Typography variant="body2">Press to resume</Typography>
+            <Box mr={1} mt={-1}>
+              <SmallTimer
+                timerTitle={taskName}
+                timerId={id}
+                totalTime={taskTimeSec}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
