@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
+import { deleteTimer } from '../../api/serverApi';
 import { BASE_URL, SERVER_ROUTES } from '../../constants/serverConstants';
 import timeStringView from '../../helpers/timeString';
 import { TaskArrReduced } from '../../types/trackerInterfaces';
@@ -22,12 +23,7 @@ const AddedTask = ({
   const timeString = timeStringView(sec, min, hours);
 
   const onClickHandler = async () => {
-    const response = await fetch(`${BASE_URL}/${SERVER_ROUTES.TIMERS}/${id}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      throw new Error('Failed to Delete timer');
-    }
+    await deleteTimer(id);
     setRefreshPage(!refreshPage);
   };
 

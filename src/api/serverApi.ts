@@ -68,3 +68,13 @@ export const createServerUserId = async (
   });
   return response;
 };
+
+export const deleteTimer = async (id: string) => {
+  const response = await fetch(`${BASE_URL}/${SERVER_ROUTES.TIMERS}/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error('Failed to Delete timer');
+  }
+  return response;
+};
