@@ -4,7 +4,9 @@ import { Box, IconButton } from '@mui/material';
 
 import { createTimer, updateTimer } from '../../api/serverApi';
 import { TIMER_ACTIVE } from '../../constants/serverConstants';
+import timeStringView from '../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { setErrorMessage } from '../../store/errorHandler';
 import {
   setIsTimerOn,
   setPreviousTimeStamp,
@@ -20,23 +22,19 @@ interface TimerProps {
 
 const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
   const timerData = useAppSelector((state) => state.timeTracker);
-  const { isTimerOn } = timerData;
-  const [sec, setSec] = useState(0);
-  const [min, setMin] = useState(0);
-  const [hours, setHours] = useState(0);
   const dispatch = useAppDispatch();
   const [timerTitle, setTimerTitle] = useState('');
   const [timerId, setTimerId] = useState('');
-  const { totalTime } = timerData;
-  const [isError, setIsError] = useState(false);
-  const [errorStatus, setErrorStatus] = useState('');
+  const [sec, setSec] = useState(0);
+  const [min, setMin] = useState(0);
+  const [hours, setHours] = useState(0);
+  const { isTimerOn, totalTime, previousTimeStamp } = timerData;
+  const timeString = timeStringView(sec, min, hours);
 
   useEffect(() => {
     if (isTimerOn) {
       const timeSpent = new Date(
-        timerData.totalTime +
-          Date.now() -
-          (timerData.previousTimeStamp || Date.now())
+        totalTime + Date.now() - (previousTimeStamp || Date.now())
       );
       setSec(timeSpent.getSeconds());
       setMin(timeSpent.getMinutes());
@@ -47,10 +45,10 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
       setTimerTitle(timerData.timerTitle);
     }
   }, [
-    timerData.totalTime,
+    totalTime,
     timerData.timerId,
     timerData.timerTitle,
-    timerData.previousTimeStamp,
+    previousTimeStamp,
     isTimerOn,
   ]);
 
@@ -61,9 +59,7 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
           setTimerData({
             ...timerData,
             totalTime:
-              totalTime +
-              Date.now() -
-              (timerData.previousTimeStamp || Date.now()),
+              totalTime + Date.now() - (previousTimeStamp || Date.now()),
           })
         );
         dispatch(setPreviousTimeStamp(Date.now()));
@@ -71,7 +67,7 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
       return () => clearInterval(interval);
     }
     return undefined;
-  }, [isTimerOn, totalTime, timerData, dispatch]);
+  }, [isTimerOn, totalTime, timerData, dispatch, previousTimeStamp]);
 
   useEffect(() => {
     if (isTimerOn && sec % 10 === 0 && sec !== 0) {
@@ -84,12 +80,13 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
             timerId
           );
         } catch {
-          setIsError(true);
-          setErrorStatus('Failed to update timer, please refresh the page');
+          dispatch(
+            setErrorMessage('Failed to update timer, please refresh the page')
+          );
         }
       })();
     }
-  }, [timerTitle, totalTime, isTimerOn, timerId, sec]);
+  }, [timerTitle, totalTime, isTimerOn, timerId, sec, dispatch]);
 
   const onClickHandler = async () => {
     if (!isTimerOn && sec === 0 && min === 0 && hours === 0) {
@@ -98,8 +95,9 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
         setTimerId(data.id);
         dispatch(setPreviousTimeStamp(Date.now()));
       } catch (error) {
-        setIsError(true);
-        setErrorStatus('Failed to create timer, please refresh the page');
+        dispatch(
+          setErrorMessage('Failed to create timer, please refresh the page')
+        );
       }
     }
     if (isTimerOn) {
@@ -123,24 +121,19 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
         );
         setRefreshPage(!refreshPage);
       } catch (error) {
-        setIsError(true);
-        setErrorStatus('Failed to update timer, please refresh the page');
+        dispatch(
+          setErrorMessage('Failed to update timer, please refresh the page')
+        );
       }
     }
     dispatch(setIsTimerOn(!isTimerOn));
   };
 
-  if (isError) {
-    return <Box color="red">{errorStatus}</Box>;
-  }
-
   return (
     <Box
       mr={1}
       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <Box>{`${hours > 9 ? hours : `0${hours}`}: ${
-        min > 9 ? min : `0${min}`
-      }: ${sec > 9 ? sec : `0${sec}`}`}</Box>
+      <Box>{timeString}</Box>
       <IconButton onClick={onClickHandler}>
         {isTimerOn ? <StopIcon /> : <PlayArrowIcon />}
       </IconButton>

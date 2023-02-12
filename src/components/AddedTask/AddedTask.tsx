@@ -1,10 +1,9 @@
-import { useState } from 'react';
-
 import { Box, Typography } from '@mui/material';
 
 import { deleteTimer } from '../../api/serverApi';
-import { BASE_URL, SERVER_ROUTES } from '../../constants/serverConstants';
 import timeStringView from '../../helpers/timeString';
+import { useAppDispatch } from '../../hooks/hooks';
+import { setErrorMessage } from '../../store/errorHandler';
 import { TaskArrReduced } from '../../types/trackerInterfaces';
 import SmallTimer from '../SmallTimer/SmallTimer';
 
@@ -16,12 +15,11 @@ const AddedTask = ({
   setRefreshPage,
   refreshPage,
 }: TaskArrReduced) => {
-  const [isError, setIsError] = useState(false);
+  const dispatch = useAppDispatch();
   const helperDate = new Date(taskTimeSec);
   const hours = helperDate.getUTCHours() || 0;
   const min = helperDate.getMinutes() || 0;
   const sec = helperDate.getSeconds() || 0;
-
   const timeString = timeStringView(sec, min, hours);
 
   const onClickHandler = async () => {
@@ -29,13 +27,9 @@ const AddedTask = ({
       await deleteTimer(id);
       setRefreshPage(!refreshPage);
     } catch (error) {
-      setIsError(true);
+      dispatch(setErrorMessage('Failed to delete timer'));
     }
   };
-
-  if (isError) {
-    return <Box>Failed to delete, please try again latter</Box>;
-  }
 
   return (
     <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>

@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { getGitHubToken, getGithubUserData } from '../../api/githubApi';
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
 import { useAppDispatch } from '../../hooks/hooks';
+import { setErrorMessage } from '../../store/errorHandler';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
 const LoginPage = () => {
@@ -24,9 +25,13 @@ const LoginPage = () => {
     if (gitHubCode && !localStorageToken) {
       (async () => {
         setIsLoading(true);
-        const data = await getGitHubToken(gitHubCode);
-        localStorage.setItem(LOCAL_STORAGE_KEY, data.access_token);
-        setRefresh(!refresh);
+        try {
+          const data = await getGitHubToken(gitHubCode);
+          localStorage.setItem(LOCAL_STORAGE_KEY, data.access_token);
+          setRefresh(!refresh);
+        } catch (error) {
+          dispatch(setErrorMessage('Failed to get gitHubToken'));
+        }
       })();
     }
   }, [gitHubCode, localStorageToken, navigate, dispatch, refresh]);
@@ -34,16 +39,20 @@ const LoginPage = () => {
   useEffect(() => {
     if (localStorageToken) {
       (async () => {
-        const data = await getGithubUserData();
-        dispatch(
-          setGitHubUserData({
-            login: data.login,
-            id: data.id,
-            avatar_url: data.avatar_url,
-          })
-        );
-        navigate('/tracker');
-        setIsLoading(false);
+        try {
+          const data = await getGithubUserData();
+          dispatch(
+            setGitHubUserData({
+              login: data.login,
+              id: data.id,
+              avatar_url: data.avatar_url,
+            })
+          );
+          navigate('/tracker');
+          setIsLoading(false);
+        } catch (error) {
+          dispatch(setErrorMessage('Failed to get gitHub user data'));
+        }
       })();
     }
   }, [localStorageToken, dispatch, navigate]);

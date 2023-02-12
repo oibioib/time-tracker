@@ -9,6 +9,7 @@ import Timer from '../../../../components/Timer/Timer';
 import { HOURS_IN_MILISEC } from '../../../../constants/appConstants';
 import timeStringView from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { setErrorMessage } from '../../../../store/errorHandler';
 import { setIsTimerOn, setTimerData } from '../../../../store/timeTrackerSlice';
 
 interface AddedTaskData {
@@ -31,8 +32,6 @@ const TrackerView = () => {
   const [refreshPage, setRefreshPage] = useState(true);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
   const dispatch = useAppDispatch();
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
       let acc = total;
@@ -94,12 +93,15 @@ const TrackerView = () => {
           );
           setTasksArr(dataArr);
         } catch (error) {
-          setIsError(true);
-          setErrorMessage('Failed to get timers data, please try again latter');
+          dispatch(
+            setErrorMessage(
+              'Failed to get timers data, please try again latter'
+            )
+          );
         }
       })();
     }
-  }, [refreshPage, serverUserId]);
+  }, [refreshPage, serverUserId, dispatch]);
 
   useEffect(() => {
     if (serverUserId) {
@@ -118,29 +120,15 @@ const TrackerView = () => {
             dispatch(setIsTimerOn(true));
           }
         } catch (error) {
-          setIsError(true);
-          setErrorMessage('Failed to get active, please try again latter');
+          dispatch(
+            setErrorMessage(
+              'Failed to get active timer, please try again latter'
+            )
+          );
         }
       })();
     }
   }, [serverUserId, dispatch]);
-
-  if (isError) {
-    if (isError) {
-      return (
-        <Box
-          color="red"
-          sx={{
-            height: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          {errorMessage}
-        </Box>
-      );
-    }
-  }
 
   return (
     <Grid item container pt={2}>

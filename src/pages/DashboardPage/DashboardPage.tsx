@@ -15,6 +15,7 @@ import { getGithubUserData } from '../../api/githubApi';
 import { createServerUserId } from '../../api/serverApi';
 import DashboardSidebar from '../../components/DashboardSidebar';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { setErrorMessage } from '../../store/errorHandler';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 import { setServerUserLogin } from '../../store/serverUserDataSlice';
 import { KeyboardArrowLeftIcon, MenuIcon } from '../../theme/appIcons';
@@ -26,8 +27,6 @@ const DashboardPage = () => {
   const dispatch = useAppDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (!userData.id) {
@@ -44,8 +43,9 @@ const DashboardPage = () => {
           );
           setIsLoading(false);
         } catch (error) {
-          setIsError(true);
-          setErrorMessage('Failed to get data from gitHub. Try later');
+          dispatch(
+            setErrorMessage('Failed to get data from gitHub. Try later')
+          );
         }
       })();
     }
@@ -58,8 +58,9 @@ const DashboardPage = () => {
           const data = await createServerUserId(userData.id, userData.login);
           dispatch(setServerUserLogin(data.id));
         } catch (error) {
-          setIsError(true);
-          setErrorMessage('Failed to create user. Please try again letter');
+          dispatch(
+            setErrorMessage('Failed to create user. Please try again letter')
+          );
         }
       })();
     }
@@ -75,21 +76,6 @@ const DashboardPage = () => {
           alignItems: 'center',
         }}>
         <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (isError) {
-    return (
-      <Box
-        color="red"
-        sx={{
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        {errorMessage}
       </Box>
     );
   }

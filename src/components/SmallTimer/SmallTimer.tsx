@@ -1,10 +1,9 @@
-import { useState } from 'react';
-
-import { Box, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 
 import { updateTimer } from '../../api/serverApi';
 import { TIMER_ACTIVE } from '../../constants/serverConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { setErrorMessage } from '../../store/errorHandler';
 import {
   setIsTimerOn,
   setPreviousTimeStamp,
@@ -21,7 +20,6 @@ interface SmallTimerProps {
 const SmallTimer = ({ timerId, timerTitle, totalTime }: SmallTimerProps) => {
   const isTimerOn = useAppSelector((state) => state.timeTracker.isTimerOn);
   const dispatch = useAppDispatch();
-  const [isError, setIsError] = useState(false);
 
   const onClickHandler = async () => {
     dispatch(setIsTimerOn(true));
@@ -36,14 +34,11 @@ const SmallTimer = ({ timerId, timerTitle, totalTime }: SmallTimerProps) => {
     try {
       await updateTimer(timerTitle, TIMER_ACTIVE.ACTIVE, totalTime, timerId);
     } catch (error) {
-      setIsError(true);
+      dispatch(setErrorMessage('Failed to resume time tracker'));
     }
     return undefined;
   };
 
-  if (isError) {
-    return <Box color="red">Failed to resume, reload the page</Box>;
-  }
   return (
     <IconButton onClick={onClickHandler} disabled={isTimerOn}>
       <PlayArrowIcon />
