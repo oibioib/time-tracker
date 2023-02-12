@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, IconButton } from '@mui/material';
 
-import { BASE_URL, FLY_ROUTES } from '../../constants/apiFly';
+import { createTimer, updateTimer } from '../../api/serverApi';
+import { TIMER_ACTIVE } from '../../constants/serverConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
   setIsTimerOn,
@@ -14,10 +15,10 @@ import { PlayArrowIcon, StopIcon } from '../../theme/appIcons';
 interface TimerProps {
   setRefreshPage: React.Dispatch<React.SetStateAction<boolean>>;
   refreshPage: boolean;
-  flyUserId: string;
+  serverUserId: string;
 }
 
-const Timer = ({ setRefreshPage, refreshPage, flyUserId }: TimerProps) => {
+const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
   const timerData = useAppSelector((state) => state.timeTracker);
   const { isTimerOn } = timerData;
   const [sec, setSec] = useState(0);
@@ -29,15 +30,27 @@ const Timer = ({ setRefreshPage, refreshPage, flyUserId }: TimerProps) => {
   const { totalTime } = timerData;
 
   useEffect(() => {
-    const timeSpent = new Date(timerData.totalTime);
-    setSec(timeSpent.getSeconds());
-    setMin(timeSpent.getMinutes());
-    setHours(timeSpent.getUTCHours());
-    if (timerData.timerId) {
-      setTimerId(timerData.timerId);
+    if (isTimerOn) {
+      const timeSpent = new Date(
+        timerData.totalTime +
+          Date.now() -
+          (timerData.previousTimeStamp || Date.now())
+      );
+      setSec(timeSpent.getSeconds());
+      setMin(timeSpent.getMinutes());
+      setHours(timeSpent.getUTCHours());
+      if (timerData.timerId) {
+        setTimerId(timerData.timerId);
+      }
+      setTimerTitle(timerData.timerTitle);
     }
-    setTimerTitle(timerData.timerTitle);
-  }, [timerData.totalTime, timerData.timerId, timerData.timerTitle]);
+  }, [
+    timerData.totalTime,
+    timerData.timerId,
+    timerData.timerTitle,
+    timerData.previousTimeStamp,
+    isTimerOn,
+  ]);
 
   useEffect(() => {
     if (isTimerOn) {
@@ -61,19 +74,11 @@ const Timer = ({ setRefreshPage, refreshPage, flyUserId }: TimerProps) => {
   useEffect(() => {
     if (isTimerOn && sec % 10 === 0 && sec !== 0) {
       (async () => {
-        const response = await fetch(
-          `${BASE_URL}/${FLY_ROUTES.TIMERS}/${timerId}`,
-          {
-            method: 'PATCH',
-            body: JSON.stringify({
-              title: timerTitle,
-              isActive: 1,
-              totalTime,
-            }),
-            headers: {
-              'Content-type': 'application/json',
-            },
-          }
+        const response = await updateTimer(
+          timerTitle,
+          TIMER_ACTIVE.ACTIVE,
+          totalTime,
+          timerId
         );
         if (!response.ok) {
           throw new Error('Could not PATCH data to DB');
@@ -84,39 +89,20 @@ const Timer = ({ setRefreshPage, refreshPage, flyUserId }: TimerProps) => {
 
   const onClickHandler = async () => {
     if (!isTimerOn && sec === 0 && min === 0 && hours === 0) {
-      const response = await fetch(`${BASE_URL}/${FLY_ROUTES.TIMERS}`, {
-        method: 'POST',
-        body: JSON.stringify({
-          title: timerTitle,
-          startTime: Date.now(),
-          userId: flyUserId,
-        }),
-        headers: {
-          'Content-type': 'application/json',
-        },
-      });
+      const response = await createTimer(timerTitle, serverUserId);
       if (!response.ok) {
         throw new Error('Could not POST data to DB');
       }
-
       const data = await response.json();
       setTimerId(data.id);
       dispatch(setPreviousTimeStamp(Date.now()));
     }
     if (isTimerOn) {
-      const response = await fetch(
-        `${BASE_URL}/${FLY_ROUTES.TIMERS}/${timerId}`,
-        {
-          method: 'PATCH',
-          body: JSON.stringify({
-            title: timerTitle,
-            isActive: 0,
-            totalTime,
-          }),
-          headers: {
-            'Content-type': 'application/json',
-          },
-        }
+      const response = await updateTimer(
+        timerTitle,
+        TIMER_ACTIVE.INACTIVE,
+        totalTime,
+        timerId
       );
       if (!response.ok) {
         throw new Error('Could not PATCH data to DB');
