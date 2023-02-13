@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { Avatar, Grid, Typography } from '@mui/material';
 
-import githubUserData from '../../api/githubApi';
+import { getGithubUserData } from '../../api/githubApi';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
@@ -12,7 +12,7 @@ const UserAvatar = () => {
   useEffect(() => {
     if (!userData.id) {
       (async () => {
-        const data = await githubUserData();
+        const data = await getGithubUserData();
         dispatch(
           setGitHubUserData({
             login: data.login,
@@ -30,7 +30,6 @@ const UserAvatar = () => {
       <Typography variant="body1">
         Name: {userData && userData.login}
       </Typography>
-      <Typography variant="body1">ID {userData && userData.id}</Typography>
     </Grid>
   );
 };

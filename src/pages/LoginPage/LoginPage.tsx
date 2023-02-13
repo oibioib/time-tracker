@@ -5,9 +5,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, Button, CircularProgress, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
-import githubUserData from '../../api/githubApi';
+import { getGitHubToken, getGithubUserData } from '../../api/githubApi';
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
 import { useAppDispatch } from '../../hooks/hooks';
+import { setErrorMessage } from '../../store/errorHandler';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 
 const LoginPage = () => {
@@ -24,15 +25,13 @@ const LoginPage = () => {
     if (gitHubCode && !localStorageToken) {
       (async () => {
         setIsLoading(true);
-        const result = await fetch(
-          `${GITHUB_AUTH.PROXY_URL}/getAccessToken?code=${gitHubCode}`,
-          {
-            method: 'GET',
-          }
-        );
-        const data = await result.json();
-        localStorage.setItem(LOCAL_STORAGE_KEY, data.access_token);
-        setRefresh(!refresh);
+        try {
+          const data = await getGitHubToken(gitHubCode);
+          localStorage.setItem(LOCAL_STORAGE_KEY, data.access_token);
+          setRefresh(!refresh);
+        } catch (error) {
+          dispatch(setErrorMessage('Failed to get gitHubToken'));
+        }
       })();
     }
   }, [gitHubCode, localStorageToken, navigate, dispatch, refresh]);
@@ -40,16 +39,20 @@ const LoginPage = () => {
   useEffect(() => {
     if (localStorageToken) {
       (async () => {
-        const data = await githubUserData();
-        dispatch(
-          setGitHubUserData({
-            login: data.login,
-            id: data.id,
-            avatar_url: data.avatar_url,
-          })
-        );
-        navigate('/tracker');
-        setIsLoading(false);
+        try {
+          const data = await getGithubUserData();
+          dispatch(
+            setGitHubUserData({
+              login: data.login,
+              id: data.id,
+              avatar_url: data.avatar_url,
+            })
+          );
+          navigate('/tracker');
+          setIsLoading(false);
+        } catch (error) {
+          dispatch(setErrorMessage('Failed to get gitHub user data'));
+        }
       })();
     }
   }, [localStorageToken, dispatch, navigate]);
