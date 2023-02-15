@@ -8,18 +8,15 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import { useEffect } from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
 import { Grid, Typography } from '@mui/material';
 
+import EmptyViewStatistic from '../../../../components/EmptyView/EmptyViewStatistic';
 import { SelectX } from '../../../../components/SelectStatistics';
 import CalendarStatistics from '../../../../components/SelectStatistics/CalendarStatistic';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
-import {
-  createProjectUser,
-  getAllTime,
-} from '../../../../store/statisticSlice';
+import generateColor from '../../../../helpers/generateColor';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 ChartJS.register(
   CategoryScale,
@@ -37,58 +34,51 @@ export const options = {
     legend: {
       position: 'top' as const,
     },
+
     // title: {
     //   display: true,
     //   text: 'Chart.js Bar Chart',
     // },
   },
+  scales: {
+    y: {
+      ticks: {
+        callback: (value: number | string) => `${value} min`,
+      },
+    },
+  },
 };
 
-export function generateColor() {
-  const base = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
-  let code = '';
-  for (let i = 0; i < 6; i += 1) {
-    code += base[Math.floor(Math.random() * base.length)];
-  }
-  return `#${code}`;
+function convertationToMin(timeInMSec: string) {
+  return Number(timeInMSec) / (1000 * 60);
 }
 
 const StatisticsView = () => {
-  const dispatch = useAppDispatch();
-  const userGitHubData = useAppSelector((state) => state.gitHubFetch);
-  // console.log('1', userGitHubData);
-  useEffect(() => {
-    if (userGitHubData) {
-      dispatch(createProjectUser(userGitHubData));
-    }
-  }, [userGitHubData, dispatch]);
-
-  const userProjectId = useAppSelector(
-    (state) => state.statistics.createProjectUserData.id
-  );
-  // console.log('2', userProjectId);
-
-  useEffect(() => {
-    if (userProjectId) {
-      dispatch(getAllTime(userProjectId));
-    }
-  }, [userProjectId, dispatch]);
-  const statData = useAppSelector((state) => state.statistics.timersData);
+  const intervalData = useAppSelector((state) => state.statistics.dataInterval);
 
   const userData = {
-    labels: statData.map((data) => data.title),
+    labels: intervalData.map((data) => data.title),
+    datasets: [
+      {
+        label: 'Tasks',
+        data: intervalData.map((data) => convertationToMin(data.totalTime)),
+        backgroundColor: intervalData.map(() => generateColor()),
+      },
+    ],
+  };
+
+  function convertationToDate(time: string) {
+    const dateFormat = new Date(Number(time));
+    return dateFormat.toLocaleDateString('en-GB');
+  }
+
+  const selectedData = {
+    labels: intervalData.map((data) => convertationToDate(data.startTime)),
     datasets: [
       {
         label: 'Users Time',
-        data: statData.map((data) => data.totalTime),
-        backgroundColor: statData.map(() => generateColor()),
-        // backgroundColor: [
-        //   'rgba(75,192,192,1)',
-        //   '#ecf0f1',
-        //   '#50AF95',
-        //   '#f3ba2f',
-        //   '#2a71d0',
-        // ],
+        data: intervalData.map((data) => convertationToMin(data.totalTime)),
+        backgroundColor: intervalData.map(() => generateColor()),
       },
     ],
   };
@@ -101,12 +91,21 @@ const StatisticsView = () => {
         {/* <SelectY /> */}
         <CalendarStatistics />
       </Grid>
-      <Grid item xs={11} sm={12}>
-        <Bar data={userData} options={options} />
-      </Grid>
-      <Grid item sx={{ width: { xs: '300', sm: '500' } }}>
+      {/* <Grid item sx={{ width: { xs: '300', sm: '500' } }}>
         <Pie data={userData} options={options} />
-      </Grid>
+      </Grid> */}
+      {intervalData.length ? (
+        <Grid item container>
+          <Grid item xs={11} sm={12}>
+            <Bar data={selectedData} options={options} />
+          </Grid>
+          <Grid item xs={11} sm={12}>
+            <Bar data={userData} options={options} />
+          </Grid>
+        </Grid>
+      ) : (
+        <EmptyViewStatistic />
+      )}
     </Grid>
   );
 };
