@@ -3,13 +3,14 @@ import DatePicker from 'react-datepicker';
 
 import { Grid } from '@mui/material';
 
-import { useAppDispatch } from '../../hooks/hooks';
-import { addTimePeriod } from '../../store/statisticSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { addTimePeriod, getDataInterval } from '../../store/statisticSlice';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 const CalendarStatistics = () => {
   const dispatch = useAppDispatch();
+  const serverUserId = useAppSelector((state) => state.serverUserData.id);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [rezStartDate, setRezStartDate] = useState<number>(
@@ -21,7 +22,6 @@ const CalendarStatistics = () => {
 
   const onChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
-    // console.log(start, end);
     setStartDate(start);
     setEndDate(end);
 
@@ -37,8 +37,10 @@ const CalendarStatistics = () => {
   };
 
   const handleCalendarClose = () => {
-    // console.log('1111111dispatch(addTimePeriod)');
     dispatch(addTimePeriod([rezStartDate, rezEndDate]));
+    if (serverUserId && rezStartDate && rezEndDate) {
+      dispatch(getDataInterval({ serverUserId, rezStartDate, rezEndDate }));
+    }
   };
 
   return (
