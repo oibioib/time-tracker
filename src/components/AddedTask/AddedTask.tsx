@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 
 import { deleteTimer } from '../../api/serverApi';
 import timeStringView from '../../helpers/timeString';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
 import { TaskArrReduced } from '../../types/trackerInterfaces';
 import SmallTimer from '../SmallTimer/SmallTimer';
@@ -14,6 +14,7 @@ const AddedTask = ({
   id,
   setRefreshPage,
   refreshPage,
+  project,
 }: TaskArrReduced) => {
   const dispatch = useAppDispatch();
   const helperDate = new Date(taskTimeSec);
@@ -21,11 +22,16 @@ const AddedTask = ({
   const min = helperDate.getMinutes() || 0;
   const sec = helperDate.getSeconds() || 0;
   const timeString = timeStringView(sec, min, hours);
+  const isTimerOn = useAppSelector((state) => state.timeTracker.isTimerOn);
 
   const onClickHandler = async () => {
     try {
-      await deleteTimer(id);
-      setRefreshPage(!refreshPage);
+      if (!isTimerOn) {
+        await deleteTimer(id);
+        setRefreshPage(!refreshPage);
+      } else {
+        dispatch(setErrorMessage('Please stop timer, to delete one'));
+      }
     } catch (error) {
       dispatch(setErrorMessage('Failed to delete timer'));
     }
@@ -39,7 +45,14 @@ const AddedTask = ({
             <b>{taskStart}</b>
           </Typography>
         </Box>
-        <Box>{taskName}</Box>
+        <Box my={1}>{taskName}</Box>
+        <Box>
+          {project?.id && (
+            <Typography variant="body2">
+              Project: <b>{project?.title}</b>
+            </Typography>
+          )}
+        </Box>
       </Box>
       <Box sx={{ display: 'flex' }}>
         <Box mr={3}>
@@ -61,6 +74,7 @@ const AddedTask = ({
                 timerTitle={taskName}
                 timerId={id}
                 totalTime={taskTimeSec}
+                project={project}
               />
             </Box>
           </Box>
