@@ -15,7 +15,7 @@ const EmptyView = () => {
           </Box>
           <Box sx={{ textAlign: 'center' }}>
             Simple enter the name of the task you are working on and press start
-            timer button
+            timer button. Timer will be created when you stop it
           </Box>
         </Box>
       </Paper>

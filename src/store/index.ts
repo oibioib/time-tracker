@@ -2,6 +2,7 @@ import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
 
 import errorHandlerSlice from './errorHandler';
 import gitHubFetchReducer from './gitHubFetchSlice';
+import projectSlice from './projectSlice';
 import serverUserDataSlice from './serverUserDataSlice';
 import statisticsReducer from './statisticSlice';
 import themeModeReducer from './themeModeSlice';
@@ -15,6 +16,7 @@ const store = configureStore({
     statistics: statisticsReducer,
     serverUserData: serverUserDataSlice,
     errorHandler: errorHandlerSlice,
+    projectArr: projectSlice,
   },
 });
 

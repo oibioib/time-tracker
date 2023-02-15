@@ -1,22 +1,29 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 
 import { getActiveTimer, getUserTimers } from '../../../../api/serverApi';
 import AddedTask from '../../../../components/AddedTask/AddedTask';
 import EmptyView from '../../../../components/EmptyView/EmptyView';
+import ProjectList from '../../../../components/ProjectList/ProjectList';
 import Timer from '../../../../components/Timer/Timer';
-import { HOURS_IN_MILISEC } from '../../../../constants/appConstants';
+import {
+  HOURS_IN_MILISEC,
+  MORE_TASKS,
+  TASKS_SHOWED_DEFAULT,
+} from '../../../../constants/appConstants';
 import timeStringView from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import { setIsTimerOn, setTimerData } from '../../../../store/timeTrackerSlice';
+import { ProjectData } from '../../../../types/trackerInterfaces';
 
 interface AddedTaskData {
   taskName: string;
   taskStart: string;
   taskTimeSec: number;
   id: string;
+  project: ProjectData;
 }
 
 interface TimerData {
@@ -24,13 +31,22 @@ interface TimerData {
   totalTime: number;
   title: string;
   id: string;
+  isActive: boolean;
+  project: ProjectData;
 }
 
+const tallGrid = {
+  mxHeight: '10%',
+};
+
 const TrackerView = () => {
-  const timerData = useAppSelector((state) => state.timeTracker);
   const [tasksArr, setTasksArr] = useState<AddedTaskData[]>([]);
   const [refreshPage, setRefreshPage] = useState(true);
+  const [isTimersData, setIsTimersData] = useState(false);
+  const [tasksShowed, setTasksShowed] = useState(TASKS_SHOWED_DEFAULT);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
+  const timerData = useAppSelector((state) => state.timeTracker);
+
   const dispatch = useAppDispatch();
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
@@ -56,7 +72,6 @@ const TrackerView = () => {
       return today.getDay() === taskDate.getDay();
     })
   );
-
   const totalDayHours = Math.floor(totalToday / HOURS_IN_MILISEC);
   const totalDayMin = new Date(totalToday).getMinutes();
   const totalDaySec = new Date(totalToday).getSeconds();
@@ -71,13 +86,18 @@ const TrackerView = () => {
     );
   };
 
+  const showMoreHandler = () => {
+    setTasksShowed(tasksShowed + MORE_TASKS);
+  };
+
   useEffect(() => {
     if (serverUserId) {
       (async () => {
         try {
           const data = await getUserTimers(serverUserId);
-          const dataArr: AddedTaskData[] = data.map(
-            ({ startTime, id, title, totalTime }: TimerData) => {
+          const dataArr: AddedTaskData[] = data
+            .filter(({ isActive }: TimerData) => !isActive)
+            .map(({ startTime, id, title, totalTime, project }: TimerData) => {
               return {
                 id,
                 taskName: title,
@@ -88,10 +108,11 @@ const TrackerView = () => {
                   day: 'numeric',
                 }),
                 taskTimeSec: +totalTime,
+                project,
               };
-            }
-          );
+            });
           setTasksArr(dataArr);
+          setIsTimersData(true);
         } catch (error) {
           dispatch(
             setErrorMessage(
@@ -101,10 +122,10 @@ const TrackerView = () => {
         }
       })();
     }
-  }, [refreshPage, serverUserId, dispatch]);
+  }, [refreshPage, serverUserId, dispatch, tasksShowed]);
 
   useEffect(() => {
-    if (serverUserId) {
+    if (serverUserId && !timerData.previousTimeStamp) {
       (async () => {
         try {
           const data = await getActiveTimer(serverUserId);
@@ -128,13 +149,21 @@ const TrackerView = () => {
         }
       })();
     }
-  }, [serverUserId, dispatch]);
+  }, [serverUserId, dispatch, timerData.previousTimeStamp]);
+
+  if (!isTimersData) {
+    return <Box> </Box>;
+  }
 
   return (
-    <Grid item container pt={2}>
-      <Grid item xs={12}>
+    <Grid container pt={2} sx={{ height: '100%' }}>
+      <Grid item xs={12} sx={{ ...tallGrid }}>
         <Paper>
-          <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>
+          <Box
+            sx={{
+              justifyContent: 'space-between',
+              display: 'flex',
+            }}>
             <Box>
               <TextField
                 placeholder="What are you working on"
@@ -143,6 +172,7 @@ const TrackerView = () => {
               />
             </Box>
             <Box sx={{ display: 'flex' }}>
+              <ProjectList />
               <Timer
                 setRefreshPage={setRefreshPage}
                 refreshPage={refreshPage}
@@ -152,8 +182,13 @@ const TrackerView = () => {
           </Box>
         </Paper>
       </Grid>
-      <Grid item xs={12}>
-        <Box mt={2} sx={{ justifyContent: 'space-between', display: 'flex' }}>
+      <Grid item xs={12} sx={{ ...tallGrid }}>
+        <Box
+          mt={2}
+          sx={{
+            justifyContent: 'space-between',
+            display: 'flex',
+          }}>
           <Box>
             <Typography variant="body2">This Week</Typography>
           </Box>
@@ -173,30 +208,36 @@ const TrackerView = () => {
           </Box>
         </Box>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} sx={{ ...tallGrid }}>
         <Box my={3} sx={{ height: 5, backgroundColor: 'coral' }}>
           {' '}
         </Box>
       </Grid>
       {tasksArr.length ? (
-        tasksArr.map(({ id, taskName, taskStart, taskTimeSec }) => {
-          return (
-            <Grid key={id} item xs={12} my={3}>
-              <Paper>
-                <AddedTask
-                  taskName={taskName}
-                  taskStart={taskStart}
-                  taskTimeSec={taskTimeSec}
-                  id={id}
-                  setRefreshPage={setRefreshPage}
-                  refreshPage={refreshPage}
-                />
-              </Paper>
-            </Grid>
-          );
-        })
+        tasksArr
+          .filter((task: AddedTaskData, index: number) => index < tasksShowed)
+          .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
+            return (
+              <Grid key={id} item xs={12} my={3}>
+                <Paper>
+                  <AddedTask
+                    taskName={taskName}
+                    taskStart={taskStart}
+                    taskTimeSec={taskTimeSec}
+                    id={id}
+                    project={project}
+                    setRefreshPage={setRefreshPage}
+                    refreshPage={refreshPage}
+                  />
+                </Paper>
+              </Grid>
+            );
+          })
       ) : (
         <EmptyView />
+      )}
+      {tasksArr.length >= tasksShowed && (
+        <Button onClick={showMoreHandler}>Show {MORE_TASKS} more</Button>
       )}
     </Grid>
   );
