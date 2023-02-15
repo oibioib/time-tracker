@@ -1,7 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import getAlltimers from '../api/getTimers';
-import { createProjectUserData } from '../api/projectUserData';
+import { getUserTimers } from '../api/serverApi';
+import getUserTimersInterval from '../api/statisticsApi';
 
 export interface timerData {
   id: string;
@@ -13,37 +13,32 @@ export interface timerData {
 
 export interface statisticsState {
   timePeriod: [number, number];
-  createProjectUserData: {
-    githubId: number;
-    githubName: string;
-    id: string;
-    name: string;
-  };
-  createProjectUserStatus: string;
-  createProjectUserError: string;
+  getDataIntervalStatus: string;
+  getDataIntervalError: string;
   timersStatus: string;
   timersError: string;
   timersData: timerData[];
+  dataInterval: timerData[];
 }
 
 const initialState: statisticsState = {
-  createProjectUserData: { githubId: 0, githubName: '', id: '', name: '' },
-  createProjectUserStatus: '',
-  createProjectUserError: '',
+  getDataIntervalStatus: '',
+  getDataIntervalError: '',
   timersStatus: '',
   timersError: '',
   timersData: [],
   timePeriod: [new Date().getTime(), new Date().getTime() + 86399000],
+  dataInterval: [],
 };
 
-export const createProjectUser = createAsyncThunk(
-  'tokenOfUser/fetchSignUp',
-  createProjectUserData
+export const getAllTimers = createAsyncThunk(
+  'timeAll/fetchGetAllTimers',
+  getUserTimers
 );
 
-export const getAllTime = createAsyncThunk(
-  'timeAll/fetchGetAllTimers',
-  getAlltimers
+export const getDataInterval = createAsyncThunk(
+  'statistics/fetchTimersInterval',
+  getUserTimersInterval
 );
 
 export const statisticsSlice = createSlice({
@@ -56,34 +51,34 @@ export const statisticsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createProjectUser.pending, (state) => {
-        state.createProjectUserStatus = 'loading';
+      .addCase(getDataInterval.pending, (state) => {
+        state.getDataIntervalStatus = 'loading';
       })
-      .addCase(createProjectUser.fulfilled, (state, { payload }) => {
-        state.createProjectUserStatus = 'fulfilled';
+      .addCase(getDataInterval.fulfilled, (state, { payload }) => {
+        state.getDataIntervalStatus = 'fulfilled';
         if (payload) {
-          state.createProjectUserData = payload;
+          console.log(payload);
+          state.dataInterval = payload;
         }
       })
-      .addCase(createProjectUser.rejected, (state, { error }) => {
+      .addCase(getDataInterval.rejected, (state, { error }) => {
         if (error.message) {
-          state.createProjectUserError = error.message;
+          state.getDataIntervalError = error.message;
         }
-        state.createProjectUserStatus = 'rejected';
+        state.getDataIntervalStatus = 'rejected';
       });
-
     builder
-      .addCase(getAllTime.pending, (state) => {
+      .addCase(getAllTimers.pending, (state) => {
         state.timersStatus = 'loading';
       })
-      .addCase(getAllTime.fulfilled, (state, { payload }) => {
+      .addCase(getAllTimers.fulfilled, (state, { payload }) => {
         state.timersStatus = 'fulfilled';
         if (payload) {
           // console.log(payload);
           state.timersData = payload;
         }
       })
-      .addCase(getAllTime.rejected, (state, { error }) => {
+      .addCase(getAllTimers.rejected, (state, { error }) => {
         if (error.message) {
           state.timersError = error.message;
         }
