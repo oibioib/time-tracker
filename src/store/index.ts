@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import errorHandlerSlice from './errorHandler';
 import gitHubFetchReducer from './gitHubFetchSlice';
+import projectSlice from './projectSlice';
 import serverUserDataSlice from './serverUserDataSlice';
 import themeModeReducer from './themeModeSlice';
 import timeTrackerSlice from './timeTrackerSlice';
@@ -13,6 +14,7 @@ const store = configureStore({
     timeTracker: timeTrackerSlice,
     serverUserData: serverUserDataSlice,
     errorHandler: errorHandlerSlice,
+    projectArr: projectSlice,
   },
 });
 

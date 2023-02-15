@@ -1,10 +1,12 @@
+import { HOURS_IN_MILISEC } from '../constants/appConstants';
 import { BASE_URL, SERVER_ROUTES } from '../constants/serverConstants';
 
 export const updateTimer = async (
   title: string,
   isActive: number,
   totalTime: number,
-  timerId: string
+  timerId: string,
+  projectId: string
 ) => {
   const response = await fetch(
     `${BASE_URL}/${SERVER_ROUTES.TIMERS}/${timerId}`,
@@ -14,6 +16,7 @@ export const updateTimer = async (
         title,
         isActive,
         totalTime,
+        projectId,
       }),
       headers: {
         'Content-type': 'application/json',
@@ -45,8 +48,13 @@ export const createTimer = async (timerTitle: string, serverUserId: string) => {
 };
 
 export const getUserTimers = async (serverUserId: string) => {
+  const today = new Date();
+  const timeStampStart =
+    Date.now() -
+    (today.getUTCDay() - 1) * 24 * HOURS_IN_MILISEC -
+    today.getHours() * HOURS_IN_MILISEC;
   const response = await fetch(
-    `${BASE_URL}/${SERVER_ROUTES.USER_TIMERS}/${serverUserId}`
+    `${BASE_URL}/${SERVER_ROUTES.USER_TIMERS}/${serverUserId}?from=${timeStampStart}`
   );
   if (!response.ok) {
     throw new Error('Could not get server User id');
@@ -93,6 +101,46 @@ export const deleteTimer = async (id: string) => {
   });
   if (!response.ok) {
     throw new Error('Failed to Delete timer');
+  }
+  return response;
+};
+
+export const createUserProject = async (userId: string, title: string) => {
+  const response = await fetch(`${BASE_URL}/${SERVER_ROUTES.USER_PROJECTS}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      userId,
+      title,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Failed to create Project');
+  }
+};
+
+export const getUserProjects = async (userId: string) => {
+  const response = await fetch(
+    `${BASE_URL}/${SERVER_ROUTES.USER_PROJECTS}/${userId}`
+  );
+  if (!response.ok) {
+    throw new Error('Failed to get user projects');
+  }
+  const data = await response.json();
+  return data;
+};
+
+export const deleteProject = async (projectId: string) => {
+  const response = await fetch(
+    `${BASE_URL}/${SERVER_ROUTES.USER_PROJECTS}/${projectId}`,
+    {
+      method: 'DELETE',
+    }
+  );
+  if (!response.ok) {
+    throw new Error('Failed to Delete project');
   }
   return response;
 };
