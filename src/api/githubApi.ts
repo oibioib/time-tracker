@@ -12,7 +12,6 @@ export const getGithubUserData = async () => {
     throw new Error('Failed to get GitHub Data');
   }
   const data = await response.json();
-  console.log(data);
   return data;
 };
 
