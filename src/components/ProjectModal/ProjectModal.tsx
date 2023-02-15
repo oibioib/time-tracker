@@ -2,10 +2,9 @@ import { useState } from 'react';
 
 import { Box, Button, Paper, TextField } from '@mui/material';
 
-import { createUserProject, getUserProjects } from '../../api/serverApi';
+import { createUserProject } from '../../api/serverApi';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
-import { setProjectArr } from '../../store/projectSlice';
 import { ProjectData } from '../../types/trackerInterfaces';
 
 const style = {

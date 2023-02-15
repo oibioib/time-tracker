@@ -35,15 +35,12 @@ const ProjectsView = () => {
   const onClickHandler = async (event: React.MouseEvent<HTMLElement>) => {
     const result = event.target as HTMLElement;
     try {
-      console.log(result.id);
       await deleteProject(result.id);
     } catch (error) {
       dispatch(setErrorMessage('Failed to delete project'));
     }
     setRefreshPage(!refreshPage);
   };
-
-  console.log(projectsArr);
 
   return (
     <>
