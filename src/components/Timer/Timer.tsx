@@ -10,6 +10,7 @@ import { setErrorMessage } from '../../store/errorHandler';
 import {
   setIsTimerOn,
   setPreviousTimeStamp,
+  setProjectToTimer,
   setTimerData,
 } from '../../store/timeTrackerSlice';
 import { PlayArrowIcon, StopIcon } from '../../theme/appIcons';
@@ -23,12 +24,17 @@ interface TimerProps {
 const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
   const timerData = useAppSelector((state) => state.timeTracker);
   const dispatch = useAppDispatch();
-  const [timerTitle, setTimerTitle] = useState('');
-  const [timerId, setTimerId] = useState('');
   const [sec, setSec] = useState(0);
   const [min, setMin] = useState(0);
   const [hours, setHours] = useState(0);
-  const { isTimerOn, totalTime, previousTimeStamp } = timerData;
+  const {
+    isTimerOn,
+    totalTime,
+    previousTimeStamp,
+    timerTitle,
+    timerId,
+    projectId,
+  } = timerData;
   const timeString = timeStringView(sec, min, hours);
 
   useEffect(() => {
@@ -39,18 +45,8 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
       setSec(timeSpent.getSeconds());
       setMin(timeSpent.getMinutes());
       setHours(timeSpent.getUTCHours());
-      if (timerData.timerId) {
-        setTimerId(timerData.timerId);
-      }
-      setTimerTitle(timerData.timerTitle);
     }
-  }, [
-    totalTime,
-    timerData.timerId,
-    timerData.timerTitle,
-    previousTimeStamp,
-    isTimerOn,
-  ]);
+  }, [totalTime, previousTimeStamp, isTimerOn]);
 
   useEffect(() => {
     if (isTimerOn) {
@@ -77,7 +73,8 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
             timerTitle,
             TIMER_ACTIVE.ACTIVE,
             totalTime,
-            timerId
+            timerId,
+            projectId
           );
         } catch {
           dispatch(
@@ -86,13 +83,18 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
         }
       })();
     }
-  }, [timerTitle, totalTime, isTimerOn, timerId, sec, dispatch]);
+  }, [timerTitle, totalTime, isTimerOn, timerId, sec, dispatch, projectId]);
 
   const onClickHandler = async () => {
     if (!isTimerOn && sec === 0 && min === 0 && hours === 0) {
       try {
         const data = await createTimer(timerTitle, serverUserId);
-        setTimerId(data.id);
+        dispatch(
+          setTimerData({
+            ...timerData,
+            timerId: data.id,
+          })
+        );
         dispatch(setPreviousTimeStamp(Date.now()));
       } catch (error) {
         dispatch(
@@ -106,7 +108,8 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
           timerTitle,
           TIMER_ACTIVE.INACTIVE,
           totalTime,
-          timerId
+          timerId,
+          projectId
         );
         setSec(0);
         setMin(0);
@@ -117,6 +120,12 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
             timerTitle: '',
             timerId: '',
             totalTime: 0,
+          })
+        );
+        dispatch(
+          setProjectToTimer({
+            projectId: '',
+            projectTitle: '',
           })
         );
         setRefreshPage(!refreshPage);
