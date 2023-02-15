@@ -12,11 +12,12 @@ import {
 } from '@mui/material';
 
 import { getGithubUserData } from '../../api/githubApi';
-import { createServerUserId } from '../../api/serverApi';
+import { createServerUserId, getUserProjects } from '../../api/serverApi';
 import DashboardSidebar from '../../components/DashboardSidebar';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
+import { setProjectArr } from '../../store/projectSlice';
 import { setServerUserLogin } from '../../store/serverUserDataSlice';
 import { KeyboardArrowLeftIcon, MenuIcon } from '../../theme/appIcons';
 
@@ -27,6 +28,7 @@ const DashboardPage = () => {
   const dispatch = useAppDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const serverUserId = useAppSelector((state) => state.serverUserData.id);
 
   useEffect(() => {
     if (!userData.id) {
@@ -65,6 +67,19 @@ const DashboardPage = () => {
       })();
     }
   }, [userData.id, userData.login, dispatch]);
+
+  useEffect(() => {
+    if (serverUserId) {
+      (async () => {
+        try {
+          const data = await getUserProjects(serverUserId);
+          dispatch(setProjectArr(data));
+        } catch (error) {
+          dispatch(setErrorMessage('Failed to get user projects'));
+        }
+      })();
+    }
+  }, [serverUserId, dispatch]);
 
   if (isLoading) {
     return (
