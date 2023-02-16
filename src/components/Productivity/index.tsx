@@ -4,7 +4,6 @@ import { Doughnut } from 'react-chartjs-2';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 
 import { ReactComponent as ProductivityLogo } from '../../assets/user-hourglass-svgrepo-com.svg';
-import generateColor from '../../helpers/generateColor';
 import { useAppSelector } from '../../hooks/hooks';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -36,7 +35,7 @@ const ProductivityBox = () => {
     datasets: [
       {
         data: [allTime, worktime],
-        backgroundColor: [allTime, worktime].map(() => generateColor()),
+        backgroundColor: ['rgba(111, 107, 117, 1)', 'rgba(19, 108, 232, 1)'],
       },
     ],
   };

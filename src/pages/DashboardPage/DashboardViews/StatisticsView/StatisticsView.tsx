@@ -83,7 +83,7 @@ const StatisticsView = () => {
         data: intervalTotalData.map((data) =>
           convertationToMin(data.totalTime)
         ),
-        backgroundColor: intervalTotalData.map(() => generateColor()),
+        backgroundColor: 'rgba(170, 135, 245, 1)',
       },
     ],
   };
@@ -100,9 +100,9 @@ const StatisticsView = () => {
   };
 
   return (
-    <Grid item container pt={2}>
-      <Typography>Statistics Page</Typography>
-      <Grid item container justifyContent="space-evenly">
+    <Grid item container pt={1}>
+      <Typography mb={0}>Statistics Page</Typography>
+      <Grid item container justifyContent="space-around">
         <SelectX />
         <CalendarStatistics />
       </Grid>
