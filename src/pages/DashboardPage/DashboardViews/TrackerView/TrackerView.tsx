@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 
@@ -15,7 +15,11 @@ import {
 import timeStringView from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
-import { setIsTimerOn, setTimerData } from '../../../../store/timeTrackerSlice';
+import {
+  setIsTimerOn,
+  setProjectToTimer,
+  setTimerData,
+} from '../../../../store/timeTrackerSlice';
 import { ProjectData } from '../../../../types/trackerInterfaces';
 
 interface AddedTaskData {
@@ -44,9 +48,9 @@ const TrackerView = () => {
   const [refreshPage, setRefreshPage] = useState(true);
   const [isTimersData, setIsTimersData] = useState(false);
   const [tasksShowed, setTasksShowed] = useState(TASKS_SHOWED_DEFAULT);
+  const onClickRef = useRef<HTMLButtonElement>(null);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
   const timerData = useAppSelector((state) => state.timeTracker);
-
   const dispatch = useAppDispatch();
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
@@ -86,6 +90,13 @@ const TrackerView = () => {
     );
   };
 
+  const onKeyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.code === 'Enter' && timerData.timerTitle) {
+      if (onClickRef.current) {
+        onClickRef.current.click();
+      }
+    }
+  };
   const showMoreHandler = () => {
     setTasksShowed(tasksShowed + MORE_TASKS);
   };
@@ -129,6 +140,7 @@ const TrackerView = () => {
       (async () => {
         try {
           const data = await getActiveTimer(serverUserId);
+          console.log(data);
           if (data[0]?.isActive) {
             dispatch(
               setTimerData({
@@ -139,6 +151,13 @@ const TrackerView = () => {
               })
             );
             dispatch(setIsTimerOn(true));
+            dispatch(
+              setProjectToTimer({
+                projectId: data[0].project.id,
+                projectTitle: data[0].project.title,
+                projectColor: data[0].project.color,
+              })
+            );
           }
         } catch (error) {
           dispatch(
@@ -169,14 +188,21 @@ const TrackerView = () => {
                 placeholder="What are you working on"
                 value={timerData.timerTitle}
                 onChange={onChangeHandler}
+                onKeyDown={onKeyDownHandler}
               />
             </Box>
-            <Box sx={{ display: 'flex' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+              }}>
               <ProjectList />
+
               <Timer
                 setRefreshPage={setRefreshPage}
                 refreshPage={refreshPage}
                 serverUserId={serverUserId}
+                onClickRef={onClickRef}
               />
             </Box>
           </Box>
