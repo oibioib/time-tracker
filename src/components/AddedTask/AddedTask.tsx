@@ -1,9 +1,12 @@
-import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
 
-import { deleteTimer } from '../../api/serverApi';
+import { Box, Menu, MenuItem, Typography } from '@mui/material';
+
+import { deleteTimer, updateTimer } from '../../api/serverApi';
 import timeStringView from '../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
+import { FolderIcon } from '../../theme/appIcons';
 import { TaskArrReduced } from '../../types/trackerInterfaces';
 import SmallTimer from '../SmallTimer/SmallTimer';
 
@@ -16,6 +19,7 @@ const AddedTask = ({
   refreshPage,
   project,
 }: TaskArrReduced) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const helperDate = new Date(taskTimeSec);
   const hours = helperDate.getUTCHours() || 0;
@@ -23,6 +27,9 @@ const AddedTask = ({
   const sec = helperDate.getSeconds() || 0;
   const timeString = timeStringView(sec, min, hours);
   const isTimerOn = useAppSelector((state) => state.timeTracker.isTimerOn);
+  const { projectsArr } = useAppSelector((state) => state.projectArr);
+  const projectToShowArr = [{ title: '', id: '' }, ...projectsArr];
+  const open = Boolean(anchorEl);
 
   const onClickHandler = async () => {
     try {
@@ -37,8 +44,35 @@ const AddedTask = ({
     }
   };
 
+  const onProjectChangeHandler = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = async (event: React.MouseEvent<HTMLElement>) => {
+    const result = event.target as HTMLElement;
+    if (!isTimerOn) {
+      try {
+        if (result.dataset.id) {
+          await updateTimer(taskName, 0, taskTimeSec, id, result.dataset.id);
+          setRefreshPage(!refreshPage);
+        }
+      } catch (err) {
+        dispatch(setErrorMessage('Failed to update timer project'));
+      }
+    } else {
+      dispatch(setErrorMessage('Please stop timer, to update project'));
+    }
+
+    setAnchorEl(null);
+  };
+
   return (
-    <Box sx={{ justifyContent: 'space-between', display: 'flex' }}>
+    <Box
+      sx={{
+        justifyContent: 'space-between',
+        display: 'flex',
+        alignItems: 'center',
+      }}>
       <Box>
         <Box>
           <Typography variant="body2">
@@ -46,14 +80,31 @@ const AddedTask = ({
           </Typography>
         </Box>
         <Box my={1}>{taskName}</Box>
-        <Box>
-          {project?.id && (
-            <Typography variant="body2">
-              Project: <b>{project?.title}</b>
-            </Typography>
-          )}
-        </Box>
       </Box>
+      <Box bgcolor={project?.color} onClick={onProjectChangeHandler}>
+        {project?.id ? (
+          <Typography variant="body2">
+            Project: <b>{project?.title}</b>
+          </Typography>
+        ) : (
+          <FolderIcon style={{ color: 'gray' }} />
+        )}
+      </Box>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          style: {
+            maxHeight: 200,
+          },
+        }}>
+        {projectToShowArr.map((item) => (
+          <MenuItem data-id={item.id} key={item.id} onClick={handleClose}>
+            {item.title || 'No Project'}
+          </MenuItem>
+        ))}
+      </Menu>
       <Box sx={{ display: 'flex' }}>
         <Box mr={3}>
           <Box mr={2} sx={{ display: 'flex' }}>
