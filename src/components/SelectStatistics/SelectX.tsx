@@ -1,15 +1,17 @@
-import { useState } from 'react';
-
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { addValueX } from '../../store/statisticSlice';
+
 const SelectX = () => {
-  const [valueX, setValueX] = useState('tasks');
+  const dispatch = useAppDispatch();
+  const valueXfromStore = useAppSelector((state) => state.statistics.valueX);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setValueX(event.target.value as string);
+    dispatch(addValueX(event.target.value));
   };
 
   return (
@@ -18,15 +20,14 @@ const SelectX = () => {
         <Select
           defaultValue="tasks"
           labelId="select-labelX"
-          value={valueX}
+          value={valueXfromStore}
           onChange={handleChange}>
           <MenuItem value="tasks">All tasks</MenuItem>
-          <MenuItem value="projects">Projects</MenuItem>
-          <MenuItem value="clients">Clients</MenuItem>
-          {/* <MenuItem value={projects}>Projects</MenuItem> */}
+          <MenuItem value="totalTime">Total Time</MenuItem>
         </Select>
       </FormControl>
     </Box>
   );
 };
+
 export default SelectX;
