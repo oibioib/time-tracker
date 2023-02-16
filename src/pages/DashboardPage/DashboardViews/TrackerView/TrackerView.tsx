@@ -140,7 +140,6 @@ const TrackerView = () => {
       (async () => {
         try {
           const data = await getActiveTimer(serverUserId);
-          console.log(data);
           if (data[0]?.isActive) {
             dispatch(
               setTimerData({

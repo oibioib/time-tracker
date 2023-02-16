@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Box, Menu, MenuItem, Tooltip } from '@mui/material';
 
+import { DEFAULT_PROJECT_ID } from '../../constants/serverConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setProjectToTimer } from '../../store/timeTrackerSlice';
 import { FolderIcon } from '../../theme/appIcons';
@@ -14,7 +15,10 @@ const ProjectList = () => {
     (state) => state.timeTracker
   );
   const dispatch = useAppDispatch();
-  const projectToShowArr = [{ title: '', id: '', color: '' }, ...projectsArr];
+  const projectToShowArr = [
+    { title: '', id: DEFAULT_PROJECT_ID, color: '' },
+    ...projectsArr,
+  ];
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -34,7 +38,7 @@ const ProjectList = () => {
     } else {
       dispatch(
         setProjectToTimer({
-          projectId: '',
+          projectId: DEFAULT_PROJECT_ID,
           projectTitle: '',
         })
       );

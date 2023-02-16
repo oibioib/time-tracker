@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Box, Menu, MenuItem, Typography } from '@mui/material';
 
 import { deleteTimer, updateTimer } from '../../api/serverApi';
+import { DEFAULT_PROJECT_ID } from '../../constants/serverConstants';
 import timeStringView from '../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
@@ -28,7 +29,10 @@ const AddedTask = ({
   const timeString = timeStringView(sec, min, hours);
   const isTimerOn = useAppSelector((state) => state.timeTracker.isTimerOn);
   const { projectsArr } = useAppSelector((state) => state.projectArr);
-  const projectToShowArr = [{ title: '', id: '' }, ...projectsArr];
+  const projectToShowArr = [
+    { title: '', id: DEFAULT_PROJECT_ID },
+    ...projectsArr,
+  ];
   const open = Boolean(anchorEl);
 
   const onClickHandler = async () => {
