@@ -14,6 +14,7 @@ import { Bar } from 'react-chartjs-2';
 import { Grid, Typography } from '@mui/material';
 
 import EmptyViewStatistic from '../../../../components/EmptyView/EmptyViewStatistic';
+import ProductivityBox from '../../../../components/Productivity';
 import { SelectX } from '../../../../components/SelectStatistics';
 import CalendarStatistics from '../../../../components/SelectStatistics/CalendarStatistic';
 import { DURATION_OF_DAY } from '../../../../constants/appConstants';
@@ -101,22 +102,23 @@ const StatisticsView = () => {
   return (
     <Grid item container pt={2}>
       <Typography>Statistics Page</Typography>
-      <Grid item container justifyContent="space-between">
+      <Grid item container justifyContent="space-evenly">
         <SelectX />
         <CalendarStatistics />
       </Grid>
 
       {intervalTotalData.length && statisticOpen ? (
         <Grid item container>
-          <Grid item xs={11} sm={12}>
+          <Grid item xs={11} sm={12} maxHeight={400}>
             <Bar data={totalTimeData} options={options} />
           </Grid>
+          <ProductivityBox />
         </Grid>
       ) : null}
 
       {intervalData.length ? (
         <Grid item container>
-          <Grid item xs={11} sm={12}>
+          <Grid item xs={11} sm={12} maxHeight={400}>
             <Bar data={selectedData} options={options} />
           </Grid>
         </Grid>
