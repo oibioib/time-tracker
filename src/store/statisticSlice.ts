@@ -1,7 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { getUserTimers } from '../api/serverApi';
-import getUserTimersInterval from '../api/statisticsApi';
+import {
+  getUserTimersInterval,
+  getUserTotalTimeInterval,
+} from '../api/statisticsApi';
+import { DURATION_OF_DAY } from '../constants/appConstants';
 
 export interface timerData {
   id: string;
@@ -11,34 +14,44 @@ export interface timerData {
   totalTime: string;
 }
 
+export interface timersDataTotal {
+  day: number;
+  startTime: string;
+  totalTime: string;
+}
+
 export interface statisticsState {
   timePeriod: [number, number];
+  valueX: string;
+  isChangeCalendar: boolean;
   getDataIntervalStatus: string;
   getDataIntervalError: string;
-  timersStatus: string;
-  timersError: string;
-  timersData: timerData[];
+  getTimersTimeStatus: string;
+  getTimersTimeError: string;
   dataInterval: timerData[];
+  dataTotalTime: timersDataTotal[];
 }
 
 const initialState: statisticsState = {
+  dataInterval: [],
+  isChangeCalendar: false,
+  valueX: 'tasks',
   getDataIntervalStatus: '',
   getDataIntervalError: '',
-  timersStatus: '',
-  timersError: '',
-  timersData: [],
-  timePeriod: [new Date().getTime(), new Date().getTime() + 86399000],
-  dataInterval: [],
+  getTimersTimeStatus: '',
+  getTimersTimeError: '',
+  timePeriod: [new Date().getTime(), new Date().getTime() + DURATION_OF_DAY],
+  dataTotalTime: [],
 };
-
-export const getAllTimers = createAsyncThunk(
-  'timeAll/fetchGetAllTimers',
-  getUserTimers
-);
 
 export const getDataInterval = createAsyncThunk(
   'statistics/fetchTimersInterval',
   getUserTimersInterval
+);
+
+export const getTimersTime = createAsyncThunk(
+  'statistics/fetchTimersTime',
+  getUserTotalTimeInterval
 );
 
 export const statisticsSlice = createSlice({
@@ -47,6 +60,18 @@ export const statisticsSlice = createSlice({
   reducers: {
     addTimePeriod: (state, action: PayloadAction<[number, number]>) => {
       state.timePeriod = action.payload;
+    },
+    addValueX: (state, action: PayloadAction<string>) => {
+      state.valueX = action.payload;
+    },
+    changeCalendar: (state, action: PayloadAction<boolean>) => {
+      state.isChangeCalendar = action.payload;
+    },
+    deleteTotalData: (state) => {
+      state.dataTotalTime = [];
+    },
+    deleteDataInterval: (state) => {
+      state.dataInterval = [];
     },
   },
   extraReducers: (builder) => {
@@ -57,7 +82,6 @@ export const statisticsSlice = createSlice({
       .addCase(getDataInterval.fulfilled, (state, { payload }) => {
         state.getDataIntervalStatus = 'fulfilled';
         if (payload) {
-          console.log(payload);
           state.dataInterval = payload;
         }
       })
@@ -68,25 +92,30 @@ export const statisticsSlice = createSlice({
         state.getDataIntervalStatus = 'rejected';
       });
     builder
-      .addCase(getAllTimers.pending, (state) => {
-        state.timersStatus = 'loading';
+      .addCase(getTimersTime.pending, (state) => {
+        state.getTimersTimeStatus = 'loading';
       })
-      .addCase(getAllTimers.fulfilled, (state, { payload }) => {
-        state.timersStatus = 'fulfilled';
+      .addCase(getTimersTime.fulfilled, (state, { payload }) => {
+        state.getTimersTimeStatus = 'fulfilled';
         if (payload) {
-          // console.log(payload);
-          state.timersData = payload;
+          state.dataTotalTime = payload;
         }
       })
-      .addCase(getAllTimers.rejected, (state, { error }) => {
+      .addCase(getTimersTime.rejected, (state, { error }) => {
         if (error.message) {
-          state.timersError = error.message;
+          state.getTimersTimeError = error.message;
         }
-        state.timersStatus = 'rejected';
+        state.getTimersTimeStatus = 'rejected';
       });
   },
 });
 
-export const { addTimePeriod } = statisticsSlice.actions;
+export const {
+  changeCalendar,
+  addTimePeriod,
+  addValueX,
+  deleteTotalData,
+  deleteDataInterval,
+} = statisticsSlice.actions;
 
 export default statisticsSlice.reducer;
