@@ -3,24 +3,30 @@ import DatePicker from 'react-datepicker';
 
 import { Grid } from '@mui/material';
 
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { addTimePeriod, getDataInterval } from '../../store/statisticSlice';
+import { DURATION_OF_DAY } from '../../constants/appConstants';
+import { useAppDispatch } from '../../hooks/hooks';
+import { addTimePeriod, changeCalendar } from '../../store/statisticSlice';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
 const CalendarStatistics = () => {
   const dispatch = useAppDispatch();
-  const serverUserId = useAppSelector((state) => state.serverUserData.id);
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [isChange, setIsChange] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+
   const [rezStartDate, setRezStartDate] = useState<number>(
     new Date().getTime()
   );
   const [rezEndDate, setRezEndDate] = useState<number>(
-    new Date().getTime() + 86399000
+    new Date().getTime() + DURATION_OF_DAY
   );
 
   const onChange = (dates: [Date | null, Date | null]) => {
+    if (!isChange) {
+      setIsChange(true);
+      dispatch(changeCalendar(true));
+    }
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
@@ -28,19 +34,16 @@ const CalendarStatistics = () => {
     if (start) {
       if (end === null) {
         setRezStartDate(start.getTime());
-        setRezEndDate(start.getTime() + 86399000);
+        setRezEndDate(start.getTime() + DURATION_OF_DAY);
       } else {
         setRezStartDate(start.getTime());
-        setRezEndDate(end.getTime() + 86399000);
+        setRezEndDate(end.getTime() + DURATION_OF_DAY);
       }
     }
   };
 
   const handleCalendarClose = () => {
     dispatch(addTimePeriod([rezStartDate, rezEndDate]));
-    if (serverUserId && rezStartDate && rezEndDate) {
-      dispatch(getDataInterval({ serverUserId, rezStartDate, rezEndDate }));
-    }
   };
 
   return (
