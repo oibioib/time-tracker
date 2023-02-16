@@ -6,7 +6,13 @@ interface IrequestInterval {
   rezEndDate: number;
 }
 
-const getUserTimersInterval = async ({
+interface IrequestTotalInterval {
+  serverUserId: string;
+  rezStartDate: number;
+  dayAmount: number;
+}
+
+export const getUserTimersInterval = async ({
   serverUserId,
   rezStartDate,
   rezEndDate,
@@ -18,8 +24,20 @@ const getUserTimersInterval = async ({
     throw new Error('Could not get server User id');
   }
   const data = await response.json();
-  console.log(data);
   return data;
 };
 
-export default getUserTimersInterval;
+export const getUserTotalTimeInterval = async ({
+  serverUserId,
+  rezStartDate,
+  dayAmount,
+}: IrequestTotalInterval) => {
+  const response = await fetch(
+    `${BASE_URL}/${SERVER_ROUTES.USER_TOTAL_TIMERS}/${serverUserId}?from=${rezStartDate}&days=${dayAmount}`
+  );
+  if (!response.ok) {
+    throw new Error('Could not get server User id');
+  }
+  const data = await response.json();
+  return data;
+};
