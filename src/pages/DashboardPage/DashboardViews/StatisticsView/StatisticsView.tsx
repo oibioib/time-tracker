@@ -8,6 +8,7 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
+import { useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 
 import { Grid, Typography } from '@mui/material';
@@ -15,8 +16,18 @@ import { Grid, Typography } from '@mui/material';
 import EmptyViewStatistic from '../../../../components/EmptyView/EmptyViewStatistic';
 import { SelectX } from '../../../../components/SelectStatistics';
 import CalendarStatistics from '../../../../components/SelectStatistics/CalendarStatistic';
+import { DURATION_OF_DAY } from '../../../../constants/appConstants';
+import convertationToDate from '../../../../helpers/convertationToDate';
+import convertationToMin from '../../../../helpers/convertationtoMin';
 import generateColor from '../../../../helpers/generateColor';
-import { useAppSelector } from '../../../../hooks/hooks';
+import options from '../../../../helpers/statisticsOptions';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import {
+  deleteDataInterval,
+  deleteTotalData,
+  getDataInterval,
+  getTimersTime,
+} from '../../../../store/statisticSlice';
 
 ChartJS.register(
   CategoryScale,
@@ -28,55 +39,59 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-
-    // title: {
-    //   display: true,
-    //   text: 'Chart.js Bar Chart',
-    // },
-  },
-  scales: {
-    y: {
-      ticks: {
-        callback: (value: number | string) => `${value} min`,
-      },
-    },
-  },
-};
-
-function convertationToMin(timeInMSec: string) {
-  return Number(timeInMSec) / (1000 * 60);
-}
-
 const StatisticsView = () => {
-  const intervalData = useAppSelector((state) => state.statistics.dataInterval);
+  const dispatch = useAppDispatch();
 
-  const userData = {
-    labels: intervalData.map((data) => data.title),
+  const statisticOpen = useAppSelector(
+    (state) => state.statistics.isChangeCalendar
+  );
+
+  const statisticsValueY = useAppSelector(
+    (state) => state.statistics.timePeriod
+  );
+  const rezStartDate = statisticsValueY[0];
+  const rezEndDate = statisticsValueY[1];
+
+  const intervalTotalData = useAppSelector(
+    (state) => state.statistics.dataTotalTime
+  );
+  const intervalData = useAppSelector((state) => state.statistics.dataInterval);
+  const statisticsValueX = useAppSelector((state) => state.statistics.valueX);
+  const serverUserId = useAppSelector((state) => state.serverUserData.id);
+
+  useEffect(() => {
+    if (serverUserId) {
+      if (statisticsValueX === 'tasks') {
+        dispatch(getDataInterval({ serverUserId, rezStartDate, rezEndDate }));
+        dispatch(deleteTotalData());
+      } else {
+        const dayAmount = Math.trunc(
+          (rezEndDate - rezStartDate) / DURATION_OF_DAY
+        );
+        dispatch(getTimersTime({ serverUserId, rezStartDate, dayAmount }));
+        dispatch(deleteDataInterval());
+      }
+    }
+  }, [rezStartDate, rezEndDate, statisticsValueX, dispatch, serverUserId]);
+
+  const totalTimeData = {
+    labels: intervalTotalData.map((data) => convertationToDate(data.startTime)),
     datasets: [
       {
-        label: 'Tasks',
-        data: intervalData.map((data) => convertationToMin(data.totalTime)),
-        backgroundColor: intervalData.map(() => generateColor()),
+        label: 'Total time',
+        data: intervalTotalData.map((data) =>
+          convertationToMin(data.totalTime)
+        ),
+        backgroundColor: intervalTotalData.map(() => generateColor()),
       },
     ],
   };
 
-  function convertationToDate(time: string) {
-    const dateFormat = new Date(Number(time));
-    return dateFormat.toLocaleDateString('en-GB');
-  }
-
   const selectedData = {
-    labels: intervalData.map((data) => convertationToDate(data.startTime)),
+    labels: intervalData.map((data) => data.title),
     datasets: [
       {
-        label: 'Users Time',
+        label: 'All tasks',
         data: intervalData.map((data) => convertationToMin(data.totalTime)),
         backgroundColor: intervalData.map(() => generateColor()),
       },
@@ -88,22 +103,26 @@ const StatisticsView = () => {
       <Typography>Statistics Page</Typography>
       <Grid item container justifyContent="space-between">
         <SelectX />
-        {/* <SelectY /> */}
         <CalendarStatistics />
       </Grid>
-      {/* <Grid item sx={{ width: { xs: '300', sm: '500' } }}>
-        <Pie data={userData} options={options} />
-      </Grid> */}
+
+      {intervalTotalData.length && statisticOpen ? (
+        <Grid item container>
+          <Grid item xs={11} sm={12}>
+            <Bar data={totalTimeData} options={options} />
+          </Grid>
+        </Grid>
+      ) : null}
+
       {intervalData.length ? (
         <Grid item container>
           <Grid item xs={11} sm={12}>
             <Bar data={selectedData} options={options} />
           </Grid>
-          <Grid item xs={11} sm={12}>
-            <Bar data={userData} options={options} />
-          </Grid>
         </Grid>
-      ) : (
+      ) : null}
+      {(intervalTotalData.length && statisticOpen) ||
+      intervalData.length ? null : (
         <EmptyViewStatistic />
       )}
     </Grid>
