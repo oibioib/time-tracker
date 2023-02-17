@@ -21,17 +21,17 @@ const LangSwitch = () => {
     <Grid container spacing={1}>
       <Grid item>
         <Button
-          size="small"
+          size="large"
           onClick={changeLanguage}
-          color="info"
           sx={{
+            minWidth: 'auto',
             ':hover': {
-              bgcolor: 'info.main',
-              color: 'white',
+              bgcolor: 'primary.main',
+              color: 'text.primary',
             },
           }}>
           <Typography color="white" variant="body1" component="span">
-            {isEng ? 'EN' : 'RU'}
+            {isEng ? 'RU' : 'EN'}
           </Typography>
         </Button>
       </Grid>

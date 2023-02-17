@@ -1,77 +1,92 @@
 import { useTranslation } from 'react-i18next';
 
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 
 import AboutUs from '../../components/AboutUs';
+import MainClocks from '../../components/MainClocks/MainClocks';
 import { MAIN_PAGE_CARDS } from '../../constants';
+import { MAX_CONTENT_WIDTH } from '../../theme/appTheme';
 
 const MainPage = () => {
   const { t } = useTranslation();
   return (
-    <Grid container alignItems="center" justifyContent="center" mb={12}>
-      <Grid item container pb={3} pt={3} justifyContent="center">
-        <Grid maxWidth={800}>
-          <Typography
-            variant="h2"
-            component="h1"
-            align="center"
-            sx={{ color: 'primary.info' }}>
-            {t('mainPage.title')}
-          </Typography>
-          <Typography
-            variant="h5"
-            component="h5"
-            sx={{ color: 'primary.main' }}
-            align="center">
-            {t('mainPage.subtitle')}
-          </Typography>
+    <Grid
+      container
+      alignItems="center"
+      justifyContent="center"
+      mb={12}
+      flexDirection="column">
+      <Grid
+        item
+        container
+        p={2}
+        pt={{ xs: 3, md: 10 }}
+        pb={{ xs: 5, md: 10 }}
+        justifyContent="center"
+        sx={{ backgroundColor: 'primary.dark', overflow: 'hidden' }}>
+        <Grid
+          item
+          container
+          sx={{ maxWidth: MAX_CONTENT_WIDTH }}
+          justifyContent="space-between">
+          <Grid
+            item
+            container
+            xs={12}
+            lg={9}
+            sx={{ gap: 5 }}
+            alignItems="center"
+            justifyContent="center">
+            <Typography
+              component="h1"
+              align="center"
+              sx={{
+                color: 'info.main',
+                typography: { xs: 'h4', lg: 'h3' },
+              }}>
+              {t('mainPage.title')}
+            </Typography>
+            <Typography
+              component="h2"
+              sx={{
+                color: 'primary.light',
+                typography: { xs: 'h6', lg: 'h5' },
+              }}
+              align="center">
+              {t('mainPage.subtitle')}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} lg={3} pt={{ xs: 5, md: 10, lg: 0 }}>
+            <MainClocks />
+          </Grid>
         </Grid>
-        <Card sx={{ maxWidth: 550, mr: 2, mb: 2, ml: 2 }}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              height="350"
-              image="./images/hourglass.jpg"
-              alt="hourglass"
-            />
-          </CardActionArea>
-        </Card>
       </Grid>
       <Grid
         item
         container
-        alignItems="center"
         justifyContent="center"
-        columnSpacing={{ xs: 1, sm: 2, md: 2 }}>
+        columnSpacing={{ xs: 1, sm: 2, md: 2 }}
+        p={2}
+        sx={{ height: '100%' }}>
         {MAIN_PAGE_CARDS.map((card) => (
           <Card sx={{ maxWidth: 335, m: 2 }} key={card.title}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="240"
-                image={card.image}
-                alt="card of app"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h4" component="div">
-                  {t(`titleCard.${card.title}`)}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {t(`description.${card.title}`)}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
+            <CardMedia
+              component="img"
+              height="240"
+              image={card.image}
+              alt="card of app"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h4" component="h3">
+                {t(`titleCard.${card.title}`)}
+              </Typography>
+              <Typography variant="body1" color="text.primary">
+                {t(`description.${card.title}`)}
+              </Typography>
+            </CardContent>
           </Card>
         ))}
       </Grid>
-      <AboutUs />
     </Grid>
   );
 };

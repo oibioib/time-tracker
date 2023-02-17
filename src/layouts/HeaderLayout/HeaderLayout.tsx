@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Link as LinkRouter } from 'react-router-dom';
 
 import {
+  Box,
   Button,
+  CardMedia,
   Grid,
   IconButton,
   PaletteMode,
@@ -23,7 +25,6 @@ import {
   Brightness4Icon,
   Brightness7Icon,
   DashboardIcon,
-  HomeIcon,
   LoginIcon,
 } from '../../theme/appIcons';
 
@@ -84,29 +85,51 @@ const HeaderLayout = () => {
         direction="row"
         alignItems="center"
         justifyContent="space-between">
-        <Grid item container spacing={1} sx={{ width: 'auto' }}>
+        <Grid
+          item
+          container
+          spacing={1}
+          sx={{ width: 'auto' }}
+          alignItems="center">
           <Grid item>
-            <Button
-              size="large"
-              variant="contained"
-              startIcon={<HomeIcon />}
-              component={LinkRouter}
-              to="/">
-              <Typography
-                color="white"
-                sx={{ display: { xs: 'none', sm: 'block' } }}>
-                {t('buttons.mainPage')}
-              </Typography>
-            </Button>
+            <LinkRouter to="/">
+              <Box sx={{ display: 'flex' }}>
+                <CardMedia
+                  component="img"
+                  sx={{ height: { xs: 30, md: 40 } }}
+                  image="./logo-ico.png"
+                  alt="Time Tracker"
+                />
+                <CardMedia
+                  component="img"
+                  sx={{
+                    pl: 2,
+                    pr: 3,
+                    height: { sm: 30, md: 40 },
+                    display: { xs: 'none', sm: 'block' },
+                  }}
+                  image="./logo-text.png"
+                  alt="Time Tracker"
+                />
+              </Box>
+            </LinkRouter>
           </Grid>
           <Grid item>
             {isLoggedIn && (
               <Button
                 size="large"
-                variant="contained"
-                startIcon={<DashboardIcon />}
+                variant="text"
                 component={LinkRouter}
-                to={ROUTES.DASHBOARD}>
+                to={ROUTES.DASHBOARD}
+                color="info"
+                sx={{
+                  gap: 0.5,
+                  backgroundColor: 'primary.dark',
+                  ':hover': {
+                    backgroundColor: 'primary.main',
+                  },
+                }}>
+                <DashboardIcon />
                 <Typography
                   color="white"
                   sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -127,10 +150,18 @@ const HeaderLayout = () => {
             {!isLoggedIn && (
               <Button
                 size="large"
-                variant="contained"
-                startIcon={<LoginIcon />}
+                variant="text"
                 component={LinkRouter}
-                to={ROUTES.LOGIN}>
+                to={ROUTES.LOGIN}
+                color="info"
+                sx={{
+                  gap: 0.5,
+                  backgroundColor: 'primary.dark',
+                  ':hover': {
+                    backgroundColor: 'primary.main',
+                  },
+                }}>
+                <LoginIcon />
                 <Typography
                   color="white"
                   sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -141,10 +172,16 @@ const HeaderLayout = () => {
           </Grid>
           <Grid item>
             <IconButton
-              sx={{ ml: 1 }}
+              sx={{
+                ml: 1,
+                ':hover': {
+                  bgcolor: 'primary.main',
+                  color: 'info',
+                },
+              }}
               onClick={toggleColorMode}
-              color="inherit">
-              {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
+              color="info">
+              {mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
             </IconButton>
           </Grid>
           <Grid item alignItems="center">
