@@ -10,6 +10,7 @@ const timeTrackerSlice = createSlice({
     previousTimeStamp: 0,
     projectId: '',
     projectTitle: '',
+    projectColor: '',
   },
   reducers: {
     setIsTimerOn(state, action) {
@@ -26,6 +27,7 @@ const timeTrackerSlice = createSlice({
     setProjectToTimer(state, action) {
       state.projectId = action.payload.projectId;
       state.projectTitle = action.payload.projectTitle;
+      state.projectColor = action.payload.projectColor;
     },
   },
 });

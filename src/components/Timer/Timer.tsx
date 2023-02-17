@@ -19,9 +19,15 @@ interface TimerProps {
   setRefreshPage: React.Dispatch<React.SetStateAction<boolean>>;
   refreshPage: boolean;
   serverUserId: string;
+  onClickRef: React.RefObject<HTMLButtonElement>;
 }
 
-const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
+const Timer = ({
+  setRefreshPage,
+  refreshPage,
+  serverUserId,
+  onClickRef,
+}: TimerProps) => {
   const timerData = useAppSelector((state) => state.timeTracker);
   const dispatch = useAppDispatch();
   const [sec, setSec] = useState(0);
@@ -88,7 +94,7 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
   const onClickHandler = async () => {
     if (!isTimerOn && sec === 0 && min === 0 && hours === 0) {
       try {
-        const data = await createTimer(timerTitle, serverUserId);
+        const data = await createTimer(timerTitle, serverUserId, projectId);
         dispatch(
           setTimerData({
             ...timerData,
@@ -143,7 +149,7 @@ const Timer = ({ setRefreshPage, refreshPage, serverUserId }: TimerProps) => {
       mr={1}
       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Box>{timeString}</Box>
-      <IconButton onClick={onClickHandler}>
+      <IconButton onClick={onClickHandler} ref={onClickRef}>
         {isTimerOn ? <StopIcon /> : <PlayArrowIcon />}
       </IconButton>
     </Box>

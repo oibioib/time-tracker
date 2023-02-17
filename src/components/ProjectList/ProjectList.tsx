@@ -1,20 +1,29 @@
 import { useState } from 'react';
 
-import { Box, Menu, MenuItem } from '@mui/material';
+import { Box, Menu, MenuItem, Tooltip } from '@mui/material';
 
+import { DEFAULT_PROJECT_ID } from '../../constants/serverConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setProjectToTimer } from '../../store/timeTrackerSlice';
 import { FolderIcon } from '../../theme/appIcons';
 
 const ProjectList = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isToolTipOpen, setIsTookTipOpen] = useState(false);
   const { projectsArr } = useAppSelector((state) => state.projectArr);
-  const { projectTitle } = useAppSelector((state) => state.timeTracker);
+  const { projectTitle, projectColor } = useAppSelector(
+    (state) => state.timeTracker
+  );
   const dispatch = useAppDispatch();
-  const projectToShowArr = [{ title: '', id: '' }, ...projectsArr];
+  const projectToShowArr = [
+    { title: '', id: DEFAULT_PROJECT_ID, color: '' },
+    ...projectsArr,
+  ];
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+    setIsTookTipOpen(false);
   };
   const handleClose = (event: React.MouseEvent<HTMLElement>) => {
     const result = event.target as HTMLElement;
@@ -23,12 +32,13 @@ const ProjectList = () => {
         setProjectToTimer({
           projectId: result.ariaLabel,
           projectTitle: result.innerText,
+          projectColor: result.dataset.color,
         })
       );
     } else {
       dispatch(
         setProjectToTimer({
-          projectId: '',
+          projectId: DEFAULT_PROJECT_ID,
           projectTitle: '',
         })
       );
@@ -37,33 +47,50 @@ const ProjectList = () => {
   };
 
   return (
-    <Box my="auto" mr={2}>
-      {projectTitle ? (
-        <Box onClick={handleClick} sx={{ ':hover': { cursor: 'pointer' } }}>
-          {projectTitle}
-        </Box>
-      ) : (
-        <Box onClick={handleClick}>
-          <FolderIcon style={{ color: 'gray' }} />
-        </Box>
-      )}
+    <Tooltip title="add project" placement="left-start" open={isToolTipOpen}>
+      <Box my="auto" mr={2} sx={{ ':hover': { cursor: 'pointer' } }}>
+        {projectTitle ? (
+          <Box
+            onClick={handleClick}
+            sx={{ ':hover': { cursor: 'pointer' } }}
+            bgcolor={projectColor}>
+            {projectTitle}
+          </Box>
+        ) : (
+          <Box onClick={handleClick}>
+            <FolderIcon
+              style={{ color: 'gray' }}
+              onMouseLeave={() => {
+                setIsTookTipOpen(false);
+              }}
+              onMouseMove={() => {
+                setIsTookTipOpen(true);
+              }}
+            />
+          </Box>
+        )}
 
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: 200,
-          },
-        }}>
-        {projectToShowArr.map(({ id, title }) => (
-          <MenuItem aria-label={id} key={id} onClick={handleClose}>
-            {title || 'No Project'}
-          </MenuItem>
-        ))}
-      </Menu>
-    </Box>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            style: {
+              maxHeight: 200,
+            },
+          }}>
+          {projectToShowArr.map(({ id, title, color }) => (
+            <MenuItem
+              aria-label={id}
+              key={id}
+              onClick={handleClose}
+              data-color={color}>
+              {title || 'No Project'}
+            </MenuItem>
+          ))}
+        </Menu>
+      </Box>
+    </Tooltip>
   );
 };
 

@@ -1,6 +1,18 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Button, Grid, Modal, Paper } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Modal,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 
 import { deleteProject, getUserProjects } from '../../../../api/serverApi';
 import ProjectModal from '../../../../components/ProjectModal/ProjectModal';
@@ -11,23 +23,37 @@ import { setProjectArr } from '../../../../store/projectSlice';
 const ProjectsView = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
+  const { projectsArr } = useAppSelector((state) => state.projectArr);
+  const dispatch = useAppDispatch();
+  const serverUserId = useAppSelector((state) => state.serverUserData.id);
+  const [defaultProjectParam, setDefaultProjectParam] = useState({
+    id: '',
+    title: '',
+    color: '',
+    salary: '',
+  });
   const onOpenHandler = () => {
     setIsOpen(true);
   };
   const onCloseHandler = () => {
+    setDefaultProjectParam({
+      id: '',
+      title: '',
+      color: '',
+      salary: '',
+    });
     setIsOpen(false);
   };
-  const { projectsArr } = useAppSelector((state) => state.projectArr);
-  const dispatch = useAppDispatch();
-  const serverUserId = useAppSelector((state) => state.serverUserData.id);
 
   useEffect(() => {
     (async () => {
-      try {
-        const data = await getUserProjects(serverUserId);
-        dispatch(setProjectArr(data));
-      } catch {
-        dispatch(setErrorMessage('Failed to get user projects'));
+      if (serverUserId) {
+        try {
+          const data = await getUserProjects(serverUserId);
+          dispatch(setProjectArr(data));
+        } catch {
+          dispatch(setErrorMessage('Failed to get user projects'));
+        }
       }
     })();
   }, [serverUserId, refreshPage, dispatch]);
@@ -42,6 +68,17 @@ const ProjectsView = () => {
     setRefreshPage(!refreshPage);
   };
 
+  const onChangeHandler = (event: React.MouseEvent<HTMLElement>) => {
+    const result = event.target as HTMLElement;
+    setDefaultProjectParam({
+      id: result.dataset.id || '',
+      title: result.dataset.title || '',
+      color: result.dataset.color || '',
+      salary: result.dataset.salary || '',
+    });
+    setIsOpen(true);
+  };
+
   return (
     <>
       <Modal open={isOpen} onClose={onCloseHandler}>
@@ -50,6 +87,8 @@ const ProjectsView = () => {
             setIsOpen={setIsOpen}
             refreshPage={refreshPage}
             setRefreshPage={setRefreshPage}
+            defaultProjectParam={defaultProjectParam}
+            setDefaultProjectParam={setDefaultProjectParam}
           />
         </div>
       </Modal>
@@ -66,45 +105,69 @@ const ProjectsView = () => {
             </Box>
           </Paper>
         </Grid>
-        <Grid item xs={12} my={2}>
-          <Grid container height={40}>
-            <Grid item xs={4}>
-              <b>Project Name</b>
-            </Grid>
-            <Grid item xs={4}>
-              total minutes
-            </Grid>
-            <Grid item xs={4}>
-              del
-            </Grid>
-          </Grid>
+        <Grid item xs={12}>
+          <Box>Choose month</Box>
         </Grid>
-        {projectsArr.length
-          ? projectsArr.map(({ id, title, totalTime }) => {
-              return (
-                <Grid item xs={12} key={id} my={2}>
-                  <Paper>
-                    <Grid container height={40}>
-                      <Grid item xs={4}>
-                        {title}
-                      </Grid>
-                      <Grid item xs={4}>
-                        {Math.floor(totalTime / 1000 / 60)}
-                      </Grid>
-                      <Grid
-                        id={id}
-                        item
-                        xs={4}
-                        onClick={onClickHandler}
-                        sx={{ ':hover': { cursor: 'pointer' } }}>
-                        del
-                      </Grid>
-                    </Grid>
-                  </Paper>
-                </Grid>
-              );
-            })
-          : ''}
+        {projectsArr.length ? (
+          <Grid item xs={12}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <b>Name</b>
+                    </TableCell>
+                    <TableCell>
+                      <b>Time</b>
+                    </TableCell>
+                    <TableCell>
+                      <b>$/hour</b>
+                    </TableCell>
+                    <TableCell>
+                      <b>Options</b>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {projectsArr.map(
+                    ({ id, title, totalTime, color, salary }) => {
+                      return (
+                        <TableRow key={id}>
+                          <TableCell>
+                            <Box bgcolor={color}>{title}</Box>
+                          </TableCell>
+                          <TableCell>{totalTime}</TableCell>
+                          <TableCell>{salary}</TableCell>
+                          <TableCell>
+                            <Box
+                              color="coral"
+                              id={id}
+                              onClick={onClickHandler}
+                              sx={{ ':hover': { cursor: 'pointer' } }}
+                              mb={1}>
+                              del
+                            </Box>
+                            <Box
+                              data-id={id}
+                              data-title={title}
+                              data-color={color}
+                              data-salary={salary}
+                              onClick={onChangeHandler}
+                              sx={{ ':hover': { cursor: 'pointer' } }}>
+                              change
+                            </Box>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    }
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+        ) : (
+          ''
+        )}
       </Grid>
     </>
   );
