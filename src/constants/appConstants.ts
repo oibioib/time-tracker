@@ -10,3 +10,5 @@ export enum ROUTES {
 export const HOURS_IN_MILISEC = 1000 * 60 * 60;
 export const TASKS_SHOWED_DEFAULT = 5;
 export const MORE_TASKS = 2;
+export const DURATION_OF_DAY = 86399000;
+export const DEFAULT_COLOR = '#ffffff';

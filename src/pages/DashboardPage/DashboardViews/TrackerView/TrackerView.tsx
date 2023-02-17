@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 
@@ -15,7 +15,11 @@ import {
 import timeStringView from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
-import { setIsTimerOn, setTimerData } from '../../../../store/timeTrackerSlice';
+import {
+  setIsTimerOn,
+  setProjectToTimer,
+  setTimerData,
+} from '../../../../store/timeTrackerSlice';
 import { ProjectData } from '../../../../types/trackerInterfaces';
 
 interface AddedTaskData {
@@ -35,18 +39,14 @@ interface TimerData {
   project: ProjectData;
 }
 
-const tallGrid = {
-  mxHeight: '10%',
-};
-
 const TrackerView = () => {
   const [tasksArr, setTasksArr] = useState<AddedTaskData[]>([]);
   const [refreshPage, setRefreshPage] = useState(true);
   const [isTimersData, setIsTimersData] = useState(false);
   const [tasksShowed, setTasksShowed] = useState(TASKS_SHOWED_DEFAULT);
+  const onClickRef = useRef<HTMLButtonElement>(null);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
   const timerData = useAppSelector((state) => state.timeTracker);
-
   const dispatch = useAppDispatch();
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
@@ -86,6 +86,13 @@ const TrackerView = () => {
     );
   };
 
+  const onKeyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.code === 'Enter' && timerData.timerTitle) {
+      if (onClickRef.current) {
+        onClickRef.current.click();
+      }
+    }
+  };
   const showMoreHandler = () => {
     setTasksShowed(tasksShowed + MORE_TASKS);
   };
@@ -139,6 +146,13 @@ const TrackerView = () => {
               })
             );
             dispatch(setIsTimerOn(true));
+            dispatch(
+              setProjectToTimer({
+                projectId: data[0].project.id,
+                projectTitle: data[0].project.title,
+                projectColor: data[0].project.color,
+              })
+            );
           }
         } catch (error) {
           dispatch(
@@ -157,7 +171,7 @@ const TrackerView = () => {
 
   return (
     <Grid container pt={2} sx={{ height: '100%' }}>
-      <Grid item xs={12} sx={{ ...tallGrid }}>
+      <Grid item xs={12}>
         <Paper>
           <Box
             sx={{
@@ -169,20 +183,27 @@ const TrackerView = () => {
                 placeholder="What are you working on"
                 value={timerData.timerTitle}
                 onChange={onChangeHandler}
+                onKeyDown={onKeyDownHandler}
               />
             </Box>
-            <Box sx={{ display: 'flex' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+              }}>
               <ProjectList />
+
               <Timer
                 setRefreshPage={setRefreshPage}
                 refreshPage={refreshPage}
                 serverUserId={serverUserId}
+                onClickRef={onClickRef}
               />
             </Box>
           </Box>
         </Paper>
       </Grid>
-      <Grid item xs={12} sx={{ ...tallGrid }}>
+      <Grid item xs={12}>
         <Box
           mt={2}
           sx={{
@@ -208,7 +229,7 @@ const TrackerView = () => {
           </Box>
         </Box>
       </Grid>
-      <Grid item xs={12} sx={{ ...tallGrid }}>
+      <Grid item xs={12}>
         <Box my={3} sx={{ height: 5, backgroundColor: 'coral' }}>
           {' '}
         </Box>
