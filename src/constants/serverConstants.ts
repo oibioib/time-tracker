@@ -6,6 +6,7 @@ export enum SERVER_ROUTES {
   USER_TIMERS = 'usertimers',
   IS_ACTIVE_TIMERS = '?status=active',
   USER_PROJECTS = 'userprojects',
+  USER_TOTAL_TIMERS = 'usertimerstime',
 }
 
 export enum TIMER_ACTIVE {
