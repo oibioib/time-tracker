@@ -27,6 +27,7 @@ import {
   options,
 } from '../../../../helpers/statisticsHelpers';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { setErrorMessage } from '../../../../store/errorHandler';
 import {
   deleteDataInterval,
   deleteTotalData,
@@ -46,6 +47,12 @@ ChartJS.register(
 
 const StatisticsView = () => {
   const dispatch = useAppDispatch();
+  const errorGetTimersTime = useAppSelector(
+    (state) => state.statistics.getTimersTimeError
+  );
+  const errorGetDataInterval = useAppSelector(
+    (state) => state.statistics.getDataIntervalError
+  );
 
   const statisticOpen = useAppSelector(
     (state) => state.statistics.isChangeCalendar
@@ -78,6 +85,13 @@ const StatisticsView = () => {
       }
     }
   }, [rezStartDate, rezEndDate, statisticsValueX, dispatch, serverUserId]);
+
+  if (errorGetDataInterval) {
+    dispatch(setErrorMessage(errorGetDataInterval));
+  }
+  if (errorGetTimersTime) {
+    dispatch(setErrorMessage(errorGetTimersTime));
+  }
 
   const totalTimeData = {
     labels: intervalTotalData.map((data) => convertationToDate(data.startTime)),
