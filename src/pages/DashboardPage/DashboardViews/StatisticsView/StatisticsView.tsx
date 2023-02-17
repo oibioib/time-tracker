@@ -15,13 +15,17 @@ import { Grid, Typography } from '@mui/material';
 
 import EmptyViewStatistic from '../../../../components/EmptyView/EmptyViewStatistic';
 import ProductivityBox from '../../../../components/Productivity';
-import { SelectX } from '../../../../components/SelectStatistics';
-import CalendarStatistics from '../../../../components/SelectStatistics/CalendarStatistic';
+import {
+  CalendarStatistics,
+  SelectX,
+} from '../../../../components/SelectStatistics';
 import { DURATION_OF_DAY } from '../../../../constants/appConstants';
-import convertationToDate from '../../../../helpers/convertationToDate';
-import convertationToMin from '../../../../helpers/convertationtoMin';
-import generateColor from '../../../../helpers/generateColor';
-import options from '../../../../helpers/statisticsOptions';
+import {
+  convertationToDate,
+  convertationToMin,
+  generateColor,
+  options,
+} from '../../../../helpers/statisticsHelpers';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import {
   deleteDataInterval,
