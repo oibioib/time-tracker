@@ -32,13 +32,10 @@ const CalendarStatistics = () => {
     setEndDate(end);
 
     if (start) {
-      if (end === null) {
-        setRezStartDate(start.getTime());
-        setRezEndDate(start.getTime() + DURATION_OF_DAY);
-      } else {
-        setRezStartDate(start.getTime());
-        setRezEndDate(end.getTime() + DURATION_OF_DAY);
-      }
+      setRezStartDate(start.getTime());
+      setRezEndDate(
+        (end === null ? start.getTime() : end.getTime()) + DURATION_OF_DAY
+      );
     }
   };
 
