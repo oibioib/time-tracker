@@ -144,6 +144,12 @@ const Timer = ({
     dispatch(setIsTimerOn(!isTimerOn));
   };
 
+  useEffect(() => {
+    if (!isTimerOn) {
+      document.title = 'Time tracker';
+    } else document.title = timeString;
+  }, [timeString, isTimerOn]);
+
   return (
     <Box
       mr={1}

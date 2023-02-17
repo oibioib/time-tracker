@@ -141,10 +141,6 @@ const ProjectModal = ({
         </Box>
       </Box>
 
-      <Box>Rate: $/h</Box>
-      <TextField type="number" onChange={numberHandler} value={salary} />
-      <Box>Color</Box>
-      <MuiColorInput value={color} onChange={colorHandler} />
       <Box>Name</Box>
       <TextField
         required
@@ -158,6 +154,20 @@ const ProjectModal = ({
         onFocus={() => {
           setErrMessage('');
         }}
+      />
+      <Box>Rate: $/h</Box>
+      <TextField
+        type="number"
+        onChange={numberHandler}
+        onKeyDown={onKeyDownHandler}
+        value={salary}
+      />
+      <Box>Color</Box>
+      <MuiColorInput
+        format="hex"
+        value={color}
+        onChange={colorHandler}
+        onKeyDown={onKeyDownHandler}
       />
 
       <Box>

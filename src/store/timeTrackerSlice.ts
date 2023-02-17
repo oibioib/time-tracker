@@ -1,5 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { DEFAULT_COLOR } from '../constants/appConstants';
+import { DEFAULT_PROJECT_ID } from '../constants/serverConstants';
+
 const timeTrackerSlice = createSlice({
   name: 'timeTrackerSlice',
   initialState: {
@@ -8,9 +11,9 @@ const timeTrackerSlice = createSlice({
     totalTime: 0,
     timerTitle: '',
     previousTimeStamp: 0,
-    projectId: '',
+    projectId: DEFAULT_PROJECT_ID,
     projectTitle: '',
-    projectColor: '',
+    projectColor: DEFAULT_COLOR,
   },
   reducers: {
     setIsTimerOn(state, action) {
