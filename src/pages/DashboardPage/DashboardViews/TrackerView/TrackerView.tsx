@@ -39,10 +39,6 @@ interface TimerData {
   project: ProjectData;
 }
 
-const tallGrid = {
-  mxHeight: '10%',
-};
-
 const TrackerView = () => {
   const [tasksArr, setTasksArr] = useState<AddedTaskData[]>([]);
   const [refreshPage, setRefreshPage] = useState(true);
@@ -175,7 +171,7 @@ const TrackerView = () => {
 
   return (
     <Grid container pt={2} sx={{ height: '100%' }}>
-      <Grid item xs={12} sx={{ ...tallGrid }}>
+      <Grid item xs={12}>
         <Paper>
           <Box
             sx={{
@@ -207,7 +203,7 @@ const TrackerView = () => {
           </Box>
         </Paper>
       </Grid>
-      <Grid item xs={12} sx={{ ...tallGrid }}>
+      <Grid item xs={12}>
         <Box
           mt={2}
           sx={{
@@ -233,7 +229,7 @@ const TrackerView = () => {
           </Box>
         </Box>
       </Grid>
-      <Grid item xs={12} sx={{ ...tallGrid }}>
+      <Grid item xs={12}>
         <Box my={3} sx={{ height: 5, backgroundColor: 'coral' }}>
           {' '}
         </Box>
