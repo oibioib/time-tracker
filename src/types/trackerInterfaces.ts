@@ -1,6 +1,8 @@
 export interface ProjectData {
   id: string;
   title: string;
+  salary?: string;
+  color?: string;
 }
 
 export interface TaskArrReduced {

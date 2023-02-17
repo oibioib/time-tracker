@@ -13,3 +13,5 @@ export enum TIMER_ACTIVE {
   ACTIVE = 1,
   INACTIVE = 0,
 }
+
+export const DEFAULT_PROJECT_ID = 'null';

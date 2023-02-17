@@ -28,13 +28,18 @@ export const updateTimer = async (
   }
 };
 
-export const createTimer = async (timerTitle: string, serverUserId: string) => {
+export const createTimer = async (
+  timerTitle: string,
+  serverUserId: string,
+  projectId: string
+) => {
   const response = await fetch(`${BASE_URL}/${SERVER_ROUTES.TIMERS}`, {
     method: 'POST',
     body: JSON.stringify({
       title: timerTitle,
       startTime: Date.now(),
       userId: serverUserId,
+      projectId,
     }),
     headers: {
       'Content-type': 'application/json',
@@ -105,12 +110,19 @@ export const deleteTimer = async (id: string) => {
   return response;
 };
 
-export const createUserProject = async (userId: string, title: string) => {
+export const createUserProject = async (
+  userId: string,
+  title: string,
+  salary: string,
+  color: string
+) => {
   const response = await fetch(`${BASE_URL}/${SERVER_ROUTES.USER_PROJECTS}`, {
     method: 'POST',
     body: JSON.stringify({
       userId,
       title,
+      salary,
+      color,
     }),
     headers: {
       'Content-Type': 'application/json',
@@ -118,6 +130,31 @@ export const createUserProject = async (userId: string, title: string) => {
   });
   if (!response.ok) {
     throw new Error('Failed to create Project');
+  }
+};
+
+export const updateUserProject = async (
+  projectId: string,
+  title: string,
+  salary: string,
+  color: string
+) => {
+  const response = await fetch(
+    `${BASE_URL}/${SERVER_ROUTES.USER_PROJECTS}/${projectId}`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify({
+        title,
+        salary,
+        color,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  if (!response.ok) {
+    throw new Error('Failed to update Project');
   }
 };
 
