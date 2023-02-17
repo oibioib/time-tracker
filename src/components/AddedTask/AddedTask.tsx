@@ -7,7 +7,7 @@ import { DEFAULT_PROJECT_ID } from '../../constants/serverConstants';
 import timeStringView from '../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
-import { FolderIcon } from '../../theme/appIcons';
+import { CircleIcon, FolderIcon } from '../../theme/appIcons';
 import { TaskArrReduced } from '../../types/trackerInterfaces';
 import SmallTimer from '../SmallTimer/SmallTimer';
 
@@ -85,10 +85,28 @@ const AddedTask = ({
         </Box>
         <Box my={1}>{taskName}</Box>
       </Box>
-      <Box bgcolor={project?.color} onClick={onProjectChangeHandler}>
+
+      <Box
+        onClick={onProjectChangeHandler}
+        sx={{ ':hover': { cursor: 'pointer' } }}>
         {project?.id ? (
           <Typography variant="body2">
-            Project: <b>{project?.title}</b>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+              }}>
+              Project:
+              <CircleIcon
+                sx={{
+                  color: `${project?.color}`,
+                  width: '15px',
+                }}
+              />
+              <Box>
+                <b>{project?.title}</b>
+              </Box>
+            </Box>
           </Typography>
         ) : (
           <FolderIcon style={{ color: 'gray' }} />

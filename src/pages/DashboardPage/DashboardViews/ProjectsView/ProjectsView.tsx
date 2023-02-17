@@ -16,9 +16,14 @@ import {
 
 import { deleteProject, getUserProjects } from '../../../../api/serverApi';
 import ProjectModal from '../../../../components/ProjectModal/ProjectModal';
+import {
+  DEFAULT_COLOR,
+  HOURS_IN_MILISEC,
+} from '../../../../constants/appConstants';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import { setProjectArr } from '../../../../store/projectSlice';
+import { CircleIcon } from '../../../../theme/appIcons';
 
 const ProjectsView = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +34,7 @@ const ProjectsView = () => {
   const [defaultProjectParam, setDefaultProjectParam] = useState({
     id: '',
     title: '',
-    color: '',
+    color: DEFAULT_COLOR,
     salary: '',
   });
   const onOpenHandler = () => {
@@ -92,8 +97,8 @@ const ProjectsView = () => {
           />
         </div>
       </Modal>
-      <Grid container columns={4}>
-        <Grid item xs={12} mt={2}>
+      <Grid container columns={4} sx={{ height: '100%' }}>
+        <Grid item xs={12} my={2}>
           <Paper>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Box>Projects</Box>
@@ -118,7 +123,7 @@ const ProjectsView = () => {
                       <b>Name</b>
                     </TableCell>
                     <TableCell>
-                      <b>Time</b>
+                      <b>Time (Hours)</b>
                     </TableCell>
                     <TableCell>
                       <b>$/hour</b>
@@ -134,9 +139,23 @@ const ProjectsView = () => {
                       return (
                         <TableRow key={id}>
                           <TableCell>
-                            <Box bgcolor={color}>{title}</Box>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}>
+                              <CircleIcon
+                                sx={{
+                                  color: { color },
+                                  width: '15px',
+                                }}
+                              />
+                              <Box>{title}</Box>
+                            </Box>
                           </TableCell>
-                          <TableCell>{totalTime}</TableCell>
+                          <TableCell>
+                            {Math.floor(totalTime / HOURS_IN_MILISEC) || '< 0'}
+                          </TableCell>
                           <TableCell>{salary}</TableCell>
                           <TableCell>
                             <Box

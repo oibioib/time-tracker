@@ -5,7 +5,7 @@ import { Box, Menu, MenuItem, Tooltip } from '@mui/material';
 import { DEFAULT_PROJECT_ID } from '../../constants/serverConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setProjectToTimer } from '../../store/timeTrackerSlice';
-import { FolderIcon } from '../../theme/appIcons';
+import { CircleIcon, FolderIcon } from '../../theme/appIcons';
 
 const ProjectList = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -50,11 +50,20 @@ const ProjectList = () => {
     <Tooltip title="add project" placement="left-start" open={isToolTipOpen}>
       <Box my="auto" mr={2} sx={{ ':hover': { cursor: 'pointer' } }}>
         {projectTitle ? (
-          <Box
-            onClick={handleClick}
-            sx={{ ':hover': { cursor: 'pointer' } }}
-            bgcolor={projectColor}>
-            {projectTitle}
+          <Box onClick={handleClick} sx={{ ':hover': { cursor: 'pointer' } }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+              }}>
+              <CircleIcon
+                sx={{
+                  color: `${projectColor}`,
+                  width: '15px',
+                }}
+              />
+              <Box>{projectTitle}</Box>
+            </Box>
           </Box>
         ) : (
           <Box onClick={handleClick}>
