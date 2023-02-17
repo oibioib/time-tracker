@@ -15,8 +15,7 @@ const ProductivityBox = () => {
   const statisticsValueY = useAppSelector(
     (state) => state.statistics.timePeriod
   );
-  const rezStartDate = statisticsValueY[0];
-  const rezEndDate = statisticsValueY[1];
+  const [rezStartDate, rezEndDate] = statisticsValueY;
 
   const sumTotal = intervalTotalData.reduce(
     (accum, val) => accum + Number(val.totalTime),
