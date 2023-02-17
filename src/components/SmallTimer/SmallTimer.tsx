@@ -43,6 +43,7 @@ const SmallTimer = ({
       setProjectToTimer({
         projectId: project?.id,
         projectTitle: project?.title,
+        projectColor: project?.color,
       })
     );
     try {
