@@ -31,9 +31,7 @@ const SettingsView = () => {
     e.preventDefault();
     if (newUserName) {
       dispatch(setNewName(newUserName));
-      if (newUserName) {
-        setOpen(true);
-      }
+      setOpen(true);
       (async () => {
         try {
           await updateServerUserId(userServerId, newUserName);
