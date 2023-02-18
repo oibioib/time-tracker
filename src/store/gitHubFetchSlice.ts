@@ -7,6 +7,7 @@ const gitHubFetchSlice = createSlice({
     avatar_url: 'url',
     id: 0,
     newName: '',
+    gitHubName: '',
   },
   reducers: {
     setGitHubUserData(state, action) {
@@ -17,8 +18,12 @@ const gitHubFetchSlice = createSlice({
     setNewName(state, action: PayloadAction<string>) {
       state.newName = action.payload;
     },
+    setGitHubName(state, action: PayloadAction<string>) {
+      state.gitHubName = action.payload;
+    },
   },
 });
 
-export const { setGitHubUserData, setNewName } = gitHubFetchSlice.actions;
+export const { setGitHubName, setGitHubUserData, setNewName } =
+  gitHubFetchSlice.actions;
 export default gitHubFetchSlice.reducer;
