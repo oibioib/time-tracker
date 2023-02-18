@@ -16,7 +16,11 @@ import { createServerUserId, getUserProjects } from '../../api/serverApi';
 import DashboardSidebar from '../../components/DashboardSidebar';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
-import { setGitHubUserData, setNewName } from '../../store/gitHubFetchSlice';
+import {
+  setGitHubName,
+  setGitHubUserData,
+  setNewName,
+} from '../../store/gitHubFetchSlice';
 import { setProjectArr } from '../../store/projectSlice';
 import { setServerUserLogin } from '../../store/serverUserDataSlice';
 import { KeyboardArrowLeftIcon, MenuIcon } from '../../theme/appIcons';
@@ -61,6 +65,7 @@ const DashboardPage = () => {
           if (data.name) {
             dispatch(setNewName(data.name));
           }
+          dispatch(setGitHubName(data.gitHubName));
           dispatch(setServerUserLogin(data.id));
         } catch (error) {
           dispatch(

@@ -5,6 +5,7 @@ import { useAppSelector } from '../../hooks/hooks';
 const UserAvatar = () => {
   const newUserName = useAppSelector((state) => state.gitHubFetch.newName);
   const userData = useAppSelector((state) => state.gitHubFetch);
+  const gitHubName = useAppSelector((state) => state.gitHubFetch.gitHubName);
 
   return (
     <Grid item ml={2} mt={2} color="white">
@@ -12,7 +13,7 @@ const UserAvatar = () => {
       {newUserName ? (
         <Typography variant="body1">{newUserName}</Typography>
       ) : (
-        <Typography variant="body1">{userData && userData.login}</Typography>
+        <Typography variant="body1">{userData && gitHubName}</Typography>
       )}
     </Grid>
   );
