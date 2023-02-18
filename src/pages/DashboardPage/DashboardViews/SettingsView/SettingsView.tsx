@@ -63,7 +63,7 @@ const SettingsView = () => {
       </Typography>
       <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Name is changed!
+          {t('settings.successMessage')}
         </Alert>
       </Snackbar>
       <Grid item pt={2}>
