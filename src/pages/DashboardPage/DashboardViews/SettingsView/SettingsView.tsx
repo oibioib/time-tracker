@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button, Grid, Snackbar, TextField, Typography } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
@@ -17,6 +18,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const SettingsView = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = React.useState(false);
   const userServerId = useAppSelector((state) => state.serverUserData.id);
 
@@ -57,7 +59,7 @@ const SettingsView = () => {
   return (
     <Grid item mx="auto">
       <Typography align="center" mb={2} mt={2} variant="h3" mx="auto">
-        Settings Page
+        {t('dashboard.settings')}
       </Typography>
       <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
@@ -74,7 +76,7 @@ const SettingsView = () => {
             }}>
             <TextField
               id="outlined-controlled"
-              label="New name"
+              label={t(`settings.newName`)}
               onChange={onChange}
               value={newUserName}
             />
@@ -86,7 +88,7 @@ const SettingsView = () => {
               sx={{
                 mt: 2,
               }}>
-              Submit
+              {t('buttons.submit')}
             </Button>
           </Grid>
         </form>
