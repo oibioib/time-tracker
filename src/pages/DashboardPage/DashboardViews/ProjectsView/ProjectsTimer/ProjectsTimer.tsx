@@ -5,7 +5,10 @@ import { Box } from '@mui/material';
 
 import { getProjectTimers } from '../../../../../api/serverApi';
 import { CalendarStatistics } from '../../../../../components/SelectStatistics';
-import { HOURS_IN_MILISEC } from '../../../../../constants/appConstants';
+import {
+  DEFAULT_END_TODAY_TIMESTAMP,
+  DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+} from '../../../../../constants/appConstants';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/hooks';
 import { addTimePeriod } from '../../../../../store/statisticSlice';
 import { TimerData } from '../../../../../types/trackerInterfaces';
@@ -29,7 +32,10 @@ const ProjectsTimer = () => {
   useEffect(() => {
     return () => {
       dispatch(
-        addTimePeriod([Date.now() - HOURS_IN_MILISEC * 24 * 7, Date.now()])
+        addTimePeriod([
+          DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+          DEFAULT_END_TODAY_TIMESTAMP,
+        ])
       );
     };
   }, [dispatch]);

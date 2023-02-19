@@ -9,6 +9,8 @@ import ProjectList from '../../../../components/ProjectList/ProjectList';
 import { CalendarStatistics } from '../../../../components/SelectStatistics';
 import Timer from '../../../../components/Timer/Timer';
 import {
+  DEFAULT_END_TODAY_TIMESTAMP,
+  DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
   HOURS_IN_MILISEC,
   MORE_TASKS,
   TASKS_SHOWED_DEFAULT,
@@ -165,7 +167,10 @@ const TrackerView = () => {
   useEffect(() => {
     return () => {
       dispatch(
-        addTimePeriod([Date.now() - HOURS_IN_MILISEC * 24 * 7, Date.now()])
+        addTimePeriod([
+          DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+          DEFAULT_END_TODAY_TIMESTAMP,
+        ])
       );
     };
   }, [dispatch]);
