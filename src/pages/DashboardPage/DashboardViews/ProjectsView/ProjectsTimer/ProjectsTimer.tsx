@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
 
 import { getProjectTimers } from '../../../../../api/serverApi';
-import { CalendarStatistics } from '../../../../../components/SelectStatistics';
+import CalendarStatistics from '../../../../../components/SelectStatistics';
 import {
   DEFAULT_END_TODAY_TIMESTAMP,
   DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,

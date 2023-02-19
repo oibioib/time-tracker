@@ -6,7 +6,7 @@ import { getActiveTimer, getUserTimers } from '../../../../api/serverApi';
 import AddedTask from '../../../../components/AddedTask/AddedTask';
 import EmptyView from '../../../../components/EmptyView/EmptyView';
 import ProjectList from '../../../../components/ProjectList/ProjectList';
-import { CalendarStatistics } from '../../../../components/SelectStatistics';
+import CalendarStatistics from '../../../../components/SelectStatistics';
 import Timer from '../../../../components/Timer/Timer';
 import {
   DEFAULT_END_TODAY_TIMESTAMP,

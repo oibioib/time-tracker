@@ -25,7 +25,6 @@ export interface timersDataTotal {
 
 export interface statisticsState {
   timePeriod: [number, number];
-  valueX: string;
   getDataIntervalStatus: string;
   getDataIntervalError: string;
   getTimersTimeStatus: string;
@@ -36,7 +35,6 @@ export interface statisticsState {
 
 const initialState: statisticsState = {
   dataInterval: [],
-  valueX: 'tasks',
   getDataIntervalStatus: '',
   getDataIntervalError: '',
   getTimersTimeStatus: '',
@@ -64,15 +62,6 @@ export const statisticsSlice = createSlice({
   reducers: {
     addTimePeriod: (state, action: PayloadAction<[number, number]>) => {
       state.timePeriod = action.payload;
-    },
-    addValueX: (state, action: PayloadAction<string>) => {
-      state.valueX = action.payload;
-    },
-    deleteTotalData: (state) => {
-      state.dataTotalTime = [];
-    },
-    deleteDataInterval: (state) => {
-      state.dataInterval = [];
     },
   },
   extraReducers: (builder) => {
@@ -111,7 +100,6 @@ export const statisticsSlice = createSlice({
   },
 });
 
-export const { addTimePeriod, addValueX, deleteTotalData, deleteDataInterval } =
-  statisticsSlice.actions;
+export const { addTimePeriod } = statisticsSlice.actions;
 
 export default statisticsSlice.reducer;
