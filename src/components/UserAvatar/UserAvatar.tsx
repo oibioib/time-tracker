@@ -1,35 +1,20 @@
-import { useEffect } from 'react';
-
 import { Avatar, Grid, Typography } from '@mui/material';
 
-import { getGithubUserData } from '../../api/githubApi';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { setGitHubUserData } from '../../store/gitHubFetchSlice';
+import { useAppSelector } from '../../hooks/hooks';
 
 const UserAvatar = () => {
+  const newUserName = useAppSelector((state) => state.gitHubFetch.newName);
   const userData = useAppSelector((state) => state.gitHubFetch);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    if (!userData.id) {
-      (async () => {
-        const data = await getGithubUserData();
-        dispatch(
-          setGitHubUserData({
-            login: data.login,
-            id: data.id,
-            avatar_url: data.avatar_url,
-          })
-        );
-      })();
-    }
-  }, [userData, dispatch]);
+  const gitHubName = useAppSelector((state) => state.gitHubFetch.gitHubName);
 
   return (
     <Grid item ml={2} mt={2} color="white">
       <Avatar alt="user" src={`${userData && userData.avatar_url}`} />
-      <Typography variant="body1">
-        Name: {userData && userData.login}
-      </Typography>
+      {newUserName ? (
+        <Typography variant="body1">{newUserName}</Typography>
+      ) : (
+        <Typography variant="body1">{userData && gitHubName}</Typography>
+      )}
     </Grid>
   );
 };
