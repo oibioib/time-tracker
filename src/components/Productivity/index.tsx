@@ -44,7 +44,7 @@ const ProductivityBox = () => {
         <Grid container mx="auto" my={2} justifyContent="space-between">
           <Grid item>
             <ProductivityLogo height={100} width="50%" />
-            <Typography variant="h3" ml={1}>
+            <Typography variant="h6" ml={1}>
               <b>Уour productivity is {worktime}% for the selected period</b>
             </Typography>
           </Grid>
