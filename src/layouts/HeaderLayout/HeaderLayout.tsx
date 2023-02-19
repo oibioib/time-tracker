@@ -5,7 +5,6 @@ import { Link as LinkRouter } from 'react-router-dom';
 
 import {
   Box,
-  Button,
   CardMedia,
   Grid,
   IconButton,
@@ -16,7 +15,10 @@ import {
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 
+import logoIco from '../../assets/logo-ico.png';
+import logoText from '../../assets/logo-text.png';
 import LangSwitch from '../../components/LangSwitch';
+import Logout from '../../components/Logout/Logout';
 import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
@@ -27,6 +29,10 @@ import {
   DashboardIcon,
   LoginIcon,
 } from '../../theme/appIcons';
+import {
+  HeaderButton,
+  headerButtonTypography,
+} from '../../theme/styledComponents/HeaderButton';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -100,8 +106,8 @@ const HeaderLayout = () => {
               <Box sx={{ display: 'flex' }}>
                 <CardMedia
                   component="img"
-                  sx={{ height: { xs: 30, md: 40 } }}
-                  image="./logo-ico.png"
+                  sx={{ height: { xs: 30, md: 40 }, width: 'auto' }}
+                  image={logoIco}
                   alt="Time Tracker"
                 />
                 <CardMedia
@@ -110,9 +116,10 @@ const HeaderLayout = () => {
                     pl: 2,
                     pr: 3,
                     height: { sm: 30, md: 40 },
+                    width: 'auto',
                     display: { xs: 'none', sm: 'block' },
                   }}
-                  image="./logo-text.png"
+                  image={logoText}
                   alt="Time Tracker"
                 />
               </Box>
@@ -120,26 +127,15 @@ const HeaderLayout = () => {
           </Grid>
           <Grid item>
             {isLoggedIn && (
-              <Button
-                size="large"
+              <HeaderButton
                 variant="text"
                 component={LinkRouter}
-                to={ROUTES.DASHBOARD}
-                color="info"
-                sx={{
-                  gap: 0.5,
-                  backgroundColor: 'primary.dark',
-                  ':hover': {
-                    backgroundColor: 'primary.main',
-                  },
-                }}>
+                to={ROUTES.DASHBOARD}>
                 <DashboardIcon />
-                <Typography
-                  color="white"
-                  sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Typography sx={headerButtonTypography}>
                   {t('buttons.dashboardPage')}
                 </Typography>
-              </Button>
+              </HeaderButton>
             )}
           </Grid>
         </Grid>
@@ -151,27 +147,18 @@ const HeaderLayout = () => {
           alignItems="center"
           justifyContent="space-between">
           <Grid item>
-            {!isLoggedIn && (
-              <Button
-                size="large"
+            {!isLoggedIn ? (
+              <HeaderButton
                 variant="text"
                 component={LinkRouter}
-                to={ROUTES.LOGIN}
-                color="info"
-                sx={{
-                  gap: 0.5,
-                  backgroundColor: 'primary.dark',
-                  ':hover': {
-                    backgroundColor: 'primary.main',
-                  },
-                }}>
+                to={ROUTES.LOGIN}>
                 <LoginIcon />
-                <Typography
-                  color="white"
-                  sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Typography sx={headerButtonTypography}>
                   {t('buttons.loginPage')}
                 </Typography>
-              </Button>
+              </HeaderButton>
+            ) : (
+              <Logout />
             )}
           </Grid>
           <Grid item>
@@ -185,7 +172,7 @@ const HeaderLayout = () => {
               }}
               onClick={toggleColorMode}
               color="info">
-              {mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+              {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
           </Grid>
           <Grid item alignItems="center">

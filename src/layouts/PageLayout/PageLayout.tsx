@@ -6,11 +6,7 @@ import HeaderLayout from '../HeaderLayout/HeaderLayout';
 
 const PageLayout = () => {
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="space-between"
-      minHeight="100vh">
+    <Grid container direction="column" minHeight="100vh">
       <Grid
         item
         container
