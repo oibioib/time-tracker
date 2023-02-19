@@ -19,9 +19,7 @@ export enum THEME_MODE {
   DARK = 'dark',
 }
 
-export const DEFAULT_STARTDAY_TODAY = new Date(
-  new Date().setUTCHours(0, 0, 0, 0)
-);
+export const DEFAULT_STARTDAY_TODAY = new Date(new Date().setHours(0, 0, 0, 0));
 export const DEFAULT_START_TODAY_TIMESTAMP = DEFAULT_STARTDAY_TODAY.getTime();
 export const DEFAULT_END_TODAY_TIMESTAMP =
   DEFAULT_START_TODAY_TIMESTAMP + DURATION_OF_DAY;
