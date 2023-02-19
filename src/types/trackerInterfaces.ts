@@ -25,3 +25,12 @@ export interface UserProject {
   id: string;
   title: string;
 }
+
+export interface TimerData {
+  startTime: number;
+  totalTime: number;
+  title: string;
+  id: string;
+  isActive: boolean;
+  project: ProjectData;
+}
