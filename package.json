@@ -23,7 +23,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@fontsource/inter": "^4.5.15",
+    "@fontsource/noto-sans": "^4.5.11",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
     "@mui/x-date-pickers": "^6.0.0-beta.3",
