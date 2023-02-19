@@ -3,18 +3,22 @@ import { useTranslation } from 'react-i18next';
 
 import { Button, Grid, Typography } from '@mui/material';
 
+import { LOCAL_LANGUAGE } from '../../constants/storageConstants';
+
 const LangSwitch = () => {
-  const [isEng, setIsEng] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(false);
   const { i18n } = useTranslation();
+  const language = localStorage.getItem(LOCAL_LANGUAGE) || 'en';
 
   const changeLanguage = () => {
-    if (isEng) {
-      i18n.changeLanguage('en');
-      setIsEng(false);
-    } else {
+    if (language === 'en') {
       i18n.changeLanguage('ru');
-      setIsEng(true);
+      localStorage.setItem(LOCAL_LANGUAGE, 'ru');
+    } else {
+      i18n.changeLanguage('en');
+      localStorage.setItem(LOCAL_LANGUAGE, 'en');
     }
+    setRefreshPage(!refreshPage);
   };
 
   return (
@@ -31,7 +35,7 @@ const LangSwitch = () => {
             },
           }}>
           <Typography color="white" variant="body1" component="span">
-            {isEng ? 'EN' : 'RU'}
+            {language === 'en' ? 'EN' : 'RU'}
           </Typography>
         </Button>
       </Grid>
