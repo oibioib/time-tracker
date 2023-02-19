@@ -8,7 +8,11 @@ import { createServerUserId, getUserProjects } from '../../api/serverApi';
 import DashboardSidebar from '../../components/DashboardSidebar';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
-import { setGitHubUserData } from '../../store/gitHubFetchSlice';
+import {
+  setGitHubName,
+  setGitHubUserData,
+  setNewName,
+} from '../../store/gitHubFetchSlice';
 import { setProjectArr } from '../../store/projectSlice';
 import { setServerUserLogin } from '../../store/serverUserDataSlice';
 
@@ -48,6 +52,10 @@ const DashboardPage = () => {
       (async () => {
         try {
           const data = await createServerUserId(userData.id, userData.login);
+          if (data.name) {
+            dispatch(setNewName(data.name));
+          }
+          dispatch(setGitHubName(data.gitHubName));
           dispatch(setServerUserLogin(data.id));
         } catch (error) {
           dispatch(

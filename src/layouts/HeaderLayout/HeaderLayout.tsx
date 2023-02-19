@@ -3,15 +3,7 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as LinkRouter } from 'react-router-dom';
 
-import {
-  Box,
-  CardMedia,
-  Grid,
-  IconButton,
-  PaletteMode,
-  Snackbar,
-  Typography,
-} from '@mui/material';
+import { Box, CardMedia, Grid, Snackbar, Typography } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 
@@ -19,16 +11,11 @@ import logoIco from '../../assets/logo-ico.png';
 import logoText from '../../assets/logo-text.png';
 import LangSwitch from '../../components/LangSwitch';
 import Logout from '../../components/Logout/Logout';
+import ThemeSwitch from '../../components/ThemeSwitch/ThemeSwitch';
 import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
-import { changeTheme } from '../../store/themeModeSlice';
-import {
-  Brightness4Icon,
-  Brightness7Icon,
-  DashboardIcon,
-  LoginIcon,
-} from '../../theme/appIcons';
+import { DashboardIcon, LoginIcon } from '../../theme/appIcons';
 import {
   HeaderButton,
   headerButtonTypography,
@@ -42,7 +29,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const HeaderLayout = () => {
-  const [mode, setMode] = useState<PaletteMode>('dark');
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const gitHubID = useAppSelector((state) => state.gitHubFetch.id);
@@ -58,13 +44,6 @@ const HeaderLayout = () => {
       setOpen(true);
     }
   }, [errorMessage]);
-
-  const toggleColorMode = () => {
-    setMode((prevMode: PaletteMode) =>
-      prevMode === 'light' ? 'dark' : 'light'
-    );
-    dispatch(changeTheme(mode));
-  };
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -162,18 +141,7 @@ const HeaderLayout = () => {
             )}
           </Grid>
           <Grid item>
-            <IconButton
-              sx={{
-                ml: 1,
-                ':hover': {
-                  bgcolor: 'primary.main',
-                  color: 'info',
-                },
-              }}
-              onClick={toggleColorMode}
-              color="info">
-              {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
+            <ThemeSwitch />
           </Grid>
           <Grid item alignItems="center">
             <LangSwitch />

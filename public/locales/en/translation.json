@@ -4,7 +4,8 @@
     "mainPage": "Main",
     "dashboardPage": "Dashboard",
     "gitHubLogin": "GitHub Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "submit": "Submit"
   },
   "dashboard": {
     "navigation": "Navigation",
@@ -27,7 +28,11 @@
     "statistics": "Statistics"
   },
   "mainPage": {
-    "title": "Time Tracker is app that let's you easily track your time",
+    "title": "Time Tracker is app that lets you easily track your time",
     "subtitle": "There are only 24 hours in a day, you can`t change that, but you can spend your time usefully"
+  },
+  "settings": {
+    "newName": "New name",
+    "successMessage": "Name is changed!"
   }
 }
