@@ -90,7 +90,7 @@ const AddedTask = ({
         onClick={onProjectChangeHandler}
         sx={{ ':hover': { cursor: 'pointer' } }}>
         {project?.id ? (
-          <Typography variant="body2">
+          <Typography variant="body2" component="div">
             <Box
               sx={{
                 display: 'flex',
