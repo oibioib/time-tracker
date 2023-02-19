@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { IconButton } from '@mui/material';
 
 import { LOCAL_THEME_MOD } from '../../constants';
