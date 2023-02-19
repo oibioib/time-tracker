@@ -14,6 +14,7 @@ import {
   StatisticsView,
   TrackerView,
 } from './pages/DashboardPage/DashboardViews';
+import ProjectsTimer from './pages/DashboardPage/DashboardViews/ProjectsView/ProjectsTimer/ProjectsTimer';
 import Theme from './theme/appTheme';
 
 const router = createBrowserRouter([
@@ -38,7 +39,14 @@ const router = createBrowserRouter([
             path: '',
             element: <TrackerView />,
           },
-          { path: ROUTES.PROJECTS_VIEW, element: <ProjectsView /> },
+          {
+            path: ROUTES.PROJECTS_VIEW,
+            element: <ProjectsView />,
+          },
+          {
+            path: `${ROUTES.PROJECTS_VIEW}/${ROUTES.PROJECTS_ID}`,
+            element: <ProjectsTimer />,
+          },
           { path: ROUTES.CLIENTS_VIEW, element: <ClientsView /> },
           {
             path: ROUTES.STATISTICS_VIEW,
