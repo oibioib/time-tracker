@@ -6,28 +6,22 @@ import HeaderLayout from '../HeaderLayout/HeaderLayout';
 
 const PageLayout = () => {
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="space-between"
-      minHeight="100vh">
+    <Grid container direction="column" minHeight="100vh">
       <Grid
         item
         container
-        sx={{ backgroundColor: 'primary.main', width: 'auto' }}
+        sx={{ backgroundColor: 'primary.dark', width: 'auto' }}
         p={2}>
         <HeaderLayout />
       </Grid>
-      <Grid item pl={2} pr={2} minHeight="80vh">
+      <Grid item sx={{ flex: '1 1 0' }}>
         <ContainerLayout />
       </Grid>
       <Grid
         item
         container
         sx={{
-          backgroundColor: 'primary.main',
-          width: '100%',
-          bottom: 0,
+          backgroundColor: 'primary.dark',
         }}
         p={1}>
         <FooterLayout />

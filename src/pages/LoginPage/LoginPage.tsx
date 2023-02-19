@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { Box, Button, CircularProgress, Grid } from '@mui/material';
+import { Button, CircularProgress, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 import { getGitHubToken, getGithubUserData } from '../../api/githubApi';
+import octocat from '../../assets/octocat.png';
 import { GITHUB_AUTH, LOCAL_STORAGE_KEY } from '../../constants';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
+import { GitHubIcon } from '../../theme/appIcons';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -59,21 +61,42 @@ const LoginPage = () => {
 
   if (isLoading) {
     return (
-      <Box
-        sx={{
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <CircularProgress />
-      </Box>
+      <Grid container alignItems="center" justifyContent="center" height="100%">
+        <CircularProgress size={70} />
+      </Grid>
     );
   }
 
   return (
-    <Grid container direction="column" alignItems="center">
-      <Grid item pb={5} pt={5}>
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      height="100%"
+      sx={{
+        position: 'relative',
+        '&::after': {
+          content: '""',
+          background: `url(${octocat}) bottom right no-repeat`,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundSize: 400,
+          zIndex: -1,
+          opacity: 0.5,
+          '@media (min-width: 360px) and (max-width: 1600px)': {
+            backgroundSize:
+              'calc(150px + (400 - 150) * ((100vw - 360px) / (1600 - 360)))',
+          },
+          '@media screen and (max-width: 359px)': {
+            backgroundSize: 150,
+          },
+        },
+      }}>
+      <Grid item mb={5}>
         <Typography variant="h4" component="h1">
           Login via Github
         </Typography>
@@ -82,6 +105,8 @@ const LoginPage = () => {
         <Button
           size="large"
           variant="contained"
+          startIcon={<GitHubIcon />}
+          sx={{ fontSize: '1.4rem' }}
           href={`https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`}>
           {t('buttons.gitHubLogin')}
         </Button>

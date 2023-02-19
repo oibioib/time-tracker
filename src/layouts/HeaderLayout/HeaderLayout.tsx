@@ -3,16 +3,23 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as LinkRouter } from 'react-router-dom';
 
-import { Button, Grid, Snackbar, Typography } from '@mui/material';
+import { Box, CardMedia, Grid, Snackbar, Typography } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 
+import logoIco from '../../assets/logo-ico.png';
+import logoText from '../../assets/logo-text.png';
 import LangSwitch from '../../components/LangSwitch';
+import Logout from '../../components/Logout/Logout';
 import ThemeSwitch from '../../components/ThemeSwitch/ThemeSwitch';
 import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
-import { DashboardIcon, HomeIcon, LoginIcon } from '../../theme/appIcons';
+import { DashboardIcon, LoginIcon } from '../../theme/appIcons';
+import {
+  HeaderButton,
+  headerButtonTypography,
+} from '../../theme/styledComponents/HeaderButton';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -67,35 +74,47 @@ const HeaderLayout = () => {
         direction="row"
         alignItems="center"
         justifyContent="space-between">
-        <Grid item container spacing={1} sx={{ width: 'auto' }}>
+        <Grid
+          item
+          container
+          spacing={1}
+          sx={{ width: 'auto' }}
+          alignItems="center">
           <Grid item>
-            <Button
-              size="large"
-              variant="contained"
-              startIcon={<HomeIcon />}
-              component={LinkRouter}
-              to="/">
-              <Typography
-                color="white"
-                sx={{ display: { xs: 'none', sm: 'block' } }}>
-                {t('buttons.mainPage')}
-              </Typography>
-            </Button>
+            <LinkRouter to="/">
+              <Box sx={{ display: 'flex' }}>
+                <CardMedia
+                  component="img"
+                  sx={{ height: { xs: 30, md: 40 }, width: 'auto' }}
+                  image={logoIco}
+                  alt="Time Tracker"
+                />
+                <CardMedia
+                  component="img"
+                  sx={{
+                    pl: 2,
+                    pr: 3,
+                    height: { sm: 30, md: 40 },
+                    width: 'auto',
+                    display: { xs: 'none', sm: 'block' },
+                  }}
+                  image={logoText}
+                  alt="Time Tracker"
+                />
+              </Box>
+            </LinkRouter>
           </Grid>
           <Grid item>
             {isLoggedIn && (
-              <Button
-                size="large"
-                variant="contained"
-                startIcon={<DashboardIcon />}
+              <HeaderButton
+                variant="text"
                 component={LinkRouter}
                 to={ROUTES.DASHBOARD}>
-                <Typography
-                  color="white"
-                  sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <DashboardIcon />
+                <Typography sx={headerButtonTypography}>
                   {t('buttons.dashboardPage')}
                 </Typography>
-              </Button>
+              </HeaderButton>
             )}
           </Grid>
         </Grid>
@@ -107,19 +126,18 @@ const HeaderLayout = () => {
           alignItems="center"
           justifyContent="space-between">
           <Grid item>
-            {!isLoggedIn && (
-              <Button
-                size="large"
-                variant="contained"
-                startIcon={<LoginIcon />}
+            {!isLoggedIn ? (
+              <HeaderButton
+                variant="text"
                 component={LinkRouter}
                 to={ROUTES.LOGIN}>
-                <Typography
-                  color="white"
-                  sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <LoginIcon />
+                <Typography sx={headerButtonTypography}>
                   {t('buttons.loginPage')}
                 </Typography>
-              </Button>
+              </HeaderButton>
+            ) : (
+              <Logout />
             )}
           </Grid>
           <Grid item>

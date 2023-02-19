@@ -1,12 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { Box, Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import { LOCAL_STORAGE_KEY } from '../../constants';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 import { LogoutIcon } from '../../theme/appIcons';
+import {
+  HeaderButton,
+  headerButtonTypography,
+} from '../../theme/styledComponents/HeaderButton';
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -19,17 +23,10 @@ const Logout = () => {
   };
 
   return (
-    <Box mt={5} ml={2}>
-      <Button
-        size="large"
-        variant="contained"
-        startIcon={<LogoutIcon />}
-        onClick={logoutHandler}>
-        <Typography color="white" sx={{ display: { xs: 'none', sm: 'block' } }}>
-          {t('buttons.logout')}
-        </Typography>
-      </Button>
-    </Box>
+    <HeaderButton variant="text" onClick={logoutHandler}>
+      <LogoutIcon />
+      <Typography sx={headerButtonTypography}>{t('buttons.logout')}</Typography>
+    </HeaderButton>
   );
 };
 

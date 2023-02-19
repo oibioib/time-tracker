@@ -17,7 +17,16 @@ const ThemeSwitch = () => {
     localStorage.setItem(LOCAL_THEME_MOD, newMode);
   };
   return (
-    <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+    <IconButton
+      sx={{
+        ml: 1,
+        ':hover': {
+          bgcolor: 'primary.main',
+          color: 'info',
+        },
+      }}
+      onClick={toggleColorMode}
+      color="info">
       {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
     </IconButton>
   );

@@ -90,6 +90,7 @@ const TrackerView = () => {
       }
     }
   };
+
   const showMoreHandler = () => {
     setTasksShowed(tasksShowed + MORE_TASKS);
   };
@@ -180,97 +181,62 @@ const TrackerView = () => {
   }
 
   return (
-    <Grid container pt={2} sx={{ height: '100%' }}>
-      <Grid item xs={12}>
-        <Paper>
-          <Box
-            sx={{
-              justifyContent: 'space-between',
-              display: 'flex',
-            }}>
-            <Box>
-              <TextField
-                placeholder="What are you working on"
-                value={timerData.timerTitle}
-                onChange={onChangeHandler}
-                onKeyDown={onKeyDownHandler}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-              }}>
-              <ProjectList />
-
-              <Timer
-                setRefreshPage={setRefreshPage}
-                refreshPage={refreshPage}
-                serverUserId={serverUserId}
-                onClickRef={onClickRef}
-              />
-            </Box>
-          </Box>
-        </Paper>
+    <Grid container flexDirection="column">
+      <Grid item>
+        <TextField
+          placeholder="What are you working on"
+          value={timerData.timerTitle}
+          onChange={onChangeHandler}
+          onKeyDown={onKeyDownHandler}
+        />
+        <ProjectList />
+        <Timer
+          setRefreshPage={setRefreshPage}
+          refreshPage={refreshPage}
+          serverUserId={serverUserId}
+          onClickRef={onClickRef}
+        />
       </Grid>
-      <Grid item xs={12}>
-        <Box
-          mt={2}
-          sx={{
-            justifyContent: 'space-between',
-            display: 'flex',
-          }}>
-          <Box>
-            {/* <Typography variant="body2">This Week</Typography> */}
-            <CalendarStatistics />
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Box mr={1}>
-              <Typography variant="body2">
-                period total:
-                <b> {timeStringWeek}</b>
-              </Typography>
-            </Box>
-            <Box>
-              <Typography variant="body2">
-                today total:
-                <b> {timeStringDay}</b>
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
+      <Grid item>
+        {/* <Typography variant="body2">This Week</Typography> */}
+        <CalendarStatistics />
+        <Typography variant="body2">
+          period total:
+          <b> {timeStringWeek}</b>
+        </Typography>
+        <Typography variant="body2">
+          today total:
+          <b> {timeStringDay}</b>
+        </Typography>
       </Grid>
-      <Grid item xs={12}>
-        <Box my={3} sx={{ height: 5, backgroundColor: 'coral' }}>
-          {' '}
-        </Box>
+      <Grid item>
+        {tasksArr.length ? (
+          tasksArr
+            .filter((task: AddedTaskData, index: number) => index < tasksShowed)
+            .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
+              return (
+                <Grid key={id} item xs={12} my={3}>
+                  <Paper>
+                    <AddedTask
+                      taskName={taskName}
+                      taskStart={taskStart}
+                      taskTimeSec={taskTimeSec}
+                      id={id}
+                      project={project}
+                      setRefreshPage={setRefreshPage}
+                      refreshPage={refreshPage}
+                    />
+                  </Paper>
+                </Grid>
+              );
+            })
+        ) : (
+          <EmptyView />
+        )}
+        {tasksArr.length >= tasksShowed && (
+          <Button onClick={showMoreHandler}>Show more</Button>
+        )}
       </Grid>
-      {tasksArr.length ? (
-        tasksArr
-          .filter((task: AddedTaskData, index: number) => index < tasksShowed)
-          .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
-            return (
-              <Grid key={id} item xs={12} my={3}>
-                <Paper>
-                  <AddedTask
-                    taskName={taskName}
-                    taskStart={taskStart}
-                    taskTimeSec={taskTimeSec}
-                    id={id}
-                    project={project}
-                    setRefreshPage={setRefreshPage}
-                    refreshPage={refreshPage}
-                  />
-                </Paper>
-              </Grid>
-            );
-          })
-      ) : (
-        <EmptyView />
-      )}
-      {tasksArr.length >= tasksShowed && (
-        <Button onClick={showMoreHandler}>Show more</Button>
-      )}
     </Grid>
   );
 };
