@@ -19,7 +19,11 @@ import {
   CalendarStatistics,
   SelectX,
 } from '../../../../components/SelectStatistics';
-import { DURATION_OF_DAY } from '../../../../constants/appConstants';
+import {
+  DEFAULT_END_TODAY_TIMESTAMP,
+  DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+  DURATION_OF_DAY,
+} from '../../../../constants/appConstants';
 import {
   convertationToDate,
   convertationToMin,
@@ -29,6 +33,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import {
+  addTimePeriod,
   deleteDataInterval,
   deleteTotalData,
   getDataInterval,
@@ -52,10 +57,6 @@ const StatisticsView = () => {
   );
   const errorGetDataInterval = useAppSelector(
     (state) => state.statistics.getDataIntervalError
-  );
-
-  const statisticOpen = useAppSelector(
-    (state) => state.statistics.isChangeCalendar
   );
 
   const statisticsValueY = useAppSelector(
@@ -117,6 +118,17 @@ const StatisticsView = () => {
     ],
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(
+        addTimePeriod([
+          DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+          DEFAULT_END_TODAY_TIMESTAMP,
+        ])
+      );
+    };
+  }, [dispatch]);
+
   return (
     <Grid item container pt={1}>
       <Typography mb={0}>Statistics Page</Typography>
@@ -125,7 +137,7 @@ const StatisticsView = () => {
         <CalendarStatistics />
       </Grid>
 
-      {intervalTotalData.length && statisticOpen ? (
+      {intervalTotalData.length ? (
         <Grid item container>
           <Grid item xs={11} sm={12} maxHeight={400}>
             <Bar data={totalTimeData} options={options} />
@@ -141,8 +153,7 @@ const StatisticsView = () => {
           </Grid>
         </Grid>
       ) : null}
-      {(intervalTotalData.length && statisticOpen) ||
-      intervalData.length ? null : (
+      {intervalTotalData.length || intervalData.length ? null : (
         <EmptyViewStatistic />
       )}
     </Grid>
