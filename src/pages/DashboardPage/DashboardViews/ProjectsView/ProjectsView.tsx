@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Box,
@@ -37,6 +38,7 @@ const ProjectsView = () => {
     color: DEFAULT_COLOR,
     salary: '',
   });
+  const navigate = useNavigate();
   const onOpenHandler = () => {
     setIsOpen(true);
   };
@@ -140,9 +142,13 @@ const ProjectsView = () => {
                         <TableRow key={id}>
                           <TableCell>
                             <Box
+                              onClick={() => {
+                                navigate(`${id}`);
+                              }}
                               sx={{
                                 display: 'flex',
                                 alignItems: 'center',
+                                ':hover': { cursor: 'pointer' },
                               }}>
                               <CircleIcon
                                 sx={{
