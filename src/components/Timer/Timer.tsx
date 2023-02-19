@@ -148,6 +148,10 @@ const Timer = ({
     if (!isTimerOn) {
       document.title = 'Time tracker';
     } else document.title = timeString;
+
+    return () => {
+      document.title = 'Time tracker';
+    };
   }, [timeString, isTimerOn]);
 
   return (

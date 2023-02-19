@@ -3,29 +3,16 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as LinkRouter } from 'react-router-dom';
 
-import {
-  Button,
-  Grid,
-  IconButton,
-  PaletteMode,
-  Snackbar,
-  Typography,
-} from '@mui/material';
+import { Button, Grid, Snackbar, Typography } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 
 import LangSwitch from '../../components/LangSwitch';
+import ThemeSwitch from '../../components/ThemeSwitch/ThemeSwitch';
 import { LOCAL_STORAGE_KEY, ROUTES } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
-import { changeTheme } from '../../store/themeModeSlice';
-import {
-  Brightness4Icon,
-  Brightness7Icon,
-  DashboardIcon,
-  HomeIcon,
-  LoginIcon,
-} from '../../theme/appIcons';
+import { DashboardIcon, HomeIcon, LoginIcon } from '../../theme/appIcons';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -35,7 +22,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const HeaderLayout = () => {
-  const [mode, setMode] = useState<PaletteMode>('dark');
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const gitHubID = useAppSelector((state) => state.gitHubFetch.id);
@@ -51,13 +37,6 @@ const HeaderLayout = () => {
       setOpen(true);
     }
   }, [errorMessage]);
-
-  const toggleColorMode = () => {
-    setMode((prevMode: PaletteMode) =>
-      prevMode === 'light' ? 'dark' : 'light'
-    );
-    dispatch(changeTheme(mode));
-  };
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -144,12 +123,7 @@ const HeaderLayout = () => {
             )}
           </Grid>
           <Grid item>
-            <IconButton
-              sx={{ ml: 1 }}
-              onClick={toggleColorMode}
-              color="inherit">
-              {mode === 'light' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
+            <ThemeSwitch />
           </Grid>
           <Grid item alignItems="center">
             <LangSwitch />
