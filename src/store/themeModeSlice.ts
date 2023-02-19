@@ -1,21 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
 
-import { PaletteMode } from '@mui/material';
+import { THEME_MODE } from '../constants/appConstants';
 
-export interface IThemeMode {
-  themeColor: PaletteMode;
-}
-
-const initialState: IThemeMode = {
-  themeColor: 'light',
+const initialState = {
+  themeColor: THEME_MODE.LIGHT,
 };
 
 export const themeModeSlice = createSlice({
   name: 'themeMode',
   initialState,
   reducers: {
-    changeTheme(state, action: PayloadAction<PaletteMode>) {
+    changeTheme(state, action) {
       state.themeColor = action.payload;
     },
   },
