@@ -3,17 +3,32 @@ import { TypographyOptions } from '@mui/material/styles/createTypography';
 
 import { useAppSelector } from '../hooks/hooks';
 
+declare module '@mui/material/styles/createPalette' {
+  interface Palette {
+    sidebar: { main: string };
+  }
+
+  interface PaletteOptions {
+    sidebar?: { main: string };
+  }
+}
+
+export const MAX_CONTENT_WIDTH = 1400;
+
 export const lightTheme: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#765098',
+      main: '#5b5f97',
     },
     secondary: {
-      main: '#f50057',
+      main: '#ffc145',
     },
     info: {
-      main: '#5e407a',
+      main: '#ffffff',
+    },
+    sidebar: {
+      main: '#7b7c9c',
     },
   },
 };
@@ -22,20 +37,30 @@ export const darkTheme: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
-      main: '#765098',
+      main: '#5b5f97',
     },
     secondary: {
-      main: '#f50057',
+      main: '#fffb6c',
+    },
+    text: {
+      primary: '#E6E6E6',
+    },
+    background: {
+      default: '#303035',
+      paper: '#424248',
     },
     info: {
-      main: '#3e2852',
+      main: '#ececec',
+    },
+    sidebar: {
+      main: '#27272b',
     },
   },
 };
 
 const typography: TypographyOptions = {
   allVariants: {
-    fontFamily: '"Inter", "Roboto", sans-serif',
+    fontFamily: '"Noto Sans", "Roboto", "Inter", sans-serif',
     letterSpacing: 'normal',
   },
   h1: {
@@ -45,7 +70,6 @@ const typography: TypographyOptions = {
     fontWeight: 600,
   },
   h3: {
-    fontSize: 22,
     fontWeight: 600,
   },
   h4: {
@@ -67,6 +91,13 @@ const getThemeTokens = (mode: PaletteMode) => ({
   typography,
   shape: {
     borderRadius: 5,
+  },
+  components: {
+    MuiPaper: {
+      defaultProps: {
+        elevation: 7,
+      },
+    },
   },
 });
 

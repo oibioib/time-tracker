@@ -1,0 +1,139 @@
+$size: 250px;
+$color-clock-bg: #ffffff;
+$color-clock-border: #5b5f97;
+$color-clock-shadow: #313453;
+$color-points: #5b5f97;
+$color-arrow-seconds: #ff6303;
+
+.clock {
+  position: relative;
+  height: $size;
+  width: $size;
+  background: $color-clock-bg;
+  box-sizing: border-box;
+  border-radius: 100%;
+  border: 10px solid $color-clock-border;
+  box-shadow: 15px 15px 20px 0px $color-clock-shadow;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+
+  & *,
+  & *::before {
+    position: absolute;
+  }
+
+  &__element {
+    background: $color-points;
+  }
+
+  &__top {
+    width: 5px;
+    height: 8px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    border-radius: 0 0 2px 2px;
+  }
+
+  &__right {
+    width: 8px;
+    height: 5px;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto 0;
+    border-radius: 2px 0 0 2px;
+  }
+
+  &__bottom {
+    width: 5px;
+    height: 8px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    border-radius: 2px 2px 0 0;
+  }
+
+  &__left {
+    width: 8px;
+    height: 5px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto 0;
+    border-radius: 0 2px 2px 0;
+  }
+
+  &__center {
+    height: 14px;
+    width: 14px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 100%;
+    z-index: 1;
+  }
+
+  &__hour {
+    width: 3px;
+    height: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    animation: arrow-rotate 86400s infinite linear;
+
+    &::before {
+      content: '';
+      background: $color-points;
+      height: 83px;
+      width: 3px;
+      top: 30px;
+    }
+  }
+
+  &__minute {
+    width: 1px;
+    height: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    animation: arrow-rotate 3600s infinite linear;
+
+    &::before {
+      content: '';
+      background: $color-points;
+      height: 62px;
+      width: 1px;
+      top: 50px;
+    }
+  }
+
+  &__second {
+    width: 2px;
+    height: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    animation: arrow-rotate 60s infinite linear;
+
+    &::before {
+      content: '';
+      background: $color-arrow-seconds;
+      height: 67px;
+      width: 2px;
+      top: 45px;
+    }
+  }
+}
+
+@keyframes arrow-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

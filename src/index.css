@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Inter', 'Roboto', sans-serif;
+  font-family: 'Noto Sans', 'Roboto', 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

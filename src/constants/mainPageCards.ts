@@ -8,10 +8,6 @@ const MAIN_PAGE_CARDS = [
     image: './images/project.jpg',
   },
   {
-    title: 'clients',
-    image: './images/clients.png',
-  },
-  {
     title: 'statistics',
     image: './images/grap.jpg',
   },

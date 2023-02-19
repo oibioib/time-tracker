@@ -1,6 +1,5 @@
 import {
   AccessTimeIcon,
-  AccountBoxIcon,
   BarChartIcon,
   FolderIcon,
   SettingsIcon,
@@ -17,11 +16,6 @@ const DASHBOARD_NAVIGATION = [
     icon: <FolderIcon />,
     label: 'projectsView',
     route: ROUTES.PROJECTS_VIEW,
-  },
-  {
-    icon: <AccountBoxIcon />,
-    label: 'clientsView',
-    route: ROUTES.CLIENTS_VIEW,
   },
   {
     icon: <BarChartIcon />,
