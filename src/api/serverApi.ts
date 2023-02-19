@@ -1,4 +1,3 @@
-import { HOURS_IN_MILISEC } from '../constants/appConstants';
 import { BASE_URL, SERVER_ROUTES } from '../constants/serverConstants';
 
 export const updateTimer = async (
@@ -52,14 +51,13 @@ export const createTimer = async (
   return data;
 };
 
-export const getUserTimers = async (serverUserId: string) => {
-  const today = new Date();
-  const timeStampStart =
-    Date.now() -
-    (today.getUTCDay() - 1) * 24 * HOURS_IN_MILISEC -
-    today.getHours() * HOURS_IN_MILISEC;
+export const getUserTimers = async (
+  serverUserId: string,
+  timeStart: number,
+  timeEnd: number
+) => {
   const response = await fetch(
-    `${BASE_URL}/${SERVER_ROUTES.USER_TIMERS}/${serverUserId}?from=${timeStampStart}`
+    `${BASE_URL}/${SERVER_ROUTES.USER_TIMERS}/${serverUserId}?from=${timeStart}&to=${timeEnd}`
   );
   if (!response.ok) {
     throw new Error('Could not get server User id');
@@ -180,6 +178,21 @@ export const deleteProject = async (projectId: string) => {
     throw new Error('Failed to Delete project');
   }
   return response;
+};
+
+export const getProjectTimers = async (
+  projectId: string,
+  starttime: number,
+  endTime: number
+) => {
+  const response = await fetch(
+    `${BASE_URL}/${SERVER_ROUTES.PROJECT_TIMERS}/${projectId}?from=${starttime}&to=${endTime}`
+  );
+  if (!response.ok) {
+    throw new Error('Failed to get timers');
+  }
+  const data = await response.json();
+  return data;
 };
 
 export const updateServerUserId = async (userId: string, userName: string) => {

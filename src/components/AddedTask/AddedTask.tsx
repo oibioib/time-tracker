@@ -90,24 +90,24 @@ const AddedTask = ({
         onClick={onProjectChangeHandler}
         sx={{ ':hover': { cursor: 'pointer' } }}>
         {project?.id ? (
-          <Typography variant="body2">
-            <Box
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+            Project:
+            <CircleIcon
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-              }}>
-              Project:
-              <CircleIcon
-                sx={{
-                  color: `${project?.color}`,
-                  width: '15px',
-                }}
-              />
-              <Box>
+                color: `${project?.color}`,
+                width: '15px',
+              }}
+            />
+            <Box>
+              <Typography variant="body2">
                 <b>{project?.title}</b>
-              </Box>
+              </Typography>
             </Box>
-          </Typography>
+          </Box>
         ) : (
           <FolderIcon style={{ color: 'gray' }} />
         )}
