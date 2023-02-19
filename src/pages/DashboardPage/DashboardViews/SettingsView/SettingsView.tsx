@@ -61,7 +61,11 @@ const SettingsView = () => {
       <Typography align="center" mb={2} mt={2} variant="h3" mx="auto">
         {t('dashboard.settings')}
       </Typography>
-      <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+      <Snackbar
+        open={open}
+        autoHideDuration={1000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           {t('settings.successMessage')}
         </Alert>
