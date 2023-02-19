@@ -4,7 +4,10 @@ import {
   getUserTimersInterval,
   getUserTotalTimeInterval,
 } from '../api/statisticsApi';
-import { DURATION_OF_DAY } from '../constants/appConstants';
+import {
+  DEFAULT_END_TODAY_TIMESTAMP,
+  DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+} from '../constants/appConstants';
 
 export interface timerData {
   id: string;
@@ -40,7 +43,10 @@ const initialState: statisticsState = {
   getDataIntervalError: '',
   getTimersTimeStatus: '',
   getTimersTimeError: '',
-  timePeriod: [new Date().getTime(), new Date().getTime() + DURATION_OF_DAY],
+  timePeriod: [
+    DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+    DEFAULT_END_TODAY_TIMESTAMP,
+  ],
   dataTotalTime: [],
 };
 
