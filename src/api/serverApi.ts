@@ -194,3 +194,20 @@ export const getProjectTimers = async (
   const data = await response.json();
   return data;
 };
+
+export const updateServerUserId = async (userId: string, userName: string) => {
+  const response = await fetch(`${BASE_URL}/${SERVER_ROUTES.USERS}/${userId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      name: userName,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch new name');
+  }
+  const data = await response.json();
+  return data;
+};
