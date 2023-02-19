@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 
-import AboutUs from '../../components/AboutUs';
+// import AboutUs from '../../components/AboutUs';
 import MainClocks from '../../components/MainClocks/MainClocks';
 import { MAIN_PAGE_CARDS } from '../../constants';
 import { MAX_CONTENT_WIDTH } from '../../theme/appTheme';
