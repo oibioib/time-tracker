@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 
 import { createTimer, updateTimer } from '../../api/serverApi';
+import { DEFAULT_TITLE } from '../../constants/appConstants';
 import { TIMER_ACTIVE } from '../../constants/serverConstants';
 import timeStringView from '../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
@@ -146,11 +147,11 @@ const Timer = ({
 
   useEffect(() => {
     if (!isTimerOn) {
-      document.title = 'Time tracker';
+      document.title = DEFAULT_TITLE;
     } else document.title = timeString;
 
     return () => {
-      document.title = 'Time tracker';
+      document.title = DEFAULT_TITLE;
     };
   }, [timeString, isTimerOn]);
 

@@ -13,6 +13,7 @@ export const TASKS_SHOWED_DEFAULT = 5;
 export const MORE_TASKS = 2;
 export const DURATION_OF_DAY = 86399000;
 export const DEFAULT_COLOR = '#ffffff';
+export const DEFAULT_TITLE = 'Time Tracker';
 export enum THEME_MODE {
   LIGHT = 'light',
   DARK = 'dark',

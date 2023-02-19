@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Grid, Typography } from '@mui/material';
@@ -6,9 +6,12 @@ import { Button, Grid, Typography } from '@mui/material';
 import { LOCAL_LANGUAGE } from '../../constants/storageConstants';
 
 const LangSwitch = () => {
-  const [refreshPage, setRefreshPage] = useState(false);
   const { i18n } = useTranslation();
   const language = localStorage.getItem(LOCAL_LANGUAGE) || 'en';
+
+  useEffect(() => {
+    i18n.changeLanguage(language === 'ru' ? 'ru' : 'en');
+  }, [i18n, language]);
 
   const changeLanguage = () => {
     if (language === 'en') {
@@ -18,7 +21,6 @@ const LangSwitch = () => {
       i18n.changeLanguage('en');
       localStorage.setItem(LOCAL_LANGUAGE, 'en');
     }
-    setRefreshPage(!refreshPage);
   };
 
   return (
