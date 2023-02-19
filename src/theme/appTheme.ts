@@ -3,6 +3,16 @@ import { TypographyOptions } from '@mui/material/styles/createTypography';
 
 import { useAppSelector } from '../hooks/hooks';
 
+declare module '@mui/material/styles/createPalette' {
+  interface Palette {
+    sidebar: { main: string };
+  }
+
+  interface PaletteOptions {
+    sidebar?: { main: string };
+  }
+}
+
 export const MAX_CONTENT_WIDTH = 1400;
 
 export const lightTheme: ThemeOptions = {
@@ -16,6 +26,9 @@ export const lightTheme: ThemeOptions = {
     },
     info: {
       main: '#ffffff',
+    },
+    sidebar: {
+      main: '#7b7c9c',
     },
   },
 };
@@ -37,14 +50,17 @@ export const darkTheme: ThemeOptions = {
       paper: '#424248',
     },
     info: {
-      main: '#ffffff',
+      main: '#ececec',
+    },
+    sidebar: {
+      main: '#27272b',
     },
   },
 };
 
 const typography: TypographyOptions = {
   allVariants: {
-    fontFamily: '"Inter", "Roboto", sans-serif',
+    fontFamily: '"Noto Sans", "Roboto", "Inter", sans-serif',
     letterSpacing: 'normal',
   },
   h1: {
@@ -75,6 +91,13 @@ const getThemeTokens = (mode: PaletteMode) => ({
   typography,
   shape: {
     borderRadius: 5,
+  },
+  components: {
+    MuiPaper: {
+      defaultProps: {
+        elevation: 7,
+      },
+    },
   },
 });
 
