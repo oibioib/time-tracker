@@ -9,12 +9,8 @@ import { changeTheme } from '../../store/themeModeSlice';
 import { Brightness4Icon, Brightness7Icon } from '../../theme/appIcons';
 
 const ThemeSwitch = () => {
-  const storageMode = localStorage.getItem(LOCAL_THEME_MOD) || THEME_MODE.LIGHT;
   const mode = useAppSelector((state) => state.themeMode.themeColor);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(changeTheme(storageMode));
-  }, [dispatch, storageMode]);
 
   const toggleColorMode = () => {
     const newMode =
