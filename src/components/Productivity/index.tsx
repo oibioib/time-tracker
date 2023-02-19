@@ -16,7 +16,6 @@ const ProductivityBox = () => {
     (state) => state.statistics.timePeriod
   );
   const [rezStartDate, rezEndDate] = statisticsValueY;
-
   const sumTotal = intervalTotalData.reduce(
     (accum, val) => accum + Number(val.totalTime),
     0
@@ -25,7 +24,7 @@ const ProductivityBox = () => {
   const percent = ((sumTotal * 100) / intervalTime).toFixed(1);
   const [allTime, worktime] = [
     100 - Number(percent),
-    ((sumTotal * 100) / intervalTime).toFixed(1),
+    ((sumTotal * 100) / intervalTime).toFixed(3),
   ];
   const label = ['', 'workTime,%'];
 
@@ -40,7 +39,7 @@ const ProductivityBox = () => {
   };
 
   return (
-    <Box>
+    <Box mt={2}>
       <Paper elevation={3}>
         <Grid container mx="auto" my={2} justifyContent="space-between">
           <Grid item>
