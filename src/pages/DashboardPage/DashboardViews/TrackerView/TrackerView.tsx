@@ -6,6 +6,7 @@ import { getActiveTimer, getUserTimers } from '../../../../api/serverApi';
 import AddedTask from '../../../../components/AddedTask/AddedTask';
 import EmptyView from '../../../../components/EmptyView/EmptyView';
 import ProjectList from '../../../../components/ProjectList/ProjectList';
+import { CalendarStatistics } from '../../../../components/SelectStatistics';
 import Timer from '../../../../components/Timer/Timer';
 import {
   HOURS_IN_MILISEC,
@@ -15,27 +16,19 @@ import {
 import timeStringView from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
+import { addTimePeriod } from '../../../../store/statisticSlice';
 import {
   setIsTimerOn,
   setProjectToTimer,
   setTimerData,
 } from '../../../../store/timeTrackerSlice';
-import { ProjectData } from '../../../../types/trackerInterfaces';
+import { ProjectData, TimerData } from '../../../../types/trackerInterfaces';
 
 interface AddedTaskData {
   taskName: string;
   taskStart: string;
   taskTimeSec: number;
   id: string;
-  project: ProjectData;
-}
-
-interface TimerData {
-  startTime: number;
-  totalTime: number;
-  title: string;
-  id: string;
-  isActive: boolean;
   project: ProjectData;
 }
 
@@ -47,6 +40,8 @@ const TrackerView = () => {
   const onClickRef = useRef<HTMLButtonElement>(null);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
   const timerData = useAppSelector((state) => state.timeTracker);
+  const { timePeriod } = useAppSelector((state) => state.statistics);
+  const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
@@ -101,7 +96,7 @@ const TrackerView = () => {
     if (serverUserId) {
       (async () => {
         try {
-          const data = await getUserTimers(serverUserId);
+          const data = await getUserTimers(serverUserId, startDate, endDate);
           const dataArr: AddedTaskData[] = data
             .filter(({ isActive }: TimerData) => !isActive)
             .map(({ startTime, id, title, totalTime, project }: TimerData) => {
@@ -129,7 +124,7 @@ const TrackerView = () => {
         }
       })();
     }
-  }, [refreshPage, serverUserId, dispatch, tasksShowed]);
+  }, [refreshPage, serverUserId, dispatch, tasksShowed, startDate, endDate]);
 
   useEffect(() => {
     if (serverUserId && !timerData.previousTimeStamp) {
@@ -146,13 +141,15 @@ const TrackerView = () => {
               })
             );
             dispatch(setIsTimerOn(true));
-            dispatch(
-              setProjectToTimer({
-                projectId: data[0].project.id,
-                projectTitle: data[0].project.title,
-                projectColor: data[0].project.color,
-              })
-            );
+            if (data[0].project) {
+              dispatch(
+                setProjectToTimer({
+                  projectId: data[0].project.id,
+                  projectTitle: data[0].project.title,
+                  projectColor: data[0].project.color,
+                })
+              );
+            }
           }
         } catch (error) {
           dispatch(
@@ -164,6 +161,14 @@ const TrackerView = () => {
       })();
     }
   }, [serverUserId, dispatch, timerData.previousTimeStamp]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(
+        addTimePeriod([Date.now() - HOURS_IN_MILISEC * 24 * 7, Date.now()])
+      );
+    };
+  }, [dispatch]);
 
   if (!isTimersData) {
     return <Box> </Box>;
@@ -211,12 +216,13 @@ const TrackerView = () => {
             display: 'flex',
           }}>
           <Box>
-            <Typography variant="body2">This Week</Typography>
+            {/* <Typography variant="body2">This Week</Typography> */}
+            <CalendarStatistics />
           </Box>
           <Box sx={{ display: 'flex' }}>
             <Box mr={1}>
               <Typography variant="body2">
-                week total:
+                period total:
                 <b> {timeStringWeek}</b>
               </Typography>
             </Box>
@@ -258,7 +264,7 @@ const TrackerView = () => {
         <EmptyView />
       )}
       {tasksArr.length >= tasksShowed && (
-        <Button onClick={showMoreHandler}>Show {MORE_TASKS} more</Button>
+        <Button onClick={showMoreHandler}>Show more</Button>
       )}
     </Grid>
   );
