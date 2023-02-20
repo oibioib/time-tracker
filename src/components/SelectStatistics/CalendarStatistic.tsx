@@ -1,5 +1,7 @@
+import ru from 'date-fns/locale/ru';
 import { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import { useTranslation } from 'react-i18next';
 
 import { Grid } from '@mui/material';
 
@@ -10,18 +12,22 @@ import {
   DEFAULT_STARTDAY_TODAY,
   DURATION_OF_DAY,
 } from '../../constants/appConstants';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { addTimePeriod } from '../../store/statisticSlice';
+import './CalendarStatistic.scss';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+registerLocale('ru', ru);
+
 const CalendarStatistics = () => {
   const dispatch = useAppDispatch();
+  const { i18n } = useTranslation();
+  const themeMod = useAppSelector((state) => state.themeMode.themeColor);
   const [startDate, setStartDate] = useState<Date | null>(
     DEFAULT_STARTDAY_PREV_WEEK
   );
   const [endDate, setEndDate] = useState<Date | null>(DEFAULT_STARTDAY_TODAY);
-
   const [rezStartDate, setRezStartDate] = useState<number>(
     DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP
   );
@@ -57,6 +63,8 @@ const CalendarStatistics = () => {
         maxDate={new Date()}
         dateFormat="dd-MM-yyyy"
         onCalendarClose={handleCalendarClose}
+        className={themeMod === 'dark' ? 'dark-mode' : undefined}
+        locale={i18n.language === 'en' ? undefined : 'ru'}
       />
     </Grid>
   );

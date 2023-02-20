@@ -40,6 +40,7 @@ const TrackerView = () => {
   const [tasksArr, setTasksArr] = useState<AddedTaskData[]>([]);
   const [refreshPage, setRefreshPage] = useState(true);
   const [isTimersData, setIsTimersData] = useState(false);
+  const [errMessage, setErrMessage] = useState('');
   const [tasksShowed, setTasksShowed] = useState(TASKS_SHOWED_DEFAULT);
   const onClickRef = useRef<HTMLButtonElement>(null);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
@@ -194,10 +195,17 @@ const TrackerView = () => {
       <Grid container flexDirection="column">
         <Grid item>
           <TextField
+            required
             placeholder="What are you working on"
             value={timerData.timerTitle}
             onChange={onChangeHandler}
             onKeyDown={onKeyDownHandler}
+            error={Boolean(errMessage)}
+            label={errMessage ? 'Error' : 'Required'}
+            helperText={errMessage}
+            onFocus={() => {
+              setErrMessage('');
+            }}
           />
           <ProjectList />
           <Timer
@@ -205,10 +213,10 @@ const TrackerView = () => {
             refreshPage={refreshPage}
             serverUserId={serverUserId}
             onClickRef={onClickRef}
+            setErrMessage={setErrMessage}
           />
         </Grid>
         <Grid item>
-          {/* <Typography variant="body2">This Week</Typography> */}
           <CalendarStatistics />
           <Typography variant="body2">
             period total:

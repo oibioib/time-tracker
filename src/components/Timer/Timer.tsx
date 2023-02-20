@@ -21,6 +21,7 @@ interface TimerProps {
   refreshPage: boolean;
   serverUserId: string;
   onClickRef: React.RefObject<HTMLButtonElement>;
+  setErrMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Timer = ({
@@ -28,6 +29,7 @@ const Timer = ({
   refreshPage,
   serverUserId,
   onClickRef,
+  setErrMessage,
 }: TimerProps) => {
   const timerData = useAppSelector((state) => state.timeTracker);
   const dispatch = useAppDispatch();
@@ -93,6 +95,10 @@ const Timer = ({
   }, [timerTitle, totalTime, isTimerOn, timerId, sec, dispatch, projectId]);
 
   const onClickHandler = async () => {
+    if (!timerTitle) {
+      setErrMessage('Title can not be empty');
+      return;
+    }
     if (!isTimerOn && sec === 0 && min === 0 && hours === 0) {
       try {
         const data = await createTimer(timerTitle, serverUserId, projectId);
