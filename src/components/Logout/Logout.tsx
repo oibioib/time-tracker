@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +13,12 @@ import {
   headerButtonTypography,
 } from '../../theme/styledComponents/HeaderButton';
 
-const Logout = () => {
+interface LogoutProps {
+  setRefreshPage: React.Dispatch<React.SetStateAction<boolean>>;
+  refreshPage: boolean;
+}
+
+const Logout = ({ setRefreshPage, refreshPage }: LogoutProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -20,6 +26,7 @@ const Logout = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
     dispatch(setGitHubUserData({ login: 'login', id: 0, avatar_url: 'url' }));
     navigate('/');
+    setRefreshPage(!refreshPage);
   };
 
   return (
