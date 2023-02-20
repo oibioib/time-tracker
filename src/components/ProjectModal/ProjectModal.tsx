@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { Box, Button, Paper, TextField } from '@mui/material';
 
 import { createUserProject, updateUserProject } from '../../api/serverApi';
+import { DEFAULT_COLOR } from '../../constants/appConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
 import { ProjectData } from '../../types/trackerInterfaces';
@@ -71,7 +72,7 @@ const ProjectModal = ({
     }
   };
 
-  const helperFunction = async (func: Promise<void>) => {
+  const helperFunction = async (func: () => Promise<void>) => {
     if (
       projectsArr
         .filter(
@@ -86,23 +87,27 @@ const ProjectModal = ({
       setErrMessage('The name can not be empty');
       return;
     }
-    try {
-      await func;
-    } catch (error) {
-      dispatch(setErrorMessage('Failed to create Project'));
+    if (!errMessage) {
+      try {
+        await func();
+      } catch (error) {
+        dispatch(setErrorMessage('Failed to create Project'));
+      }
     }
     setRefreshPage(!refreshPage);
     setDefaultProjectParam({
       id: '',
       title: '',
-      color: '',
+      color: DEFAULT_COLOR,
       salary: '',
     });
     setIsOpen(false);
   };
 
   const onClickHandler = () => {
-    helperFunction(createUserProject(serverUserId, projectName, salary, color));
+    helperFunction(async () => {
+      await createUserProject(serverUserId, projectName, salary, color);
+    });
   };
 
   const onCloseHandler = () => {
@@ -124,9 +129,14 @@ const ProjectModal = ({
   };
 
   const onUpdateHandler = () => {
-    helperFunction(
-      updateUserProject(defaultProjectParam.id, projectName, salary, color)
-    );
+    helperFunction(async () => {
+      await updateUserProject(
+        defaultProjectParam.id,
+        projectName,
+        salary,
+        color
+      );
+    });
   };
 
   return (
