@@ -4,7 +4,10 @@ import {
   getUserTimersInterval,
   getUserTotalTimeInterval,
 } from '../api/statisticsApi';
-import { DURATION_OF_DAY } from '../constants/appConstants';
+import {
+  DEFAULT_END_TODAY_TIMESTAMP,
+  DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+} from '../constants/appConstants';
 
 export interface timerData {
   id: string;
@@ -22,8 +25,6 @@ export interface timersDataTotal {
 
 export interface statisticsState {
   timePeriod: [number, number];
-  valueX: string;
-  isChangeCalendar: boolean;
   getDataIntervalStatus: string;
   getDataIntervalError: string;
   getTimersTimeStatus: string;
@@ -34,13 +35,14 @@ export interface statisticsState {
 
 const initialState: statisticsState = {
   dataInterval: [],
-  isChangeCalendar: false,
-  valueX: 'tasks',
   getDataIntervalStatus: '',
   getDataIntervalError: '',
   getTimersTimeStatus: '',
   getTimersTimeError: '',
-  timePeriod: [new Date().getTime(), new Date().getTime() + DURATION_OF_DAY],
+  timePeriod: [
+    DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+    DEFAULT_END_TODAY_TIMESTAMP,
+  ],
   dataTotalTime: [],
 };
 
@@ -60,18 +62,6 @@ export const statisticsSlice = createSlice({
   reducers: {
     addTimePeriod: (state, action: PayloadAction<[number, number]>) => {
       state.timePeriod = action.payload;
-    },
-    addValueX: (state, action: PayloadAction<string>) => {
-      state.valueX = action.payload;
-    },
-    changeCalendar: (state, action: PayloadAction<boolean>) => {
-      state.isChangeCalendar = action.payload;
-    },
-    deleteTotalData: (state) => {
-      state.dataTotalTime = [];
-    },
-    deleteDataInterval: (state) => {
-      state.dataInterval = [];
     },
   },
   extraReducers: (builder) => {
@@ -110,12 +100,6 @@ export const statisticsSlice = createSlice({
   },
 });
 
-export const {
-  changeCalendar,
-  addTimePeriod,
-  addValueX,
-  deleteTotalData,
-  deleteDataInterval,
-} = statisticsSlice.actions;
+export const { addTimePeriod } = statisticsSlice.actions;
 
 export default statisticsSlice.reducer;
