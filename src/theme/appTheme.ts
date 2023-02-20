@@ -7,11 +7,13 @@ declare module '@mui/material/styles/createPalette' {
   interface Palette {
     sidebar: { main: string };
     third: { main: string };
+    accent: { main: string };
   }
 
   interface PaletteOptions {
     sidebar?: { main: string };
     third?: { main: string };
+    accent?: { main: string };
   }
 }
 
@@ -32,6 +34,9 @@ export const lightTheme: ThemeOptions = {
     },
     third: {
       main: '#5b5f97',
+    },
+    accent: {
+      main: '#ff7f50',
     },
   },
 };
@@ -60,6 +65,9 @@ export const darkTheme: ThemeOptions = {
     },
     third: {
       main: '#ececec',
+    },
+    accent: {
+      main: '#ff7f50',
     },
   },
 };
