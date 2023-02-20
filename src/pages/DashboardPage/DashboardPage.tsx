@@ -95,17 +95,19 @@ const DashboardPage = () => {
 
   return (
     <Grid container wrap="nowrap" sx={{ height: '100%' }}>
-      <Grid item mr={2}>
+      <Grid item>
         <Box
           sx={{
-            width: 200,
+            width: { xs: 'min-content', lg: 220 },
             height: '100%',
-            bgcolor: 'sidebar.main',
+            bgcolor: 'primary.main',
           }}>
           <DashboardSidebar />
         </Box>
       </Grid>
-      <Outlet />
+      <Grid item p={{ xs: 1, sm: 2 }} width="100%">
+        <Outlet />
+      </Grid>
     </Grid>
   );
 };

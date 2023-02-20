@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -13,6 +14,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 
 import { deleteProject, getUserProjects } from '../../../../api/serverApi';
@@ -25,6 +27,7 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import { setProjectArr } from '../../../../store/projectSlice';
 import { CircleIcon } from '../../../../theme/appIcons';
+import { mainTitleTypography } from '../../../../theme/elementsStyles';
 
 const ProjectsView = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +42,8 @@ const ProjectsView = () => {
     salary: '',
   });
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const onOpenHandler = () => {
     setIsOpen(true);
   };
@@ -99,7 +104,103 @@ const ProjectsView = () => {
           />
         </div>
       </Modal>
-      <Grid container columns={4} sx={{ height: '100%' }}>
+
+      <Grid container direction="column" gap={2}>
+        <Typography component="h1" sx={mainTitleTypography}>
+          {t(`dashboard.projectsView`)}
+        </Typography>
+        <Grid item container justifyContent="center" mb={4}>
+          <Button
+            onClick={onOpenHandler}
+            variant="contained"
+            sx={{ fontSize: '1.4rem' }}>
+            + Project
+          </Button>
+        </Grid>
+        <Grid item>
+          {projectsArr.length ? (
+            <Grid item xs={12}>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        <b>Name</b>
+                      </TableCell>
+                      <TableCell>
+                        <b>Time (Hours)</b>
+                      </TableCell>
+                      <TableCell>
+                        <b>$/hour</b>
+                      </TableCell>
+                      <TableCell>
+                        <b>Options</b>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {projectsArr.map(
+                      ({ id, title, totalTime, color, salary }) => {
+                        return (
+                          <TableRow key={id}>
+                            <TableCell>
+                              <Box
+                                onClick={() => {
+                                  navigate(`${id}`);
+                                }}
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  ':hover': { cursor: 'pointer' },
+                                }}>
+                                <CircleIcon
+                                  sx={{
+                                    color: { color },
+                                    width: '15px',
+                                  }}
+                                />
+                                <Box>{title}</Box>
+                              </Box>
+                            </TableCell>
+                            <TableCell>
+                              {Math.floor(totalTime / HOURS_IN_MILISEC) ||
+                                '< 0'}
+                            </TableCell>
+                            <TableCell>{salary}</TableCell>
+                            <TableCell>
+                              <Box
+                                color="coral"
+                                id={id}
+                                onClick={onClickHandler}
+                                sx={{ ':hover': { cursor: 'pointer' } }}
+                                mb={1}>
+                                del
+                              </Box>
+                              <Box
+                                data-id={id}
+                                data-title={title}
+                                data-color={color}
+                                data-salary={salary}
+                                onClick={onChangeHandler}
+                                sx={{ ':hover': { cursor: 'pointer' } }}>
+                                change
+                              </Box>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      }
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+          ) : (
+            ''
+          )}
+        </Grid>
+      </Grid>
+
+      {/* <Grid container columns={4} sx={{ height: '100%' }}>
         <Grid item xs={12} my={2}>
           <Paper>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -193,7 +294,7 @@ const ProjectsView = () => {
         ) : (
           ''
         )}
-      </Grid>
+      </Grid> */}
     </>
   );
 };

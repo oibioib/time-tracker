@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { useTranslation } from 'react-i18next';
 
 import { Grid, Typography } from '@mui/material';
 
@@ -34,6 +35,7 @@ import {
   getDataInterval,
   getTimersTime,
 } from '../../../../store/statisticSlice';
+import { mainTitleTypography } from '../../../../theme/elementsStyles';
 
 ChartJS.register(
   CategoryScale,
@@ -46,6 +48,7 @@ ChartJS.register(
 );
 
 const StatisticsView = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const errorGetTimersTime = useAppSelector(
     (state) => state.statistics.getTimersTimeError
@@ -118,34 +121,42 @@ const StatisticsView = () => {
   };
 
   return (
-    <Grid item container pt={1}>
-      <Typography mb={0}>Statistics Page</Typography>
-      <Grid item container justifyContent="space-around">
-        <SelectX />
-        <CalendarStatistics />
+    <>
+      <Grid container direction="column" gap={2}>
+        <Typography component="h1" sx={mainTitleTypography}>
+          {t(`dashboard.statistics`)}
+        </Typography>
       </Grid>
 
-      {intervalTotalData.length && statisticOpen ? (
-        <Grid item container>
-          <Grid item xs={11} sm={12} maxHeight={400}>
-            <Bar data={totalTimeData} options={options} />
-          </Grid>
-          <ProductivityBox />
+      <Grid item container pt={1}>
+        <Typography mb={0}>Statistics Page</Typography>
+        <Grid item container justifyContent="space-around">
+          <SelectX />
+          <CalendarStatistics />
         </Grid>
-      ) : null}
 
-      {intervalData.length ? (
-        <Grid item container>
-          <Grid item xs={11} sm={12} maxHeight={400}>
-            <Bar data={selectedData} options={options} />
+        {intervalTotalData.length && statisticOpen ? (
+          <Grid item container>
+            <Grid item xs={11} sm={12} maxHeight={400}>
+              <Bar data={totalTimeData} options={options} />
+            </Grid>
+            <ProductivityBox />
           </Grid>
-        </Grid>
-      ) : null}
-      {(intervalTotalData.length && statisticOpen) ||
-      intervalData.length ? null : (
-        <EmptyViewStatistic />
-      )}
-    </Grid>
+        ) : null}
+
+        {intervalData.length ? (
+          <Grid item container>
+            <Grid item xs={11} sm={12} maxHeight={400}>
+              <Bar data={selectedData} options={options} />
+            </Grid>
+          </Grid>
+        ) : null}
+        {(intervalTotalData.length && statisticOpen) ||
+        intervalData.length ? null : (
+          <EmptyViewStatistic />
+        )}
+      </Grid>
+    </>
   );
 };
 
