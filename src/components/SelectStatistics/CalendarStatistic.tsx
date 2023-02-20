@@ -17,7 +17,6 @@ registerLocale('ru', ru);
 const CalendarStatistics = () => {
   const dispatch = useAppDispatch();
   const { i18n } = useTranslation();
-  console.log(i18n.language);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
