@@ -14,9 +14,7 @@ import {
 } from '../../constants/appConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { addTimePeriod } from '../../store/statisticSlice';
-import './CalendarStatistic.scss';
-
-import 'react-datepicker/dist/react-datepicker.css';
+import '../../theme/react-datepicker/datepicker.scss';
 
 registerLocale('ru', ru);
 
@@ -65,9 +63,10 @@ const CalendarStatistics = () => {
         onCalendarClose={handleCalendarClose}
         className={
           themeMod === 'dark'
-            ? 'input-element input-dark'
-            : 'input-element input-light'
+            ? 'react-datepicker-input-element react-datepicker-input-dark'
+            : 'react-datepicker-input-element react-datepicker-input-light'
         }
+        popperClassName={themeMod === 'dark' ? 'dark' : undefined}
         locale={i18n.language === 'en' ? undefined : 'ru'}
       />
     </Grid>

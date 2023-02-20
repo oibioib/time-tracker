@@ -35,6 +35,7 @@ export const lightTheme: ThemeOptions = {
     },
     background: {
       default: palette.bgLight,
+      paper: palette.bgPaperLight,
     },
     sidebar: {
       main: '#7b7c9c',
@@ -62,7 +63,7 @@ export const darkTheme: ThemeOptions = {
     },
     background: {
       default: palette.bgDark,
-      paper: '#424248',
+      paper: palette.bgPaperDark,
     },
     info: {
       main: '#ececec',
