@@ -100,7 +100,9 @@ const DashboardPage = () => {
           sx={{
             width: { xs: 'min-content', lg: 220 },
             height: '100%',
-            bgcolor: 'primary.main',
+            backgroundColor: 'primary.main',
+            backgroundImage:
+              'linear-gradient(to left, rgba(0, 0, 0, 0.10) 0, transparent 30px, transparent 100%)',
           }}>
           <DashboardSidebar />
         </Box>
