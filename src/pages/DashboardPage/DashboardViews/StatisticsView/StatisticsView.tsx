@@ -90,7 +90,7 @@ const StatisticsView = () => {
     labels: intervalTotalData.map((data) => convertationToDate(data.startTime)),
     datasets: [
       {
-        label: 'Total time',
+        // label: 'Total time',
         data: intervalTotalData.map((data) =>
           convertationToMin(data.totalTime)
         ),
@@ -103,7 +103,7 @@ const StatisticsView = () => {
     labels: intervalData.map((data) => data.title),
     datasets: [
       {
-        label: 'All tasks',
+        // label: 'All tasks',
         data: intervalData.map((data) => convertationToMin(data.totalTime)),
         backgroundColor: intervalData.map(() => generateColor()),
       },
