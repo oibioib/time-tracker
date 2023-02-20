@@ -1,11 +1,12 @@
 import { MuiColorInput } from 'mui-color-input';
 import { useRef, useState } from 'react';
 
-import { Box, Button, Paper, TextField } from '@mui/material';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 
 import { createUserProject, updateUserProject } from '../../api/serverApi';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
+import { CloseIcon } from '../../theme/appIcons';
 import { ProjectData } from '../../types/trackerInterfaces';
 
 const style = {
@@ -13,13 +14,23 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  height: '500px',
-  boxShadow: 24,
+  gap: 3,
   p: 4,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  minWidth: 300,
+};
+
+const styleTextFild = {
+  '& label.Mui-focused': {
+    color: 'third.main',
+  },
+  '& .MuiOutlinedInput-root': {
+    '&.Mui-focused fieldset': {
+      borderColor: 'third.main',
+    },
+  },
 };
 
 interface DefaultProjectParam {
@@ -132,21 +143,29 @@ const ProjectModal = ({
   return (
     <Paper sx={style}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Box>Create new Project</Box>
-        <Box
-          onClick={onCloseHandler}
-          mt={-2}
-          sx={{ ':hover': { cursor: 'pointer' } }}>
-          x
+        <Typography component="span" variant="h6">
+          Create new Project
+        </Typography>
+        <Box onClick={onCloseHandler} mt={-2} mr={-2}>
+          <CloseIcon
+            sx={{
+              color: 'text.disabled',
+              ':hover': {
+                cursor: 'pointer',
+                color: 'third.main',
+                transform: 'rotate(90deg)',
+                transformOrigin: 'center',
+                transition: 'transform 0.2s linear',
+              },
+            }}
+          />
         </Box>
       </Box>
-
-      <Box>Name</Box>
       <TextField
         required
         error={Boolean(errMessage)}
-        label={errMessage ? 'Error' : 'Required'}
-        placeholder="Project Name"
+        label="Name"
+        InputLabelProps={{ shrink: true }}
         value={projectName}
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler}
@@ -154,29 +173,41 @@ const ProjectModal = ({
         onFocus={() => {
           setErrMessage('');
         }}
+        sx={styleTextFild}
       />
-      <Box>Rate: $/h</Box>
       <TextField
+        label="Rate: $/h"
+        InputLabelProps={{ shrink: true }}
         type="number"
         onChange={numberHandler}
         onKeyDown={onKeyDownHandler}
         value={salary}
+        sx={styleTextFild}
       />
-      <Box>Color</Box>
       <MuiColorInput
         format="hex"
+        label="Color"
         value={color}
         onChange={colorHandler}
         onKeyDown={onKeyDownHandler}
+        sx={styleTextFild}
+        isAlphaHidden={true}
       />
-
-      <Box>
+      <Box textAlign="center">
         {defaultProjectParam.id ? (
-          <Button ref={updateRef} variant="contained" onClick={onUpdateHandler}>
+          <Button
+            ref={updateRef}
+            variant="contained"
+            size="large"
+            onClick={onUpdateHandler}>
             Updated Project
           </Button>
         ) : (
-          <Button ref={createRef} variant="contained" onClick={onClickHandler}>
+          <Button
+            ref={createRef}
+            variant="contained"
+            size="large"
+            onClick={onClickHandler}>
             Create Project
           </Button>
         )}
