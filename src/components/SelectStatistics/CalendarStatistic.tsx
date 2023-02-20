@@ -4,8 +4,9 @@ import DatePicker from 'react-datepicker';
 import { Grid } from '@mui/material';
 
 import { DURATION_OF_DAY } from '../../constants/appConstants';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { addTimePeriod, changeCalendar } from '../../store/statisticSlice';
+import './CalendarStatistic.scss';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -14,7 +15,7 @@ const CalendarStatistics = () => {
   const [isChange, setIsChange] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-
+  const themeMod = useAppSelector((state) => state.themeMode.themeColor);
   const [rezStartDate, setRezStartDate] = useState<number>(
     new Date().getTime()
   );
@@ -54,6 +55,7 @@ const CalendarStatistics = () => {
         maxDate={new Date()}
         dateFormat="dd-MM-yyyy"
         onCalendarClose={handleCalendarClose}
+        className={themeMod === 'dark' ? 'dark-mode' : undefined}
       />
     </Grid>
   );
