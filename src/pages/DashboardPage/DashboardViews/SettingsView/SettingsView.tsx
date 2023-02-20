@@ -19,21 +19,25 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const SettingsView = () => {
-  const { t } = useTranslation();
-  const [open, setOpen] = React.useState(false);
   const userServerId = useAppSelector((state) => state.serverUserData.id);
+  const newUserNameStore = useAppSelector((state) => state.gitHubFetch.newName);
+  const gitHubName = useAppSelector((state) => state.gitHubFetch.gitHubName);
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
 
   const dispatch = useAppDispatch();
-  const [newUserName, setNewUserName] = useState<string>('');
+  const [newUserName, setNewUserName] = useState<string>(
+    newUserNameStore || gitHubName
+  );
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewUserName(e.target.value.trim());
+    setNewUserName(e.target.value.replace(/^\s/, '').replace(/\s+/g, ' '));
   };
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (newUserName) {
-      dispatch(setNewName(newUserName));
+    if (newUserName.trim()) {
+      dispatch(setNewName(newUserName.trim()));
       setOpen(true);
       (async () => {
         try {
@@ -42,7 +46,6 @@ const SettingsView = () => {
           dispatch(setErrorMessage('Failed to change name. Try later'));
         }
       })();
-      setNewUserName('');
     }
   };
 
@@ -53,7 +56,6 @@ const SettingsView = () => {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
 
@@ -89,7 +91,7 @@ const SettingsView = () => {
                 id="outlined-controlled"
                 label={t(`settings.newName`)}
                 onChange={onChange}
-                value={newUserName}
+                defaultValue={newUserName}
               />
               <Button
                 type="submit"
