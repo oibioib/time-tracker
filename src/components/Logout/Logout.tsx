@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { Typography } from '@mui/material';
 
-import { LOCAL_STORAGE_KEY } from '../../constants';
+import {
+  LOCAL_GIT_NAME,
+  LOCAL_STORAGE_KEY,
+  LOCAL_USER_NAME,
+} from '../../constants';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setGitHubUserData } from '../../store/gitHubFetchSlice';
 import { LogoutIcon } from '../../theme/appIcons';
@@ -23,6 +27,8 @@ const Logout = ({ setRefreshPage, refreshPage }: LogoutProps) => {
   const { t } = useTranslation();
   const logoutHandler = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
+    localStorage.removeItem(LOCAL_USER_NAME);
+    localStorage.removeItem(LOCAL_GIT_NAME);
     dispatch(setGitHubUserData({ login: 'login', id: 0, avatar_url: 'url' }));
     navigate('/');
     setRefreshPage(!refreshPage);

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { LOCAL_GIT_NAME, LOCAL_USER_NAME } from '../constants/storageConstants';
+import { LOCAL_GIT_NAME, LOCAL_USER_NAME } from '../constants';
 
 const localName = localStorage.getItem(LOCAL_USER_NAME);
 const localGitName = localStorage.getItem(LOCAL_GIT_NAME);
