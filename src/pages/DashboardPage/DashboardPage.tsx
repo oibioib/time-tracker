@@ -55,7 +55,7 @@ const DashboardPage = () => {
           if (data.name) {
             dispatch(setNewName(data.name));
           }
-          dispatch(setGitHubName(data.gitHubName));
+          dispatch(setGitHubName(data.githubName));
           dispatch(setServerUserLogin(data.id));
         } catch (error) {
           dispatch(
