@@ -1,4 +1,69 @@
-.dark-mode {
-  background-color: #424248;
-  color: #e6e6e6;
+@import '../../theme/palette.module.scss';
+
+.input {
+  &-element {
+    font-family: inherit;
+    font-size: inherit;
+    padding: 4px 0 5px;
+    border: 0;
+    box-sizing: content-box;
+    height: 1.4375em;
+    margin: 0;
+    display: block;
+    min-width: 0;
+    padding: 16.5px 14px;
+    border-radius: #{$main-radius}px;
+    border: 0;
+    outline: 0;
+  }
+
+  &-light {
+    background-color: $bg-light;
+    color: $text-light;
+    box-shadow: 0px 0px 0px 0.67px $input-border-light;
+
+    &:hover {
+      box-shadow: 0px 0px 0px 0.67px $input-border-light-hover;
+    }
+
+    &:focus {
+      box-shadow: 0px 0px 0px 2px $primary-main;
+    }
+  }
+
+  &-dark {
+    background-color: $bg-dark;
+    color: $text-dark;
+    box-shadow: 0px 0px 0px 0.67px $input-border-dark;
+
+    &:hover {
+      box-shadow: 0px 0px 0px 0.67px $input-border-dark-hover;
+    }
+
+    &:focus {
+      box-shadow: 0px 0px 0px 2px $primary-main;
+    }
+  }
+}
+
+.react-datepicker__triangle {
+  transform: translate3d(50px, 0px, 0px) !important;
+  margin-top: -7px !important;
+}
+
+.react-datepicker__day--in-range {
+  background-color: $primary-main !important;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: rgba($primary-main, 0.6) !important;
+}
+
+.react-datepicker__day--in-selecting-range:not(
+    .react-datepicker__day--in-range,
+    .react-datepicker__month-text--in-range,
+    .react-datepicker__quarter-text--in-range,
+    .react-datepicker__year-text--in-range
+  ) {
+  background-color: rgba($primary-main, 0.4) !important;
 }

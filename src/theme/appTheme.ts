@@ -2,16 +2,19 @@ import { PaletteMode, ThemeOptions, createTheme } from '@mui/material';
 import { TypographyOptions } from '@mui/material/styles/createTypography';
 
 import { useAppSelector } from '../hooks/hooks';
+import palette from './palette.module.scss';
 
 declare module '@mui/material/styles/createPalette' {
   interface Palette {
     sidebar: { main: string };
     third: { main: string };
+    accent: { main: string };
   }
 
   interface PaletteOptions {
     sidebar?: { main: string };
     third?: { main: string };
+    accent?: { main: string };
   }
 }
 
@@ -19,19 +22,28 @@ export const lightTheme: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#5b5f97',
+      main: palette.primaryMain,
     },
     secondary: {
       main: '#ffc145',
     },
+    text: {
+      primary: palette.textLight,
+    },
     info: {
       main: '#ffffff',
+    },
+    background: {
+      default: palette.bgLight,
     },
     sidebar: {
       main: '#7b7c9c',
     },
     third: {
       main: '#5b5f97',
+    },
+    accent: {
+      main: palette.accent,
     },
   },
 };
@@ -40,16 +52,16 @@ export const darkTheme: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
-      main: '#5b5f97',
+      main: palette.primaryMain,
     },
     secondary: {
       main: '#fffb6c',
     },
     text: {
-      primary: '#E6E6E6',
+      primary: palette.textDark,
     },
     background: {
-      default: '#303035',
+      default: palette.bgDark,
       paper: '#424248',
     },
     info: {
@@ -60,6 +72,9 @@ export const darkTheme: ThemeOptions = {
     },
     third: {
       main: '#ececec',
+    },
+    accent: {
+      main: palette.accent,
     },
   },
 };
@@ -96,7 +111,7 @@ const getThemeTokens = (mode: PaletteMode) => ({
   ...(mode === 'light' ? lightTheme : darkTheme),
   typography,
   shape: {
-    borderRadius: 5,
+    borderRadius: +palette.mainRadius,
   },
   components: {
     MuiPaper: {

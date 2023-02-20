@@ -162,7 +162,7 @@ const ProjectModal = ({
               color: 'text.disabled',
               ':hover': {
                 cursor: 'pointer',
-                color: 'third.main',
+                color: 'accent.main',
                 transform: 'rotate(90deg)',
                 transformOrigin: 'center',
                 transition: 'transform 0.2s linear',
