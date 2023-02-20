@@ -6,14 +6,14 @@ import { useAppSelector } from '../hooks/hooks';
 declare module '@mui/material/styles/createPalette' {
   interface Palette {
     sidebar: { main: string };
+    third: { main: string };
   }
 
   interface PaletteOptions {
     sidebar?: { main: string };
+    third?: { main: string };
   }
 }
-
-export const MAX_CONTENT_WIDTH = 1400;
 
 export const lightTheme: ThemeOptions = {
   palette: {
@@ -29,6 +29,9 @@ export const lightTheme: ThemeOptions = {
     },
     sidebar: {
       main: '#7b7c9c',
+    },
+    third: {
+      main: '#5b5f97',
     },
   },
 };
@@ -54,6 +57,9 @@ export const darkTheme: ThemeOptions = {
     },
     sidebar: {
       main: '#27272b',
+    },
+    third: {
+      main: '#ececec',
     },
   },
 };
