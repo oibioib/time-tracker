@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { useTranslation } from 'react-i18next';
 
 import { Grid, Typography } from '@mui/material';
 
@@ -34,6 +35,7 @@ import {
   getDataInterval,
   getTimersTime,
 } from '../../../../store/statisticSlice';
+import { mainTitleTypography } from '../../../../theme/elementsStyles';
 
 ChartJS.register(
   CategoryScale,
@@ -46,6 +48,7 @@ ChartJS.register(
 );
 
 const StatisticsView = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const errorGetTimersTime = useAppSelector(
     (state) => state.statistics.getTimersTimeError
@@ -119,8 +122,11 @@ const StatisticsView = () => {
   }, [dispatch]);
 
   return (
-    <Grid item container pt={1}>
-      <Typography mb={0}>Statistics Page</Typography>
+    <Grid container direction="column" gap={2}>
+      <Typography component="h1" sx={mainTitleTypography}>
+        {t(`dashboard.statistics`)}
+      </Typography>
+
       <Grid item container justifyContent="space-around">
         <CalendarStatistics />
       </Grid>

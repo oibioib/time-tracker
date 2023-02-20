@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 
@@ -24,6 +25,7 @@ import {
   setProjectToTimer,
   setTimerData,
 } from '../../../../store/timeTrackerSlice';
+import { mainTitleTypography } from '../../../../theme/elementsStyles';
 import { ProjectData, TimerData } from '../../../../types/trackerInterfaces';
 
 interface AddedTaskData {
@@ -45,6 +47,7 @@ const TrackerView = () => {
   const { timePeriod } = useAppSelector((state) => state.statistics);
   const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
       let acc = total;
@@ -181,63 +184,73 @@ const TrackerView = () => {
   }
 
   return (
-    <Grid container flexDirection="column">
-      <Grid item>
-        <TextField
-          placeholder="What are you working on"
-          value={timerData.timerTitle}
-          onChange={onChangeHandler}
-          onKeyDown={onKeyDownHandler}
-        />
-        <ProjectList />
-        <Timer
-          setRefreshPage={setRefreshPage}
-          refreshPage={refreshPage}
-          serverUserId={serverUserId}
-          onClickRef={onClickRef}
-        />
-      </Grid>
-      <Grid item>
-        {/* <Typography variant="body2">This Week</Typography> */}
-        <CalendarStatistics />
-        <Typography variant="body2">
-          period total:
-          <b> {timeStringWeek}</b>
-        </Typography>
-        <Typography variant="body2">
-          today total:
-          <b> {timeStringDay}</b>
+    <>
+      <Grid container direction="column" gap={2}>
+        <Typography component="h1" sx={mainTitleTypography}>
+          {t(`dashboard.timeTracker`)}
         </Typography>
       </Grid>
-      <Grid item>
-        {tasksArr.length ? (
-          tasksArr
-            .filter((task: AddedTaskData, index: number) => index < tasksShowed)
-            .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
-              return (
-                <Grid key={id} item xs={12} my={3}>
-                  <Paper>
-                    <AddedTask
-                      taskName={taskName}
-                      taskStart={taskStart}
-                      taskTimeSec={taskTimeSec}
-                      id={id}
-                      project={project}
-                      setRefreshPage={setRefreshPage}
-                      refreshPage={refreshPage}
-                    />
-                  </Paper>
-                </Grid>
-              );
-            })
-        ) : (
-          <EmptyView />
-        )}
-        {tasksArr.length >= tasksShowed && (
-          <Button onClick={showMoreHandler}>Show more</Button>
-        )}
+
+      <Grid container flexDirection="column">
+        <Grid item>
+          <TextField
+            placeholder="What are you working on"
+            value={timerData.timerTitle}
+            onChange={onChangeHandler}
+            onKeyDown={onKeyDownHandler}
+          />
+          <ProjectList />
+          <Timer
+            setRefreshPage={setRefreshPage}
+            refreshPage={refreshPage}
+            serverUserId={serverUserId}
+            onClickRef={onClickRef}
+          />
+        </Grid>
+        <Grid item>
+          {/* <Typography variant="body2">This Week</Typography> */}
+          <CalendarStatistics />
+          <Typography variant="body2">
+            period total:
+            <b> {timeStringWeek}</b>
+          </Typography>
+          <Typography variant="body2">
+            today total:
+            <b> {timeStringDay}</b>
+          </Typography>
+        </Grid>
+        <Grid item>
+          {tasksArr.length ? (
+            tasksArr
+              .filter(
+                (task: AddedTaskData, index: number) => index < tasksShowed
+              )
+              .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
+                return (
+                  <Grid key={id} item xs={12} my={3}>
+                    <Paper>
+                      <AddedTask
+                        taskName={taskName}
+                        taskStart={taskStart}
+                        taskTimeSec={taskTimeSec}
+                        id={id}
+                        project={project}
+                        setRefreshPage={setRefreshPage}
+                        refreshPage={refreshPage}
+                      />
+                    </Paper>
+                  </Grid>
+                );
+              })
+          ) : (
+            <EmptyView />
+          )}
+          {tasksArr.length >= tasksShowed && (
+            <Button onClick={showMoreHandler}>Show more</Button>
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 
