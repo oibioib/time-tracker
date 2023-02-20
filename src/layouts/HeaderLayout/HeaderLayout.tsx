@@ -29,6 +29,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 const HeaderLayout = () => {
+  const [open, setOpen] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(true);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const gitHubID = useAppSelector((state) => state.gitHubFetch.id);
@@ -37,7 +39,6 @@ const HeaderLayout = () => {
   );
   const token = localStorage.getItem(LOCAL_STORAGE_KEY);
   const isLoggedIn = gitHubID || token;
-  const [open, setOpen] = useState(false);
 
   React.useEffect(() => {
     if (errorMessage) {
@@ -137,7 +138,10 @@ const HeaderLayout = () => {
                 </Typography>
               </HeaderButton>
             ) : (
-              <Logout />
+              <Logout
+                setRefreshPage={setRefreshPage}
+                refreshPage={refreshPage}
+              />
             )}
           </Grid>
           <Grid item>
