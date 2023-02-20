@@ -5,9 +5,15 @@ import { useTranslation } from 'react-i18next';
 
 import { Grid } from '@mui/material';
 
-import { DURATION_OF_DAY } from '../../constants/appConstants';
+import {
+  DEFAULT_END_TODAY_TIMESTAMP,
+  DEFAULT_STARTDAY_PREV_WEEK,
+  DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+  DEFAULT_STARTDAY_TODAY,
+  DURATION_OF_DAY,
+} from '../../constants/appConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { addTimePeriod, changeCalendar } from '../../store/statisticSlice';
+import { addTimePeriod } from '../../store/statisticSlice';
 import './CalendarStatistic.scss';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,22 +23,19 @@ registerLocale('ru', ru);
 const CalendarStatistics = () => {
   const dispatch = useAppDispatch();
   const { i18n } = useTranslation();
-  const [isChange, setIsChange] = useState<boolean>(false);
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
   const themeMod = useAppSelector((state) => state.themeMode.themeColor);
+  const [startDate, setStartDate] = useState<Date | null>(
+    DEFAULT_STARTDAY_PREV_WEEK
+  );
+  const [endDate, setEndDate] = useState<Date | null>(DEFAULT_STARTDAY_TODAY);
   const [rezStartDate, setRezStartDate] = useState<number>(
-    new Date().getTime()
+    DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP
   );
   const [rezEndDate, setRezEndDate] = useState<number>(
-    new Date().getTime() + DURATION_OF_DAY
+    DEFAULT_END_TODAY_TIMESTAMP
   );
 
   const onChange = (dates: [Date | null, Date | null]) => {
-    if (!isChange) {
-      setIsChange(true);
-      dispatch(changeCalendar(true));
-    }
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);

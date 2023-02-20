@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 
@@ -6,9 +7,11 @@ import { getActiveTimer, getUserTimers } from '../../../../api/serverApi';
 import AddedTask from '../../../../components/AddedTask/AddedTask';
 import EmptyView from '../../../../components/EmptyView/EmptyView';
 import ProjectList from '../../../../components/ProjectList/ProjectList';
-import { CalendarStatistics } from '../../../../components/SelectStatistics';
+import CalendarStatistics from '../../../../components/SelectStatistics';
 import Timer from '../../../../components/Timer/Timer';
 import {
+  DEFAULT_END_TODAY_TIMESTAMP,
+  DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
   HOURS_IN_MILISEC,
   MORE_TASKS,
   TASKS_SHOWED_DEFAULT,
@@ -22,6 +25,7 @@ import {
   setProjectToTimer,
   setTimerData,
 } from '../../../../store/timeTrackerSlice';
+import { mainTitleTypography } from '../../../../theme/elementsStyles';
 import { ProjectData, TimerData } from '../../../../types/trackerInterfaces';
 
 interface AddedTaskData {
@@ -44,6 +48,7 @@ const TrackerView = () => {
   const { timePeriod } = useAppSelector((state) => state.statistics);
   const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
       let acc = total;
@@ -167,7 +172,10 @@ const TrackerView = () => {
   useEffect(() => {
     return () => {
       dispatch(
-        addTimePeriod([Date.now() - HOURS_IN_MILISEC * 24 * 7, Date.now()])
+        addTimePeriod([
+          DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+          DEFAULT_END_TODAY_TIMESTAMP,
+        ])
       );
     };
   }, [dispatch]);
@@ -177,70 +185,80 @@ const TrackerView = () => {
   }
 
   return (
-    <Grid container flexDirection="column">
-      <Grid item>
-        <TextField
-          required
-          placeholder="What are you working on"
-          value={timerData.timerTitle}
-          onChange={onChangeHandler}
-          onKeyDown={onKeyDownHandler}
-          error={Boolean(errMessage)}
-          label={errMessage ? 'Error' : 'Required'}
-          helperText={errMessage}
-          onFocus={() => {
-            setErrMessage('');
-          }}
-        />
-        <ProjectList />
-        <Timer
-          setRefreshPage={setRefreshPage}
-          refreshPage={refreshPage}
-          serverUserId={serverUserId}
-          onClickRef={onClickRef}
-          setErrMessage={setErrMessage}
-        />
-      </Grid>
-      <Grid item>
-        <CalendarStatistics />
-        <Typography variant="body2">
-          period total:
-          <b> {timeStringWeek}</b>
-        </Typography>
-        <Typography variant="body2">
-          today total:
-          <b> {timeStringDay}</b>
+    <>
+      <Grid container direction="column" gap={2}>
+        <Typography component="h1" sx={mainTitleTypography}>
+          {t(`dashboard.timeTracker`)}
         </Typography>
       </Grid>
-      <Grid item>
-        {tasksArr.length ? (
-          tasksArr
-            .filter((task: AddedTaskData, index: number) => index < tasksShowed)
-            .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
-              return (
-                <Grid key={id} item xs={12} my={3}>
-                  <Paper>
-                    <AddedTask
-                      taskName={taskName}
-                      taskStart={taskStart}
-                      taskTimeSec={taskTimeSec}
-                      id={id}
-                      project={project}
-                      setRefreshPage={setRefreshPage}
-                      refreshPage={refreshPage}
-                    />
-                  </Paper>
-                </Grid>
-              );
-            })
-        ) : (
-          <EmptyView />
-        )}
-        {tasksArr.length >= tasksShowed && (
-          <Button onClick={showMoreHandler}>Show more</Button>
-        )}
+
+      <Grid container flexDirection="column">
+        <Grid item>
+          <TextField
+            required
+            placeholder="What are you working on"
+            value={timerData.timerTitle}
+            onChange={onChangeHandler}
+            onKeyDown={onKeyDownHandler}
+            error={Boolean(errMessage)}
+            label={errMessage ? 'Error' : 'Required'}
+            helperText={errMessage}
+            onFocus={() => {
+              setErrMessage('');
+            }}
+          />
+          <ProjectList />
+          <Timer
+            setRefreshPage={setRefreshPage}
+            refreshPage={refreshPage}
+            serverUserId={serverUserId}
+            onClickRef={onClickRef}
+            setErrMessage={setErrMessage}
+          />
+        </Grid>
+        <Grid item>
+          <CalendarStatistics />
+          <Typography variant="body2">
+            period total:
+            <b> {timeStringWeek}</b>
+          </Typography>
+          <Typography variant="body2">
+            today total:
+            <b> {timeStringDay}</b>
+          </Typography>
+        </Grid>
+        <Grid item>
+          {tasksArr.length ? (
+            tasksArr
+              .filter(
+                (task: AddedTaskData, index: number) => index < tasksShowed
+              )
+              .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
+                return (
+                  <Grid key={id} item xs={12} my={3}>
+                    <Paper>
+                      <AddedTask
+                        taskName={taskName}
+                        taskStart={taskStart}
+                        taskTimeSec={taskTimeSec}
+                        id={id}
+                        project={project}
+                        setRefreshPage={setRefreshPage}
+                        refreshPage={refreshPage}
+                      />
+                    </Paper>
+                  </Grid>
+                );
+              })
+          ) : (
+            <EmptyView />
+          )}
+          {tasksArr.length >= tasksShowed && (
+            <Button onClick={showMoreHandler}>Show more</Button>
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

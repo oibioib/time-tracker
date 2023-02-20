@@ -7,13 +7,27 @@ const UserAvatar = () => {
   const userData = useAppSelector((state) => state.gitHubFetch);
   const gitHubName = useAppSelector((state) => state.gitHubFetch.gitHubName);
 
+  const nameStyle = { display: { xs: 'none', lg: 'block' } };
+  const avatarStyle = {
+    width: { xs: 25, sm: 30, md: 40 },
+    height: { xs: 25, sm: 30, md: 40 },
+  };
+
   return (
-    <Grid item ml={2} mt={2} color="white">
-      <Avatar alt="user" src={`${userData && userData.avatar_url}`} />
+    <Grid item color="white">
+      <Avatar
+        alt="user"
+        sx={avatarStyle}
+        src={`${userData && userData.avatar_url}`}
+      />
       {newUserName ? (
-        <Typography variant="body1">{newUserName}</Typography>
+        <Typography variant="body1" sx={nameStyle}>
+          {newUserName}
+        </Typography>
       ) : (
-        <Typography variant="body1">{userData && gitHubName}</Typography>
+        <Typography variant="body1" sx={nameStyle}>
+          {userData && gitHubName}
+        </Typography>
       )}
     </Grid>
   );

@@ -10,16 +10,18 @@ import {
 } from 'chart.js';
 import { useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { useTranslation } from 'react-i18next';
 
 import { Grid, Typography } from '@mui/material';
 
 import EmptyViewStatistic from '../../../../components/EmptyView/EmptyViewStatistic';
 import ProductivityBox from '../../../../components/Productivity';
+import CalendarStatistics from '../../../../components/SelectStatistics';
 import {
-  CalendarStatistics,
-  SelectX,
-} from '../../../../components/SelectStatistics';
-import { DURATION_OF_DAY } from '../../../../constants/appConstants';
+  DEFAULT_END_TODAY_TIMESTAMP,
+  DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+  DURATION_OF_DAY,
+} from '../../../../constants/appConstants';
 import {
   convertationToDate,
   convertationToMin,
@@ -29,11 +31,11 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import {
-  deleteDataInterval,
-  deleteTotalData,
+  addTimePeriod,
   getDataInterval,
   getTimersTime,
 } from '../../../../store/statisticSlice';
+import { mainTitleTypography } from '../../../../theme/elementsStyles';
 
 ChartJS.register(
   CategoryScale,
@@ -46,16 +48,13 @@ ChartJS.register(
 );
 
 const StatisticsView = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const errorGetTimersTime = useAppSelector(
     (state) => state.statistics.getTimersTimeError
   );
   const errorGetDataInterval = useAppSelector(
     (state) => state.statistics.getDataIntervalError
-  );
-
-  const statisticOpen = useAppSelector(
-    (state) => state.statistics.isChangeCalendar
   );
 
   const statisticsValueY = useAppSelector(
@@ -68,23 +67,17 @@ const StatisticsView = () => {
     (state) => state.statistics.dataTotalTime
   );
   const intervalData = useAppSelector((state) => state.statistics.dataInterval);
-  const statisticsValueX = useAppSelector((state) => state.statistics.valueX);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
 
   useEffect(() => {
     if (serverUserId) {
-      if (statisticsValueX === 'tasks') {
-        dispatch(getDataInterval({ serverUserId, rezStartDate, rezEndDate }));
-        dispatch(deleteTotalData());
-      } else {
-        const dayAmount = Math.trunc(
-          (rezEndDate - rezStartDate) / DURATION_OF_DAY
-        );
-        dispatch(getTimersTime({ serverUserId, rezStartDate, dayAmount }));
-        dispatch(deleteDataInterval());
-      }
+      dispatch(getDataInterval({ serverUserId, rezStartDate, rezEndDate }));
+      const dayAmount = Math.trunc(
+        (rezEndDate - rezStartDate) / DURATION_OF_DAY
+      );
+      dispatch(getTimersTime({ serverUserId, rezStartDate, dayAmount }));
     }
-  }, [rezStartDate, rezEndDate, statisticsValueX, dispatch, serverUserId]);
+  }, [rezStartDate, rezEndDate, dispatch, serverUserId]);
 
   if (errorGetDataInterval) {
     dispatch(setErrorMessage(errorGetDataInterval));
@@ -117,32 +110,51 @@ const StatisticsView = () => {
     ],
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(
+        addTimePeriod([
+          DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+          DEFAULT_END_TODAY_TIMESTAMP,
+        ])
+      );
+    };
+  }, [dispatch]);
+
   return (
-    <Grid item container pt={1}>
-      <Typography mb={0}>Statistics Page</Typography>
+    <Grid container direction="column" gap={2}>
+      <Typography component="h1" sx={mainTitleTypography}>
+        {t(`dashboard.statistics`)}
+      </Typography>
+
       <Grid item container justifyContent="space-around">
-        <SelectX />
         <CalendarStatistics />
       </Grid>
 
-      {intervalTotalData.length && statisticOpen ? (
-        <Grid item container>
+      {intervalData.length ? (
+        <Grid item container mt={2}>
           <Grid item xs={11} sm={12} maxHeight={400}>
+            <Typography textAlign="center">
+              Time for each task for selected period
+            </Typography>
+            <Bar data={selectedData} options={options} />
+          </Grid>
+        </Grid>
+      ) : null}
+
+      {intervalTotalData.length ? (
+        <Grid item container mt={2}>
+          <Grid item xs={11} sm={12} maxHeight={400}>
+            <Typography textAlign="center">
+              Your WorkTime on day for selected period{' '}
+            </Typography>
             <Bar data={totalTimeData} options={options} />
           </Grid>
           <ProductivityBox />
         </Grid>
       ) : null}
 
-      {intervalData.length ? (
-        <Grid item container>
-          <Grid item xs={11} sm={12} maxHeight={400}>
-            <Bar data={selectedData} options={options} />
-          </Grid>
-        </Grid>
-      ) : null}
-      {(intervalTotalData.length && statisticOpen) ||
-      intervalData.length ? null : (
+      {intervalTotalData.length || intervalData.length ? null : (
         <EmptyViewStatistic />
       )}
     </Grid>
