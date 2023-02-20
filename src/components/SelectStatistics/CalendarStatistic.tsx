@@ -1,5 +1,7 @@
+import ru from 'date-fns/locale/ru';
 import { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import { useTranslation } from 'react-i18next';
 
 import { Grid } from '@mui/material';
 
@@ -10,8 +12,12 @@ import './CalendarStatistic.scss';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+registerLocale('ru', ru);
+
 const CalendarStatistics = () => {
   const dispatch = useAppDispatch();
+  const { i18n } = useTranslation();
+  console.log(i18n.language);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -56,6 +62,7 @@ const CalendarStatistics = () => {
         dateFormat="dd-MM-yyyy"
         onCalendarClose={handleCalendarClose}
         className={themeMod === 'dark' ? 'dark-mode' : undefined}
+        locale={i18n.language === 'en' ? undefined : 'ru'}
       />
     </Grid>
   );
