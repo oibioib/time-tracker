@@ -63,7 +63,11 @@ const CalendarStatistics = () => {
         maxDate={new Date()}
         dateFormat="dd-MM-yyyy"
         onCalendarClose={handleCalendarClose}
-        className={themeMod === 'dark' ? 'dark-mode' : undefined}
+        className={
+          themeMod === 'dark'
+            ? 'input-element input-dark'
+            : 'input-element input-light'
+        }
         locale={i18n.language === 'en' ? undefined : 'ru'}
       />
     </Grid>
