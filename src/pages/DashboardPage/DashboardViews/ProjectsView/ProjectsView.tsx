@@ -35,12 +35,13 @@ const ProjectsView = () => {
   const { projectsArr } = useAppSelector((state) => state.projectArr);
   const dispatch = useAppDispatch();
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
-  const [defaultProjectParam, setDefaultProjectParam] = useState({
+  const defaultParam = {
     id: '',
     title: '',
     color: DEFAULT_COLOR,
     salary: '',
-  });
+  };
+  const [defaultProjectParam, setDefaultProjectParam] = useState(defaultParam);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -48,12 +49,7 @@ const ProjectsView = () => {
     setIsOpen(true);
   };
   const onCloseHandler = () => {
-    setDefaultProjectParam({
-      id: '',
-      title: '',
-      color: '',
-      salary: '',
-    });
+    setDefaultProjectParam(defaultParam);
     setIsOpen(false);
   };
 
@@ -85,7 +81,7 @@ const ProjectsView = () => {
     setDefaultProjectParam({
       id: result.dataset.id || '',
       title: result.dataset.title || '',
-      color: result.dataset.color || '',
+      color: result.dataset.color || DEFAULT_COLOR,
       salary: result.dataset.salary || '',
     });
     setIsOpen(true);
