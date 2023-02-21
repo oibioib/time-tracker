@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper/Paper';
 
-import EmptyViewStatistic from '../../../../components/EmptyView/EmptyViewStatistic';
 import ProductivityBox from '../../../../components/Productivity';
 import CalendarStatistics from '../../../../components/SelectStatistics';
 import {
