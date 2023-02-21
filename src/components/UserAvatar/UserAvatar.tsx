@@ -14,18 +14,42 @@ const UserAvatar = () => {
   };
 
   return (
-    <Grid item color="white">
+    <Grid
+      item
+      container
+      direction="column"
+      color="white"
+      justifyContent="center"
+      alignItems="center"
+      gap={1.5}
+      sx={{
+        overflow: 'hidden',
+      }}>
       <Avatar
         alt="user"
         sx={avatarStyle}
         src={`${userData && userData.avatar_url}`}
       />
       {newUserName ? (
-        <Typography variant="body1" sx={nameStyle}>
+        <Typography
+          variant="body1"
+          sx={{
+            ...nameStyle,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          }}>
           {newUserName}
         </Typography>
       ) : (
-        <Typography variant="body1" sx={nameStyle}>
+        <Typography
+          variant="body1"
+          sx={{
+            ...nameStyle,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          }}>
           {userData && gitHubName}
         </Typography>
       )}

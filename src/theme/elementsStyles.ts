@@ -8,7 +8,7 @@ export const mainTitleTypography = {
   },
   mb: {
     xs: 1,
-    sm: 2,
+    sm: 4,
   },
 };
 

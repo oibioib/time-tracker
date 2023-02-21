@@ -94,7 +94,12 @@ const DashboardPage = () => {
   }
 
   return (
-    <Grid container wrap="nowrap" sx={{ height: '100%' }}>
+    <Grid
+      container
+      wrap="nowrap"
+      sx={{
+        height: '100%',
+      }}>
       <Grid item>
         <Box
           sx={{
