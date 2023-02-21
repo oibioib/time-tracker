@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
 import { createTimer, updateTimer } from '../../api/serverApi';
 import { DEFAULT_TITLE } from '../../constants/appConstants';
@@ -162,14 +164,17 @@ const Timer = ({
   }, [timeString, isTimerOn]);
 
   return (
-    <Box
-      mr={1}
-      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <Box>{timeString}</Box>
-      <IconButton onClick={onClickHandler} ref={onClickRef}>
+    <Grid container alignItems="center" sx={{ gap: 1 }} pb={1}>
+      <Typography component="span" variant="h6">
+        {timeString}
+      </Typography>
+      <IconButton
+        onClick={onClickHandler}
+        ref={onClickRef}
+        sx={{ color: 'accent.main', '& svg': { fontSize: '2rem' } }}>
         {isTimerOn ? <StopIcon /> : <PlayArrowIcon />}
       </IconButton>
-    </Box>
+    </Grid>
   );
 };
 

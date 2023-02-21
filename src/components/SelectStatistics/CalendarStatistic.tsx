@@ -52,7 +52,7 @@ const CalendarStatistics = () => {
 
   return (
     <Grid item columns={1}>
-      <legend>Choose period</legend>
+      {/* <legend>Choose period</legend> */}
       <DatePicker
         onChange={onChange}
         startDate={startDate}

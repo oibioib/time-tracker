@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
-import { Box, Menu, MenuItem, Tooltip } from '@mui/material';
+import { Box, Grid, Menu, MenuItem, Tooltip } from '@mui/material';
 
 import { DEFAULT_PROJECT_ID } from '../../constants/serverConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setProjectToTimer } from '../../store/timeTrackerSlice';
-import { CircleIcon, FolderIcon } from '../../theme/appIcons';
+import { FolderIcon } from '../../theme/appIcons';
+import { iconsStyle } from '../../theme/elementsStyles';
 
 const ProjectList = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -48,27 +49,29 @@ const ProjectList = () => {
 
   return (
     <Tooltip title="add project" placement="left-start" open={isToolTipOpen}>
-      <Box my="auto" mr={2} sx={{ ':hover': { cursor: 'pointer' } }}>
+      <Box my="auto" sx={{ ':hover': { cursor: 'pointer' } }}>
         {projectTitle ? (
           <Box onClick={handleClick} sx={{ ':hover': { cursor: 'pointer' } }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-              }}>
-              <CircleIcon
-                sx={{
-                  color: `${projectColor}`,
-                  width: '15px',
-                }}
-              />
-              <Box>{projectTitle}</Box>
-            </Box>
+            <Grid container alignItems="center">
+              <Grid item>
+                <Box
+                  sx={{
+                    mr: 0.5,
+                    backgroundColor: `${projectColor}`,
+                    width: 14,
+                    height: 14,
+                    borderRadius: '50%',
+                    boxShadow: '0 0 1px 1px rgba(0, 0, 0, 0.2)',
+                  }}
+                />
+              </Grid>
+              <Grid item>{projectTitle}</Grid>
+            </Grid>
           </Box>
         ) : (
           <Box onClick={handleClick}>
             <FolderIcon
-              style={{ color: 'gray' }}
+              sx={iconsStyle}
               onMouseLeave={() => {
                 setIsTookTipOpen(false);
               }}
