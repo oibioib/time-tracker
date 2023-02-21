@@ -185,80 +185,121 @@ const TrackerView = () => {
   }
 
   return (
-    <>
-      <Grid container direction="column" gap={2}>
-        <Typography component="h1" sx={mainTitleTypography}>
-          {t(`dashboard.timeTracker`)}
-        </Typography>
-      </Grid>
-
-      <Grid container flexDirection="column">
-        <Grid item>
-          <TextField
-            required
-            placeholder="What are you working on"
-            value={timerData.timerTitle}
-            onChange={onChangeHandler}
-            onKeyDown={onKeyDownHandler}
-            error={Boolean(errMessage)}
-            label={errMessage ? 'Error' : 'Required'}
-            helperText={errMessage}
-            onFocus={() => {
-              setErrMessage('');
-            }}
-          />
-          <ProjectList />
-          <Timer
-            setRefreshPage={setRefreshPage}
-            refreshPage={refreshPage}
-            serverUserId={serverUserId}
-            onClickRef={onClickRef}
-            setErrMessage={setErrMessage}
-          />
+    <Grid container direction="column">
+      <Typography component="h1" sx={mainTitleTypography}>
+        {t(`dashboard.timeTracker`)}
+      </Typography>
+      <Paper>
+        <Grid
+          item
+          container
+          alignItems="center"
+          direction="column"
+          borderRadius="5px"
+          sx={{
+            width: '100%',
+            gap: { xs: 1, sm: 2 },
+            // backgroundColor: 'block.main',
+          }}>
+          <Grid
+            item
+            sx={{
+              width: '100%',
+            }}>
+            <TextField
+              required
+              placeholder="What are you working on"
+              value={timerData.timerTitle}
+              onChange={onChangeHandler}
+              onKeyDown={onKeyDownHandler}
+              error={Boolean(errMessage)}
+              label={errMessage}
+              sx={{
+                width: '100%',
+                '& .MuiInputBase-input': {
+                  backgroundColor: 'background.default',
+                  borderRadius: '5px',
+                },
+              }}
+              onFocus={() => {
+                setErrMessage('');
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <ProjectList />
+          </Grid>
+          <Grid item>
+            <Timer
+              setRefreshPage={setRefreshPage}
+              refreshPage={refreshPage}
+              serverUserId={serverUserId}
+              onClickRef={onClickRef}
+              setErrMessage={setErrMessage}
+            />
+          </Grid>
         </Grid>
-        <Grid item>
+      </Paper>
+      <Grid
+        item
+        container
+        alignItems="center"
+        mt={5}
+        mb={3}
+        sx={{
+          justifyContent: { xs: 'center', sm: 'space-between' },
+          gap: 2,
+        }}>
+        <Grid item sx={{}}>
           <CalendarStatistics />
-          <Typography variant="body2">
-            period total:
+        </Grid>
+        <Grid item textAlign="right">
+          <Typography sx={{ typography: { xs: 'body2', md: 'body1' } }}>
+            Period total:
             <b> {timeStringWeek}</b>
           </Typography>
-          <Typography variant="body2">
-            today total:
+          <Typography sx={{ typography: { xs: 'body2', md: 'body1' } }}>
+            Today total:
             <b> {timeStringDay}</b>
           </Typography>
         </Grid>
-        <Grid item>
-          {tasksArr.length ? (
-            tasksArr
-              .filter(
-                (task: AddedTaskData, index: number) => index < tasksShowed
-              )
-              .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
-                return (
-                  <Grid key={id} item xs={12} my={3}>
-                    <Paper>
-                      <AddedTask
-                        taskName={taskName}
-                        taskStart={taskStart}
-                        taskTimeSec={taskTimeSec}
-                        id={id}
-                        project={project}
-                        setRefreshPage={setRefreshPage}
-                        refreshPage={refreshPage}
-                      />
-                    </Paper>
-                  </Grid>
-                );
-              })
-          ) : (
-            <EmptyView />
-          )}
-          {tasksArr.length >= tasksShowed && (
-            <Button onClick={showMoreHandler}>Show more</Button>
-          )}
-        </Grid>
       </Grid>
-    </>
+      <Grid item>
+        {tasksArr.length ? (
+          tasksArr
+            .filter((task: AddedTaskData, index: number) => index < tasksShowed)
+            .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
+              return (
+                <Grid key={id} item xs={12} mb={1}>
+                  <Paper elevation={0} sx={{ p: { xs: 1, sm: 2 } }}>
+                    <AddedTask
+                      taskName={taskName}
+                      taskStart={taskStart}
+                      taskTimeSec={taskTimeSec}
+                      id={id}
+                      project={project}
+                      setRefreshPage={setRefreshPage}
+                      refreshPage={refreshPage}
+                    />
+                  </Paper>
+                </Grid>
+              );
+            })
+        ) : (
+          <EmptyView />
+        )}
+        {tasksArr.length >= tasksShowed && (
+          <Grid container justifyContent="center">
+            <Button
+              size="large"
+              onClick={showMoreHandler}
+              sx={{ fontSize: { sm: '1.2rem' } }}>
+              Show more
+            </Button>
+          </Grid>
+        )}
+      </Grid>
+    </Grid>
   );
 };
 
