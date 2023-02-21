@@ -97,7 +97,7 @@ const Timer = ({
   }, [timerTitle, totalTime, isTimerOn, timerId, sec, dispatch, projectId]);
 
   const onClickHandler = async () => {
-    if (!timerTitle) {
+    if (!timerTitle.trim()) {
       setErrMessage('Title can not be empty');
       return;
     }
