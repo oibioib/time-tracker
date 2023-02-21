@@ -12,6 +12,7 @@ import {
 } from '../../../../constants/appConstants';
 import { timeStringHelper } from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { setErrorMessage } from '../../../../store/errorHandler';
 import { addTimePeriod } from '../../../../store/statisticSlice';
 import { mainTitleTypography } from '../../../../theme/elementsStyles';
 import { TimerData } from '../../../../types/trackerInterfaces';
@@ -34,13 +35,17 @@ const ProjectView = () => {
   useEffect(() => {
     (async () => {
       if (projectId) {
-        const data = await getProjectTimers(projectId, startDate, endDate);
-        setPageTitle(data.title);
-        setTimersArr(data.timers);
-        setIsTimersData(true);
+        try {
+          const data = await getProjectTimers(projectId, startDate, endDate);
+          setPageTitle(data.title);
+          setTimersArr(data);
+          setIsTimersData(true);
+        } catch (error) {
+          dispatch(setErrorMessage("Failed to get Project's timers"));
+        }
       }
     })();
-  }, [projectId, startDate, endDate]);
+  }, [projectId, startDate, endDate, dispatch]);
 
   useEffect(() => {
     return () => {

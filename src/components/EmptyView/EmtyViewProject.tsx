@@ -6,7 +6,7 @@ const EmptyViewProject = () => {
       <Paper elevation={3}>
         <Box width="50%" mx="auto" my={2}>
           <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h3">
+            <Typography variant="h5">
               <b>Create your first task in tracker or change the period</b>
             </Typography>
           </Box>
