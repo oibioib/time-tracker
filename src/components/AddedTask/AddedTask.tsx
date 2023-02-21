@@ -110,13 +110,18 @@ const AddedTask = ({
                   }}
                 />
                 <Box>
-                  <Typography variant="body2">
-                    <b>{project?.title}</b>
+                  <Typography variant="body2" fontWeight="bold">
+                    {project?.title}
                   </Typography>
                 </Box>
               </Box>
             ) : (
-              <FolderIcon sx={{ ...iconsStyle, fontSize: 22 }} />
+              <Grid container alignItems="center">
+                <Typography component="span" variant="body2" mr={1}>
+                  Project:
+                </Typography>
+                <FolderIcon sx={{ ...iconsStyle, fontSize: 18 }} />
+              </Grid>
             )}
           </Box>
           <Menu
