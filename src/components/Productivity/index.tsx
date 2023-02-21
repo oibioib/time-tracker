@@ -52,7 +52,7 @@ const ProductivityBox = () => {
             Your productivity is {worktime}% for the selected period
           </Typography>
         </Grid>
-        <Grid item width={150}>
+        <Grid item maxHeight={400}>
           <Doughnut data={profitData} />
         </Grid>
       </Grid>
