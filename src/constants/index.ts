@@ -1,5 +1,6 @@
 import { ROUTES, TASKS_SHOWED_DEFAULT } from './appConstants';
 import DASHBOARD_NAVIGATION from './dashBoardNavigation';
+import DREAM_TEAM from './dreamTeamConstants';
 import GithubMembers from './gitHubMembers';
 import GITHUB_AUTH from './githubAuthConstants';
 import MAIN_PAGE_CARDS from './mainPageCards';
@@ -21,4 +22,5 @@ export {
   TASKS_SHOWED_DEFAULT,
   LOCAL_USER_NAME,
   LOCAL_GIT_NAME,
+  DREAM_TEAM,
 };
