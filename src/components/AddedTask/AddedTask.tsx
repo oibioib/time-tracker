@@ -75,8 +75,8 @@ const AddedTask = ({
 
   return (
     <Grid container alignItems="center">
-      <Grid item container direction="column" xs={12} md={10} gap={1}>
-        <Grid item mb={1}>
+      <Grid item container direction="column" xs={12} md={10}>
+        <Grid item>
           <Typography component="h3" variant="h6">
             {taskName}
           </Typography>
@@ -145,7 +145,7 @@ const AddedTask = ({
         item
         container
         xs={12}
-        md
+        md={2}
         alignItems="center"
         sx={{
           justifyContent: { xs: 'center', sm: 'flex-end' },

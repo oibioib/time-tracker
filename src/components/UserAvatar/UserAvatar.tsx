@@ -13,6 +13,7 @@ const UserAvatar = () => {
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
+    textAlign: 'center',
   };
 
   const avatarStyle = {

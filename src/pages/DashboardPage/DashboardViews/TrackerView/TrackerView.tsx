@@ -264,13 +264,13 @@ const TrackerView = () => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid item>
+      <Grid item container gap={1}>
         {tasksArr.length ? (
           tasksArr
             .filter((task: AddedTaskData, index: number) => index < tasksShowed)
             .map(({ id, taskName, taskStart, taskTimeSec, project }) => {
               return (
-                <Grid key={id} item xs={12} mb={1}>
+                <Grid key={id} item xs={12}>
                   <Paper elevation={0} sx={{ p: { xs: 1, sm: 2 } }}>
                     <AddedTask
                       taskName={taskName}
