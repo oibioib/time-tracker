@@ -32,7 +32,7 @@
     "subtitle": "There are only 24 hours in a day, you can`t change that, but you can spend your time usefully"
   },
   "settings": {
-    "newName": "New name",
+    "newName": "Your name",
     "successMessage": "Name is changed!"
   }
 }

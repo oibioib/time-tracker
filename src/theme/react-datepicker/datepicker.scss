@@ -726,7 +726,6 @@
   &-element {
     font-family: inherit;
     font-size: inherit;
-    padding: 4px 0 5px;
     border: 0;
     box-sizing: content-box;
     height: 1.4375em;
@@ -737,6 +736,7 @@
     border-radius: #{$main-radius}px;
     border: 0;
     outline: 0;
+    width: 190px;
   }
 
   &-light {

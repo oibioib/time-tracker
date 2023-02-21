@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import Button from '@mui/material/Button';
 
 import { updateTimer } from '../../api/serverApi';
 import { TIMER_ACTIVE } from '../../constants/serverConstants';
@@ -11,6 +11,7 @@ import {
   setTimerData,
 } from '../../store/timeTrackerSlice';
 import { PlayArrowIcon } from '../../theme/appIcons';
+import { iconsStyle } from '../../theme/elementsStyles';
 import { ProjectData } from '../../types/trackerInterfaces';
 
 interface SmallTimerProps {
@@ -61,9 +62,13 @@ const SmallTimer = ({
   };
 
   return (
-    <IconButton onClick={onClickHandler} disabled={isTimerOn}>
-      <PlayArrowIcon />
-    </IconButton>
+    <Button
+      endIcon={<PlayArrowIcon />}
+      onClick={onClickHandler}
+      disabled={isTimerOn}
+      sx={iconsStyle}>
+      Resume
+    </Button>
   );
 };
 

@@ -8,6 +8,14 @@ export const mainTitleTypography = {
   },
   mb: {
     xs: 1,
-    sm: 2,
+    sm: 4,
   },
+};
+
+export const iconsStyle = {
+  color: 'folder.main',
+  '&:hover': {
+    color: 'accent.main',
+  },
+  transition: '0.25s linear',
 };
