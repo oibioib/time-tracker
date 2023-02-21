@@ -115,13 +115,6 @@ const ProjectModal = ({
   const onClickHandler = () => {
     helperFunction(async () => {
       await createUserProject(serverUserId, projectName, salary, color);
-      dispatch(
-        setProjectToTimer({
-          projectId: defaultProjectParam.id,
-          projectTitle: projectName,
-          projectColor: color,
-        })
-      );
     });
   };
 
@@ -147,6 +140,13 @@ const ProjectModal = ({
         color
       );
     });
+    dispatch(
+      setProjectToTimer({
+        projectId: defaultProjectParam.id,
+        projectTitle: projectName,
+        projectColor: color,
+      })
+    );
   };
 
   return (
