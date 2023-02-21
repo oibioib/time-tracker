@@ -19,7 +19,6 @@ import {
 import timeStringView from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
-import { addTimePeriod } from '../../../../store/statisticSlice';
 import {
   setIsTimerOn,
   setProjectToTimer,
@@ -45,7 +44,10 @@ const TrackerView = () => {
   const onClickRef = useRef<HTMLButtonElement>(null);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
   const timerData = useAppSelector((state) => state.timeTracker);
-  const { timePeriod } = useAppSelector((state) => state.statistics);
+  const [timePeriod, setTimePeriod] = useState([
+    DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+    DEFAULT_END_TODAY_TIMESTAMP,
+  ]);
   const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -169,17 +171,6 @@ const TrackerView = () => {
     }
   }, [serverUserId, dispatch, timerData.previousTimeStamp]);
 
-  useEffect(() => {
-    return () => {
-      dispatch(
-        addTimePeriod([
-          DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
-          DEFAULT_END_TODAY_TIMESTAMP,
-        ])
-      );
-    };
-  }, [dispatch]);
-
   if (!isTimersData) {
     return <Box> </Box>;
   }
@@ -251,7 +242,7 @@ const TrackerView = () => {
           gap: 2,
         }}>
         <Grid item sx={{}}>
-          <CalendarStatistics />
+          <CalendarStatistics setTimePeriod={setTimePeriod} />
         </Grid>
         <Grid item textAlign="right">
           <Typography sx={{ typography: { xs: 'body2', md: 'body1' } }}>

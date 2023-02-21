@@ -8,7 +8,7 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
@@ -31,7 +31,6 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import {
-  addTimePeriod,
   getDataInterval,
   getTimersTime,
 } from '../../../../store/statisticSlice';
@@ -58,9 +57,11 @@ const StatisticsView = () => {
     (state) => state.statistics.getDataIntervalError
   );
 
-  const statisticsValueY = useAppSelector(
-    (state) => state.statistics.timePeriod
-  );
+  const [statisticsValueY, setStatisticsValueY] = useState([
+    DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+    DEFAULT_END_TODAY_TIMESTAMP,
+  ]);
+
   const rezStartDate = statisticsValueY[0];
   const rezEndDate = statisticsValueY[1];
 
@@ -111,17 +112,6 @@ const StatisticsView = () => {
     ],
   };
 
-  useEffect(() => {
-    return () => {
-      dispatch(
-        addTimePeriod([
-          DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
-          DEFAULT_END_TODAY_TIMESTAMP,
-        ])
-      );
-    };
-  }, [dispatch]);
-
   return (
     <Grid container direction="column" gap={2}>
       <Typography component="h1" sx={mainTitleTypography}>
@@ -130,7 +120,7 @@ const StatisticsView = () => {
 
       <Grid item container direction="column" gap={2}>
         <Grid item container justifyContent="center">
-          <CalendarStatistics />
+          <CalendarStatistics setTimePeriod={setStatisticsValueY} />
         </Grid>
 
         {intervalTotalData.length ? (

@@ -11,15 +11,17 @@ import {
   DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
 } from '../../../../constants/appConstants';
 import { timeStringHelper } from '../../../../helpers/timeString';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { useAppDispatch } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
-import { addTimePeriod } from '../../../../store/statisticSlice';
 import { mainTitleTypography } from '../../../../theme/elementsStyles';
 import { TimerData } from '../../../../types/trackerInterfaces';
 
 const ProjectView = () => {
   const { projectId } = useParams();
-  const { timePeriod } = useAppSelector((state) => state.statistics);
+  const [timePeriod, setTimePeriod] = useState([
+    DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
+    DEFAULT_END_TODAY_TIMESTAMP,
+  ]);
   const [timersArr, setTimersArr] = useState<TimerData[]>([]);
   const [isTimersData, setIsTimersData] = useState(false);
   const [startDate, endDate] = timePeriod;
@@ -47,17 +49,6 @@ const ProjectView = () => {
     })();
   }, [projectId, startDate, endDate, dispatch]);
 
-  useEffect(() => {
-    return () => {
-      dispatch(
-        addTimePeriod([
-          DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
-          DEFAULT_END_TODAY_TIMESTAMP,
-        ])
-      );
-    };
-  }, [dispatch]);
-
   if (!isTimersData) {
     return <Box> </Box>;
   }
@@ -71,7 +62,7 @@ const ProjectView = () => {
         Total Time spend in period: {timeStringTotal}
       </Typography>
       <Grid container gap={2}>
-        <CalendarStatistics />
+        <CalendarStatistics setTimePeriod={setTimePeriod} />
         {timersArr.length ? (
           <Grid container mt={1}>
             {timersArr.map(({ id, startTime, title, totalTime }: TimerData) => {
