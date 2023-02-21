@@ -94,7 +94,6 @@ const StatisticsView = () => {
         data: intervalTotalData.map((data) =>
           convertationToMin(data.totalTime)
         ),
-        // backgroundColor: 'rgba(170, 135, 245, 1)',
         backgroundColor: palette.accent,
       },
     ],
@@ -105,7 +104,6 @@ const StatisticsView = () => {
     datasets: [
       {
         data: intervalData.map((data) => convertationToMin(data.totalTime)),
-        // backgroundColor: intervalData.map(() => generateColor()),
         backgroundColor: intervalData.map(() => palette.accent),
       },
     ],
@@ -211,10 +209,6 @@ const StatisticsView = () => {
             </Grid>
           </Paper>
         ) : null}
-
-        {intervalTotalData.length || intervalData.length ? null : (
-          <EmptyViewStatistic />
-        )}
       </Grid>
     </Grid>
   );
