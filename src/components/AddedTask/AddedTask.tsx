@@ -161,6 +161,8 @@ const AddedTask = ({
               timerId={id}
               totalTime={taskTimeSec}
               project={project}
+              refreshPage={refreshPage}
+              setRefreshPage={setRefreshPage}
             />
           </Box>
         </Box>
