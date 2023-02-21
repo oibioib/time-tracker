@@ -38,7 +38,7 @@ const SettingsView = () => {
       setErrMessage('');
     } else {
       setInvalid(true);
-      setErrMessage('The name can not be empty');
+      setErrMessage(`${t('settings.errorMessage')}`);
     }
   };
 

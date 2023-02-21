@@ -33,6 +33,7 @@
   },
   "settings": {
     "newName": "Ваше имя",
-    "successMessage": "Имя изменено!"
+    "successMessage": "Имя изменено!",
+    "errorMessage": "Имя не может быть пустым"
   }
 }
