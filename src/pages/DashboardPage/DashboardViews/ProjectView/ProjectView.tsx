@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import { Box, Grid, Paper, Typography } from '@mui/material';
 
 import { getProjectTimers } from '../../../../api/serverApi';
+import EmptyViewProject from '../../../../components/EmptyView/EmtyViewProject';
 import CalendarStatistics from '../../../../components/SelectStatistics';
 import {
   DEFAULT_END_TODAY_TIMESTAMP,
   DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
 } from '../../../../constants/appConstants';
+import { timeStringHelper } from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { addTimePeriod } from '../../../../store/statisticSlice';
 import { mainTitleTypography } from '../../../../theme/elementsStyles';
@@ -20,14 +20,24 @@ const ProjectView = () => {
   const { projectId } = useParams();
   const { timePeriod } = useAppSelector((state) => state.statistics);
   const [timersArr, setTimersArr] = useState<TimerData[]>([]);
+  const [isTimersData, setIsTimersData] = useState(false);
   const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
+  const [pageTitle, setPageTitle] = useState('');
+  const timeStringTotal = timeStringHelper(
+    timersArr.reduce((acc, cur) => {
+      const sum = acc + +cur.totalTime;
+      return sum;
+    }, 0)
+  );
 
   useEffect(() => {
     (async () => {
       if (projectId) {
         const data = await getProjectTimers(projectId, startDate, endDate);
-        setTimersArr(data);
+        setPageTitle(data.title);
+        setTimersArr(data.timers);
+        setIsTimersData(true);
       }
     })();
   }, [projectId, startDate, endDate]);
@@ -43,48 +53,61 @@ const ProjectView = () => {
     };
   }, [dispatch]);
 
+  if (!isTimersData) {
+    return <Box> </Box>;
+  }
+
   return (
     <Grid container direction="column">
       <Typography component="h1" sx={mainTitleTypography}>
-        Имя проекта (нужно добавить) Time spend пересчитать
+        {pageTitle}
+      </Typography>
+      <Typography component="h2" my={2}>
+        Total Time spend in period: {timeStringTotal}
       </Typography>
       <Grid container gap={2}>
         <CalendarStatistics />
-        <Grid container mt={1}>
-          {timersArr.map(({ id, startTime, title, totalTime }: TimerData) => {
-            const startingDate = new Date(+startTime);
-            return (
-              <Grid key={id} item xs={12} mb={1}>
-                <Paper elevation={0} sx={{ p: { xs: 1, sm: 2 } }}>
-                  <Grid
-                    item
-                    container
-                    direction="column"
-                    xs={12}
-                    md={10}
-                    gap={1}>
-                    <Grid item mb={1}>
-                      <Typography component="h3" variant="h6">
-                        {title}
-                      </Typography>
+        {timersArr.length ? (
+          <Grid container mt={1}>
+            {timersArr.map(({ id, startTime, title, totalTime }: TimerData) => {
+              const startingDate = new Date(+startTime);
+              return (
+                <Grid key={id} item xs={12} mb={1}>
+                  <Paper elevation={0} sx={{ p: { xs: 1, sm: 2 } }}>
+                    <Grid
+                      item
+                      container
+                      direction="column"
+                      xs={12}
+                      md={10}
+                      gap={1}>
+                      <Grid item mb={1}>
+                        <Typography component="h3" variant="h6">
+                          {title}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="body2">
+                          {startingDate.toLocaleDateString('en-US', {
+                            weekday: 'short',
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          })}{' '}
+                          | Time spend: {timeStringHelper(+totalTime)}
+                        </Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <Typography variant="body2">
-                        {startingDate.toLocaleDateString('en-US', {
-                          weekday: 'short',
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric',
-                        })}{' '}
-                        | Time spend: {totalTime}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Paper>
-              </Grid>
-            );
-          })}
-        </Grid>
+                  </Paper>
+                </Grid>
+              );
+            })}
+          </Grid>
+        ) : (
+          <Grid container mt={1}>
+            <EmptyViewProject />
+          </Grid>
+        )}
       </Grid>
     </Grid>
   );
