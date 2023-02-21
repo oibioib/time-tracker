@@ -171,7 +171,12 @@ const Timer = ({
       <IconButton
         onClick={onClickHandler}
         ref={onClickRef}
-        sx={{ color: 'accent.main', '& svg': { fontSize: '2rem' } }}>
+        sx={{
+          color: 'accent.main',
+          '& svg': { fontSize: '2rem' },
+          backgroundColor: 'play.main',
+          transition: '0.25s ease-in-out',
+        }}>
         {isTimerOn ? <StopIcon /> : <PlayArrowIcon />}
       </IconButton>
     </Grid>
