@@ -4,20 +4,22 @@ import { NavLink } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 
 import { DASHBOARD_NAVIGATION } from '../../constants';
+import palette from '../../theme/palette.module.scss';
 import {
   SidebarButton,
   sidebarButtonTypography,
 } from '../../theme/styledComponents/SidebarButton';
 import UserAvatar from '../UserAvatar';
 
-const activeStyle = {
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  borderRadius: '10px',
+const navStyle = {
+  display: 'block',
+  width: '100%',
   textDecoration: 'none',
+  borderRadius: `${palette.mainRadius}px`,
 };
 
-const inactiveStyle = {
-  textDecoration: 'none',
+const activeNavStyle = {
+  backgroundColor: palette.primaryMainDarken,
 };
 
 const DashboardSidebar = () => {
@@ -32,7 +34,9 @@ const DashboardSidebar = () => {
           <NavLink
             key={item.label}
             to={`${item.route}`}
-            style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
+            style={({ isActive }) =>
+              isActive ? { ...navStyle, ...activeNavStyle } : navStyle
+            }
             end>
             <SidebarButton>
               {item.icon}
