@@ -38,7 +38,7 @@ const ProjectView = () => {
         try {
           const data = await getProjectTimers(projectId, startDate, endDate);
           setPageTitle(data.title);
-          setTimersArr(data);
+          setTimersArr(data.timers);
           setIsTimersData(true);
         } catch (error) {
           dispatch(setErrorMessage("Failed to get Project's timers"));

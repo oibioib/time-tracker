@@ -7,6 +7,7 @@ import { createUserProject, updateUserProject } from '../../api/serverApi';
 import { DEFAULT_COLOR } from '../../constants/appConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
+import { setProjectToTimer } from '../../store/timeTrackerSlice';
 import { CloseIcon } from '../../theme/appIcons';
 import { ProjectData } from '../../types/trackerInterfaces';
 
@@ -114,6 +115,13 @@ const ProjectModal = ({
   const onClickHandler = () => {
     helperFunction(async () => {
       await createUserProject(serverUserId, projectName, salary, color);
+      dispatch(
+        setProjectToTimer({
+          projectId: defaultProjectParam.id,
+          projectTitle: projectName,
+          projectColor: color,
+        })
+      );
     });
   };
 
