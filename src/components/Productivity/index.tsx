@@ -1,9 +1,8 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 
-import { ReactComponent as ProductivityLogo } from '../../assets/user-hourglass-svgrepo-com.svg';
 import { useAppSelector } from '../../hooks/hooks';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -26,7 +25,7 @@ const ProductivityBox = () => {
     100 - Number(percent),
     ((sumTotal * 100) / intervalTime).toFixed(3),
   ];
-  const label = ['', 'workTime,%'];
+  const label = ['Time out of work, %', 'Work time, %'];
 
   const profitData = {
     labels: label,
@@ -34,26 +33,30 @@ const ProductivityBox = () => {
       {
         data: [allTime, worktime],
         backgroundColor: ['rgba(111, 107, 117, 1)', 'rgba(19, 108, 232, 1)'],
+        borderWidth: 1,
       },
     ],
   };
 
   return (
-    <Box mt={2}>
-      <Paper elevation={3}>
-        <Grid container mx="auto" my={2} justifyContent="space-between">
-          <Grid item>
-            <ProductivityLogo height={100} width="50%" />
-            <Typography variant="h6" ml={1}>
-              <b>Уour productivity is {worktime}% for the selected period</b>
-            </Typography>
-          </Grid>
-          <Grid item width={150}>
-            <Doughnut data={profitData} />
-          </Grid>
+    <Paper elevation={0}>
+      <Grid
+        container
+        mx="auto"
+        my={2}
+        alignItems="center"
+        justifyContent="center"
+        direction="column">
+        <Grid item>
+          <Typography variant="body1" mb={2} fontWeight="bold">
+            Your productivity is {worktime}% for the selected period
+          </Typography>
         </Grid>
-      </Paper>
-    </Box>
+        <Grid item width={150}>
+          <Doughnut data={profitData} />
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 

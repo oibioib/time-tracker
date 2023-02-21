@@ -13,6 +13,7 @@ import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 
 import { Grid, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper/Paper';
 
 import EmptyViewStatistic from '../../../../components/EmptyView/EmptyViewStatistic';
 import ProductivityBox from '../../../../components/Productivity';
@@ -25,7 +26,6 @@ import {
 import {
   convertationToDate,
   convertationToMin,
-  generateColor,
   options,
 } from '../../../../helpers/statisticsHelpers';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
@@ -36,6 +36,7 @@ import {
   getTimersTime,
 } from '../../../../store/statisticSlice';
 import { mainTitleTypography } from '../../../../theme/elementsStyles';
+import palette from '../../../../theme/palette.module.scss';
 
 ChartJS.register(
   CategoryScale,
@@ -93,7 +94,8 @@ const StatisticsView = () => {
         data: intervalTotalData.map((data) =>
           convertationToMin(data.totalTime)
         ),
-        backgroundColor: 'rgba(170, 135, 245, 1)',
+        // backgroundColor: 'rgba(170, 135, 245, 1)',
+        backgroundColor: palette.accent,
       },
     ],
   };
@@ -103,7 +105,8 @@ const StatisticsView = () => {
     datasets: [
       {
         data: intervalData.map((data) => convertationToMin(data.totalTime)),
-        backgroundColor: intervalData.map(() => generateColor()),
+        // backgroundColor: intervalData.map(() => generateColor()),
+        backgroundColor: intervalData.map(() => palette.accent),
       },
     ],
   };
@@ -125,36 +128,94 @@ const StatisticsView = () => {
         {t(`dashboard.statistics`)}
       </Typography>
 
-      <Grid item container justifyContent="space-around">
-        <CalendarStatistics />
+      <Grid item container direction="column" gap={2}>
+        <Grid item container justifyContent="center">
+          <CalendarStatistics />
+        </Grid>
+
+        {intervalTotalData.length ? (
+          <>
+            <Paper
+              elevation={0}
+              sx={{
+                maxWidth: 'auto',
+              }}>
+              <Grid
+                item
+                container
+                xs
+                justifyContent="center"
+                direction="column"
+                sx={{ p: { xs: 1, sm: 2 } }}
+                maxWidth={800}>
+                <Grid item>
+                  <Typography
+                    textAlign="center"
+                    component="h2"
+                    variant="body1"
+                    fontWeight="bold">
+                    Your WorkTime on day for selected period
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  justifyContent="center"
+                  maxHeight={400}
+                  sx={{ py: { xs: 1, sm: 2 } }}>
+                  <Bar data={totalTimeData} options={options} />
+                </Grid>
+              </Grid>
+            </Paper>
+            <Paper
+              elevation={0}
+              sx={{
+                maxWidth: 'auto',
+              }}>
+              <ProductivityBox />
+            </Paper>
+          </>
+        ) : null}
+
+        {intervalData.length ? (
+          <Paper
+            elevation={0}
+            sx={{
+              maxWidth: 'auto',
+            }}>
+            <Grid
+              item
+              container
+              xs
+              justifyContent="center"
+              direction="column"
+              sx={{ p: { xs: 1, sm: 2 } }}
+              maxWidth={800}>
+              <Grid item>
+                <Typography
+                  textAlign="center"
+                  component="h2"
+                  variant="body1"
+                  fontWeight="bold">
+                  Time for each task for selected period
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                container
+                justifyContent="center"
+                maxHeight={400}
+                sx={{ py: { xs: 1, sm: 2 } }}>
+                <Bar data={selectedData} options={options} />
+              </Grid>
+            </Grid>
+          </Paper>
+        ) : null}
+
+        {intervalTotalData.length || intervalData.length ? null : (
+          <EmptyViewStatistic />
+        )}
       </Grid>
-
-      {intervalData.length ? (
-        <Grid item container mt={2}>
-          <Grid item xs={11} sm={12} maxHeight={400}>
-            <Typography textAlign="center">
-              Time for each task for selected period
-            </Typography>
-            <Bar data={selectedData} options={options} />
-          </Grid>
-        </Grid>
-      ) : null}
-
-      {intervalTotalData.length ? (
-        <Grid item container mt={2}>
-          <Grid item xs={11} sm={12} maxHeight={400}>
-            <Typography textAlign="center">
-              Your WorkTime on day for selected period{' '}
-            </Typography>
-            <Bar data={totalTimeData} options={options} />
-          </Grid>
-          <ProductivityBox />
-        </Grid>
-      ) : null}
-
-      {intervalTotalData.length || intervalData.length ? null : (
-        <EmptyViewStatistic />
-      )}
     </Grid>
   );
 };
