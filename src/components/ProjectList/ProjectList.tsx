@@ -32,7 +32,7 @@ const ProjectList = () => {
       dispatch(
         setProjectToTimer({
           projectId: result.ariaLabel,
-          projectTitle: result.innerText,
+          projectTitle: result.dataset.title,
           projectColor: result.dataset.color,
         })
       );
@@ -96,7 +96,8 @@ const ProjectList = () => {
               aria-label={id}
               key={id}
               onClick={handleClose}
-              data-color={color}>
+              data-color={color}
+              data-title={title}>
               {title || 'No Project'}
             </MenuItem>
           ))}

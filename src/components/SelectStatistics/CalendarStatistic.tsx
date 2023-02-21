@@ -12,14 +12,16 @@ import {
   DEFAULT_STARTDAY_TODAY,
   DURATION_OF_DAY,
 } from '../../constants/appConstants';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { addTimePeriod } from '../../store/statisticSlice';
+import { useAppSelector } from '../../hooks/hooks';
 import '../../theme/react-datepicker/datepicker.scss';
 
 registerLocale('ru', ru);
 
-const CalendarStatistics = () => {
-  const dispatch = useAppDispatch();
+interface CalendarStatisticsProps {
+  setTimePeriod: React.Dispatch<React.SetStateAction<number[]>>;
+}
+
+const CalendarStatistics = ({ setTimePeriod }: CalendarStatisticsProps) => {
   const { i18n } = useTranslation();
   const themeMod = useAppSelector((state) => state.themeMode.themeColor);
   const [startDate, setStartDate] = useState<Date | null>(
@@ -47,7 +49,7 @@ const CalendarStatistics = () => {
   };
 
   const handleCalendarClose = () => {
-    dispatch(addTimePeriod([rezStartDate, rezEndDate]));
+    setTimePeriod([rezStartDate, rezEndDate]);
   };
 
   return (

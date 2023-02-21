@@ -19,6 +19,8 @@ interface SmallTimerProps {
   timerTitle: string;
   totalTime: number;
   project: ProjectData;
+  setRefreshPage: React.Dispatch<React.SetStateAction<boolean>>;
+  refreshPage: boolean;
 }
 
 const SmallTimer = ({
@@ -26,6 +28,8 @@ const SmallTimer = ({
   timerTitle,
   totalTime,
   project,
+  setRefreshPage,
+  refreshPage,
 }: SmallTimerProps) => {
   const isTimerOn = useAppSelector((state) => state.timeTracker.isTimerOn);
   const dispatch = useAppDispatch();
@@ -55,6 +59,7 @@ const SmallTimer = ({
         timerId,
         project?.id
       );
+      setRefreshPage(!refreshPage);
     } catch (error) {
       dispatch(setErrorMessage('Failed to resume time tracker'));
     }
