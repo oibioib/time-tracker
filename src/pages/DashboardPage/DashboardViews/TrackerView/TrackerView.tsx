@@ -131,7 +131,7 @@ const TrackerView = () => {
         }
       })();
     }
-  }, [refreshPage, serverUserId, dispatch, tasksShowed, startDate, endDate]);
+  }, [refreshPage, serverUserId, dispatch, startDate, endDate]);
 
   useEffect(() => {
     if (serverUserId && !timerData.previousTimeStamp) {

@@ -121,6 +121,7 @@ const typography: TypographyOptions = {
   },
   h3: {
     fontWeight: 600,
+    fontSize: 28,
   },
   h4: {
     fontWeight: 600,

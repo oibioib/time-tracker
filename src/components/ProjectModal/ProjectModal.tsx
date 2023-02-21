@@ -7,6 +7,7 @@ import { createUserProject, updateUserProject } from '../../api/serverApi';
 import { DEFAULT_COLOR } from '../../constants/appConstants';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setErrorMessage } from '../../store/errorHandler';
+import { setProjectToTimer } from '../../store/timeTrackerSlice';
 import { CloseIcon } from '../../theme/appIcons';
 import { ProjectData } from '../../types/trackerInterfaces';
 
@@ -67,6 +68,7 @@ const ProjectModal = ({
   const dispatch = useAppDispatch();
   const { projectsArr } = useAppSelector((state) => state.projectArr);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
+  const defaultParam = { id: '', title: '', color: DEFAULT_COLOR, salary: '' };
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(event.target.value);
@@ -94,7 +96,7 @@ const ProjectModal = ({
       setErrMessage('The name is already existed');
       return;
     }
-    if (projectName === '') {
+    if (projectName.trim() === '') {
       setErrMessage('The name can not be empty');
       return;
     }
@@ -106,28 +108,25 @@ const ProjectModal = ({
       }
     }
     setRefreshPage(!refreshPage);
-    setDefaultProjectParam({
-      id: '',
-      title: '',
-      color: DEFAULT_COLOR,
-      salary: '',
-    });
+    setDefaultProjectParam(defaultParam);
     setIsOpen(false);
   };
 
   const onClickHandler = () => {
     helperFunction(async () => {
       await createUserProject(serverUserId, projectName, salary, color);
+      dispatch(
+        setProjectToTimer({
+          projectId: defaultProjectParam.id,
+          projectTitle: projectName,
+          projectColor: color,
+        })
+      );
     });
   };
 
   const onCloseHandler = () => {
-    setDefaultProjectParam({
-      id: '',
-      title: '',
-      color: '',
-      salary: '',
-    });
+    setDefaultProjectParam(defaultParam);
     setIsOpen(false);
   };
 

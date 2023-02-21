@@ -5,3 +5,8 @@ const timeStringView = (sec: number, min: number, hours: number) => {
 };
 
 export default timeStringView;
+
+export const timeStringHelper = (totalTime: number) => {
+  const day = new Date(totalTime);
+  return timeStringView(day.getSeconds(), day.getMinutes(), day.getUTCHours());
+};
