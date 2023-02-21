@@ -67,6 +67,7 @@ const ProjectModal = ({
   const dispatch = useAppDispatch();
   const { projectsArr } = useAppSelector((state) => state.projectArr);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
+  const defaultParam = { id: '', title: '', color: DEFAULT_COLOR, salary: '' };
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(event.target.value);
@@ -94,7 +95,7 @@ const ProjectModal = ({
       setErrMessage('The name is already existed');
       return;
     }
-    if (projectName === '') {
+    if (projectName.trim() === '') {
       setErrMessage('The name can not be empty');
       return;
     }
@@ -106,12 +107,7 @@ const ProjectModal = ({
       }
     }
     setRefreshPage(!refreshPage);
-    setDefaultProjectParam({
-      id: '',
-      title: '',
-      color: DEFAULT_COLOR,
-      salary: '',
-    });
+    setDefaultProjectParam(defaultParam);
     setIsOpen(false);
   };
 
@@ -122,12 +118,7 @@ const ProjectModal = ({
   };
 
   const onCloseHandler = () => {
-    setDefaultProjectParam({
-      id: '',
-      title: '',
-      color: '',
-      salary: '',
-    });
+    setDefaultProjectParam(defaultParam);
     setIsOpen(false);
   };
 
