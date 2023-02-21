@@ -20,7 +20,7 @@ const ProductivityBox = () => {
     0
   );
   const intervalTime = rezEndDate - rezStartDate;
-  const percent = ((sumTotal * 100) / intervalTime).toFixed(1);
+  const percent = ((sumTotal * 100) / intervalTime).toFixed(3);
   const [allTime, worktime] = [
     100 - Number(percent),
     ((sumTotal * 100) / intervalTime).toFixed(3),
