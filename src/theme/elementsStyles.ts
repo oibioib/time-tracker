@@ -11,3 +11,11 @@ export const mainTitleTypography = {
     sm: 2,
   },
 };
+
+export const iconsStyle = {
+  color: 'folder.main',
+  '&:hover': {
+    color: 'accent.main',
+  },
+  transition: '0.25s linear',
+};

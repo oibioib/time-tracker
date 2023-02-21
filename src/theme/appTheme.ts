@@ -9,12 +9,16 @@ declare module '@mui/material/styles/createPalette' {
     sidebar: { main: string };
     third: { main: string };
     accent: { main: string };
+    folder: { main: string; hover: string };
+    block: { main: string };
   }
 
   interface PaletteOptions {
     sidebar?: { main: string };
     third?: { main: string };
     accent?: { main: string };
+    folder?: { main: string; hover: string };
+    block?: { main: string };
   }
 }
 
@@ -46,6 +50,13 @@ export const lightTheme: ThemeOptions = {
     accent: {
       main: palette.accent,
     },
+    folder: {
+      main: palette.folderIcoColor,
+      hover: palette.folderIcoColorHover,
+    },
+    block: {
+      main: palette.blockBgLight,
+    },
   },
 };
 
@@ -76,6 +87,13 @@ export const darkTheme: ThemeOptions = {
     },
     accent: {
       main: palette.accent,
+    },
+    folder: {
+      main: palette.folderIcoColor,
+      hover: palette.folderIcoColorHover,
+    },
+    block: {
+      main: palette.blockBgDark,
     },
   },
 };
