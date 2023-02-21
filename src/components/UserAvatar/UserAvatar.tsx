@@ -7,7 +7,14 @@ const UserAvatar = () => {
   const userData = useAppSelector((state) => state.gitHubFetch);
   const gitHubName = useAppSelector((state) => state.gitHubFetch.gitHubName);
 
-  const nameStyle = { display: { xs: 'none', lg: 'block' } };
+  const nameStyle = {
+    display: { xs: 'none', lg: 'block' },
+    width: '100%',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  };
+
   const avatarStyle = {
     width: { xs: 25, sm: 30, md: 40 },
     height: { xs: 25, sm: 30, md: 40 },
@@ -31,25 +38,11 @@ const UserAvatar = () => {
         src={`${userData && userData.avatar_url}`}
       />
       {newUserName ? (
-        <Typography
-          variant="body1"
-          sx={{
-            ...nameStyle,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-          }}>
+        <Typography variant="body1" sx={nameStyle}>
           {newUserName}
         </Typography>
       ) : (
-        <Typography
-          variant="body1"
-          sx={{
-            ...nameStyle,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-          }}>
+        <Typography variant="body1" sx={nameStyle}>
           {userData && gitHubName}
         </Typography>
       )}
