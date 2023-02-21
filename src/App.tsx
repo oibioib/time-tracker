@@ -9,12 +9,12 @@ import PageLayout from './layouts/PageLayout/PageLayout';
 import { DashboardPage, ErrorPage, LoginPage, MainPage } from './pages';
 import {
   ClientsView,
+  ProjectView,
   ProjectsView,
   SettingsView,
   StatisticsView,
   TrackerView,
 } from './pages/DashboardPage/DashboardViews';
-import ProjectsTimer from './pages/DashboardPage/DashboardViews/ProjectsView/ProjectsTimer/ProjectsTimer';
 import Theme from './theme/appTheme';
 
 const router = createBrowserRouter([
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
           },
           {
             path: `${ROUTES.PROJECTS_VIEW}/${ROUTES.PROJECTS_ID}`,
-            element: <ProjectsTimer />,
+            element: <ProjectView />,
           },
           { path: ROUTES.CLIENTS_VIEW, element: <ClientsView /> },
           {
