@@ -16,8 +16,6 @@ import {
 import { setProjectArr } from '../../store/projectSlice';
 import { setServerUserLogin } from '../../store/serverUserDataSlice';
 
-import './DashboardPage.css';
-
 const DashboardPage = () => {
   const userData = useAppSelector((state) => state.gitHubFetch);
   const dispatch = useAppDispatch();
