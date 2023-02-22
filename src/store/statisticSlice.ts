@@ -1,13 +1,9 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import {
   getUserTimersInterval,
   getUserTotalTimeInterval,
 } from '../api/statisticsApi';
-import {
-  DEFAULT_END_TODAY_TIMESTAMP,
-  DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
-} from '../constants/appConstants';
 
 export interface timerData {
   id: string;
@@ -24,7 +20,6 @@ export interface timersDataTotal {
 }
 
 export interface statisticsState {
-  timePeriod: [number, number];
   getDataIntervalStatus: string;
   getDataIntervalError: string;
   getTimersTimeStatus: string;
@@ -39,10 +34,6 @@ const initialState: statisticsState = {
   getDataIntervalError: '',
   getTimersTimeStatus: '',
   getTimersTimeError: '',
-  timePeriod: [
-    DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
-    DEFAULT_END_TODAY_TIMESTAMP,
-  ],
   dataTotalTime: [],
 };
 
@@ -59,11 +50,7 @@ export const getTimersTime = createAsyncThunk(
 export const statisticsSlice = createSlice({
   name: 'statistics',
   initialState,
-  reducers: {
-    addTimePeriod: (state, action: PayloadAction<[number, number]>) => {
-      state.timePeriod = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getDataInterval.pending, (state) => {
@@ -99,7 +86,5 @@ export const statisticsSlice = createSlice({
       });
   },
 });
-
-export const { addTimePeriod } = statisticsSlice.actions;
 
 export default statisticsSlice.reducer;
