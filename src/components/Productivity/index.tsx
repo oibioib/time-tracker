@@ -7,12 +7,13 @@ import { useAppSelector } from '../../hooks/hooks';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const ProductivityBox = () => {
+interface IValueY {
+  statisticsValueY: number[];
+}
+
+const ProductivityBox = ({ statisticsValueY }: IValueY) => {
   const intervalTotalData = useAppSelector(
     (state) => state.statistics.dataTotalTime
-  );
-  const statisticsValueY = useAppSelector(
-    (state) => state.statistics.timePeriod
   );
   const [rezStartDate, rezEndDate] = statisticsValueY;
   const sumTotal = intervalTotalData.reduce(
@@ -20,10 +21,10 @@ const ProductivityBox = () => {
     0
   );
   const intervalTime = rezEndDate - rezStartDate;
-  const percent = ((sumTotal * 100) / intervalTime).toFixed(3);
+  const percent = ((sumTotal * 100) / intervalTime).toFixed(2);
   const [allTime, worktime] = [
     100 - Number(percent),
-    ((sumTotal * 100) / intervalTime).toFixed(3),
+    ((sumTotal * 100) / intervalTime).toFixed(2),
   ];
   const label = ['Time out of work, %', 'Work time, %'];
 
