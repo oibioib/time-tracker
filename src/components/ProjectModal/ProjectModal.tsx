@@ -73,8 +73,6 @@ const ProjectModal = ({
     (state) => state.timeTracker.projectId
   );
 
-  console.log(chosenProjectId);
-
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(event.target.value);
   };
