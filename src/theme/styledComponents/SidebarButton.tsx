@@ -13,7 +13,7 @@ const SidebarButton = muiStyled(Button)(({ theme }) => {
     },
     display: 'flex',
     justifyContent: 'flex-start',
-    '&[aria-current="page"]': {
+    '&.active': {
       background: theme.palette.primary.dark,
     },
   };

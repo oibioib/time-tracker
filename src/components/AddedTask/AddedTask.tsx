@@ -76,7 +76,7 @@ const AddedTask = ({
   return (
     <Grid container alignItems="center">
       <Grid item container direction="column" xs={12} md={10}>
-        <Grid item>
+        <Grid item mb={1}>
           <Typography component="h3" variant="h6">
             {taskName}
           </Typography>

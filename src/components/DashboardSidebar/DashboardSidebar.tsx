@@ -4,23 +4,11 @@ import { NavLink } from 'react-router-dom';
 import { Grid, Typography } from '@mui/material';
 
 import { DASHBOARD_NAVIGATION } from '../../constants';
-import palette from '../../theme/palette.module.scss';
 import {
   SidebarButton,
   sidebarButtonTypography,
 } from '../../theme/styledComponents/SidebarButton';
 import UserAvatar from '../UserAvatar';
-
-const navStyle = {
-  display: 'block',
-  width: '100%',
-  textDecoration: 'none',
-  borderRadius: `${palette.mainRadius}px`,
-};
-
-const activeNavStyle = {
-  backgroundColor: palette.primaryMainDarken,
-};
 
 const DashboardSidebar = () => {
   const { t } = useTranslation();
@@ -31,20 +19,16 @@ const DashboardSidebar = () => {
       </Grid>
       <Grid item container sx={{ gap: 1, p: { xs: 1, sm: 2 } }}>
         {DASHBOARD_NAVIGATION.map((item) => (
-          <NavLink
+          <SidebarButton
             key={item.label}
+            component={NavLink}
             to={`${item.route}`}
-            style={({ isActive }) =>
-              isActive ? { ...navStyle, ...activeNavStyle } : navStyle
-            }
             end>
-            <SidebarButton>
-              {item.icon}
-              <Typography sx={sidebarButtonTypography}>
-                {t(`dashboard.${item.label}`)}
-              </Typography>
-            </SidebarButton>
-          </NavLink>
+            {item.icon}
+            <Typography sx={sidebarButtonTypography}>
+              {t(`dashboard.${item.label}`)}
+            </Typography>
+          </SidebarButton>
         ))}
       </Grid>
     </Grid>
