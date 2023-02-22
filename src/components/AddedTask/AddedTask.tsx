@@ -83,7 +83,7 @@ const AddedTask = ({
         </Grid>
         <Grid item>
           <Typography variant="body2">
-            {taskStart} | Time spend: {timeString}
+            {taskStart} | Time spent: {timeString}
           </Typography>
         </Grid>
         <Grid item>

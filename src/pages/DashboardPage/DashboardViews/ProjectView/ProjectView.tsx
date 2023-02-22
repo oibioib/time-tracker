@@ -58,11 +58,26 @@ const ProjectView = () => {
       <Typography component="h1" sx={mainTitleTypography}>
         {pageTitle}
       </Typography>
-      <Typography component="h2" my={2}>
-        Total Time spend in period: {timeStringTotal}
-      </Typography>
+      <Grid
+        item
+        container
+        alignItems="center"
+        mt={1}
+        mb={2}
+        sx={{
+          justifyContent: { xs: 'center', sm: 'space-between' },
+          gap: 2,
+        }}>
+        <Grid item sx={{}}>
+          <CalendarStatistics setTimePeriod={setTimePeriod} />
+        </Grid>
+        <Grid item textAlign="right">
+          <Typography component="h2">
+            Total time spent in period: <b>{timeStringTotal}</b>
+          </Typography>
+        </Grid>
+      </Grid>
       <Grid container gap={2}>
-        <CalendarStatistics setTimePeriod={setTimePeriod} />
         {timersArr.length ? (
           <Grid container mt={1}>
             {timersArr.map(({ id, startTime, title, totalTime }: TimerData) => {
@@ -89,8 +104,8 @@ const ProjectView = () => {
                             year: 'numeric',
                             month: 'short',
                             day: 'numeric',
-                          })}{' '}
-                          | Time spend: {timeStringHelper(+totalTime)}
+                          })}
+                          | Time spent: {timeStringHelper(+totalTime)}
                         </Typography>
                       </Grid>
                     </Grid>
