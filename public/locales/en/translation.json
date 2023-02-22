@@ -44,5 +44,14 @@
       "createTimer": "If you don't have timers yet, simple your first one.",
       "createTimerMore": "If you don't have timers yet, simple your first one. Or select a different time period."
     }
+  },
+  "statistics": {
+    "graphTitleForDay": "WorkTime on day for the selected period",
+    "graphTitleProductivityStart": "Productivity is",
+    "graphTitleProductivityEnd": "for the selected period",
+    "graphTitleForTasks": "Time for each task for the selected period",
+    "min": "min",
+    "titleAllTime": "Time out of work",
+    "titleWorkTime": "Work time"
   }
 }

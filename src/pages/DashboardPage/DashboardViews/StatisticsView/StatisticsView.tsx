@@ -141,7 +141,7 @@ const StatisticsView = () => {
                     component="h2"
                     variant="body1"
                     fontWeight="bold">
-                    Your WorkTime on day for selected period
+                    {t('statistics.graphTitleForDay')}
                   </Typography>
                 </Grid>
                 <Grid
@@ -184,7 +184,7 @@ const StatisticsView = () => {
                   component="h2"
                   variant="body1"
                   fontWeight="bold">
-                  Time for each task for selected period
+                  {t('statistics.graphTitleForTasks')}
                 </Typography>
               </Grid>
               <Grid

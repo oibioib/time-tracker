@@ -1,5 +1,6 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import { useTranslation } from 'react-i18next';
 
 import { Grid, Paper, Typography } from '@mui/material';
 
@@ -12,6 +13,7 @@ interface IValueY {
 }
 
 const ProductivityBox = ({ statisticsValueY }: IValueY) => {
+  const { t } = useTranslation();
   const intervalTotalData = useAppSelector(
     (state) => state.statistics.dataTotalTime
   );
@@ -26,7 +28,10 @@ const ProductivityBox = ({ statisticsValueY }: IValueY) => {
     100 - Number(percent),
     ((sumTotal * 100) / intervalTime).toFixed(2),
   ];
-  const label = ['Time out of work, %', 'Work time, %'];
+  const label = [
+    `${t('statistics.titleAllTime')}`,
+    `${t('statistics.titleWorkTime')}`,
+  ];
 
   const profitData = {
     labels: label,
@@ -50,7 +55,8 @@ const ProductivityBox = ({ statisticsValueY }: IValueY) => {
         direction="column">
         <Grid item>
           <Typography variant="body1" mb={2} fontWeight="bold">
-            Your productivity is {worktime}% for the selected period
+            {t('statistics.graphTitleProductivityStart')} {worktime}%{' '}
+            {t('statistics.graphTitleProductivityEnd')}
           </Typography>
         </Grid>
         <Grid item maxHeight={400}>

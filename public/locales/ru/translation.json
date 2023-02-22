@@ -44,5 +44,14 @@
       "createTimer": "Если у вас еще нет таймеров, создайте первый.",
       "createTimerMore": "Если у вас еще нет таймеров, создайте первый. Или выберите другой временой период."
     }
+  }, 
+  "statistics": {
+    "graphTitleForDay": "Время работы по дням за выбранный период",
+    "graphTitleProductivityStart": "Продуктивность составляет",
+    "graphTitleProductivityEnd": "за выбранный период",
+    "graphTitleForTasks": "Время на каждую задачу за выбранный период",
+    "min": "мин",
+    "titleAllTime": "Все время, %",
+    "titleWorkTime": "Время работы, %"
   }
 }
