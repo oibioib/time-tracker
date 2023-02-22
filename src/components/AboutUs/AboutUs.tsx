@@ -52,7 +52,7 @@ const AboutUs = () => {
                   borderRadius: '50%',
                 }}
                 image={photo}
-                alt="Time Tracker"
+                alt={member}
               />
             </Paper>
             <Typography variant="h6" textAlign="center">
