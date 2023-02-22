@@ -21,6 +21,7 @@ const AboutUs = () => {
       container
       justifyContent="center"
       maxWidth={MAX_CONTENT_WIDTH * 0.7}
+      height="min-content"
       gap={7}
       m={2}>
       <Typography component="h3" variant="h4" width="100%" textAlign="center">
