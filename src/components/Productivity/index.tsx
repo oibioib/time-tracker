@@ -20,7 +20,7 @@ const ProductivityBox = () => {
     0
   );
   const intervalTime = rezEndDate - rezStartDate;
-  const percent = ((sumTotal * 100) / intervalTime).toFixed(1);
+  const percent = ((sumTotal * 100) / intervalTime).toFixed(3);
   const [allTime, worktime] = [
     100 - Number(percent),
     ((sumTotal * 100) / intervalTime).toFixed(3),
@@ -52,7 +52,7 @@ const ProductivityBox = () => {
             Your productivity is {worktime}% for the selected period
           </Typography>
         </Grid>
-        <Grid item width={150}>
+        <Grid item maxHeight={400}>
           <Doughnut data={profitData} />
         </Grid>
       </Grid>

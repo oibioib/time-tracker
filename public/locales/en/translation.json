@@ -34,6 +34,7 @@
   },
   "settings": {
     "newName": "Your name",
-    "successMessage": "Name is changed!"
+    "successMessage": "Name is changed!",
+    "errorMessage": "The name can not be empty"
   }
 }

@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper/Paper';
 
-import EmptyViewStatistic from '../../../../components/EmptyView/EmptyViewStatistic';
 import ProductivityBox from '../../../../components/Productivity';
 import CalendarStatistics from '../../../../components/SelectStatistics';
 import {
@@ -95,7 +94,6 @@ const StatisticsView = () => {
         data: intervalTotalData.map((data) =>
           convertationToMin(data.totalTime)
         ),
-        // backgroundColor: 'rgba(170, 135, 245, 1)',
         backgroundColor: palette.accent,
       },
     ],
@@ -106,7 +104,6 @@ const StatisticsView = () => {
     datasets: [
       {
         data: intervalData.map((data) => convertationToMin(data.totalTime)),
-        // backgroundColor: intervalData.map(() => generateColor()),
         backgroundColor: intervalData.map(() => palette.accent),
       },
     ],
@@ -201,10 +198,6 @@ const StatisticsView = () => {
             </Grid>
           </Paper>
         ) : null}
-
-        {intervalTotalData.length || intervalData.length ? null : (
-          <EmptyViewStatistic />
-        )}
       </Grid>
     </Grid>
   );
