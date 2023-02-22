@@ -36,5 +36,13 @@
     "newName": "Your name",
     "successMessage": "Name is changed!",
     "errorMessage": "The name can not be empty"
+  },
+  "timersInfo": {
+    "message": {
+      "noData": "No data for selected period!",
+      "openTimers": "Open Timers and add a project to one of your timers or change the duration.",
+      "createTimer": "If you don't have timers yet, simple your first one.",
+      "createTimerMore": "If you don't have timers yet, simple your first one. Or select a different time period."
+    }
   }
 }
