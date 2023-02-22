@@ -38,16 +38,16 @@ const AboutUs = () => {
             gap={1}>
             <Paper
               sx={{
-                height: { xs: 220, md: 250 },
-                width: { xs: 220, md: 250 },
+                height: { xs: 150, md: 200 },
+                width: { xs: 150, md: 200 },
                 borderRadius: '50%',
                 alignSelf: 'center',
               }}>
               <CardMedia
                 component="img"
                 sx={{
-                  height: { xs: 220, md: 250 },
-                  width: { xs: 220, md: 250 },
+                  height: { xs: 150, md: 200 },
+                  width: { xs: 150, md: 200 },
                   borderRadius: '50%',
                 }}
                 image={photo}

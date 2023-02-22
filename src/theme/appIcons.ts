@@ -7,6 +7,7 @@ import CircleIcon from '@mui/icons-material/Circle';
 import CloseIcon from '@mui/icons-material/Close';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FolderIcon from '@mui/icons-material/Folder';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -42,4 +43,5 @@ export {
   CircleIcon,
   CloseIcon,
   DeleteIcon,
+  EditIcon,
 };
