@@ -2,6 +2,7 @@
   "name": "time-tracker",
   "version": "0.1.0",
   "private": true,
+  "author": "Pavel Bodal, Aleksandr Teslin, Galina Hadatovich",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

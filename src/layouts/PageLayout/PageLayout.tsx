@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 
 import ContainerLayout from '../ContainerLayout/ContainerLayout';
-import FooterLayout from '../FooterLayout';
+import FooterLayout from '../FooterLayout/FooterLayout';
 import HeaderLayout from '../HeaderLayout/HeaderLayout';
 
 const PageLayout = () => {

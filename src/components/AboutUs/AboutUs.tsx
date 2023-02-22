@@ -1,72 +1,88 @@
+import { useTranslation } from 'react-i18next';
+
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Avatar,
+  Button,
+  CardMedia,
   Grid,
+  Link as LinkMui,
+  Paper,
   Typography,
 } from '@mui/material';
 
-import { ExpandMoreIcon } from '../../theme/appIcons';
+import DREAM_TEAM from '../../constants/dreamTeamConstants';
+import { GitHubIcon } from '../../theme/appIcons';
+import { MAX_CONTENT_WIDTH } from '../../theme/elementsStyles';
 
 const AboutUs = () => {
+  const { t } = useTranslation();
   return (
-    <Grid item sx={{ maxWidth: 900 }} justifyContent="flex-start">
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header">
-          <Typography>About us </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>We tried to do it!</Typography>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header">
-              <Avatar alt="person" src="./images/kot.jpg" />
-              <Typography variant="body1" ml={2}>
-                Павел
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="body2">TeamLead, Backend,....</Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header">
-              <Avatar alt="person" src="./images/kot.jpg" />
-              <Typography variant="body1" ml={2}>
-                Александр
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="body2">
-                Authorization, Tracker,....
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header">
-              <Avatar alt="person" src="./images/kot.jpg" />
-              <Typography variant="body1" ml={2}>
-                Галина
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="body2"> Localization,....</Typography>
-            </AccordionDetails>
-          </Accordion>
-        </AccordionDetails>
-      </Accordion>
+    <Grid
+      item
+      container
+      justifyContent="center"
+      maxWidth={MAX_CONTENT_WIDTH * 0.7}
+      gap={7}
+      m={2}>
+      <Typography component="h3" variant="h4" width="100%" textAlign="center">
+        {t('mainPage.team')}
+      </Typography>
+      {DREAM_TEAM.map(({ id, github, member, role, photo }) => {
+        return (
+          <Grid
+            item
+            container
+            key={id}
+            justifyContent="center"
+            direction="column"
+            width="auto"
+            gap={1}>
+            <Paper
+              sx={{
+                height: { xs: 220, md: 250 },
+                width: { xs: 220, md: 250 },
+                borderRadius: '50%',
+                alignSelf: 'center',
+              }}>
+              <CardMedia
+                component="img"
+                sx={{
+                  height: { xs: 220, md: 250 },
+                  width: { xs: 220, md: 250 },
+                  borderRadius: '50%',
+                }}
+                image={photo}
+                alt="Time Tracker"
+              />
+            </Paper>
+            <Typography variant="h6" textAlign="center">
+              {member}
+            </Typography>
+            <Typography variant="body1" textAlign="center">
+              {role}
+            </Typography>
+            <Typography variant="body1" textAlign="center">
+              <Button
+                startIcon={<GitHubIcon />}
+                component={LinkMui}
+                href={`https://github.com/${github}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  color: 'primary.light',
+                  textTransform: 'inherit',
+                  '&:hover': {
+                    color: 'primary.dark',
+                    backgroundColor: 'transparent',
+                  },
+                }}>
+                <Typography component="span" variant="h6">
+                  {github}
+                </Typography>
+              </Button>
+            </Typography>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };

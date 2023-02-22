@@ -29,7 +29,8 @@
   },
   "mainPage": {
     "title": "Time Tracker is app that let's you easily track your time",
-    "subtitle": "There are only 24 hours in a day, you can`t change that, but you can spend your time usefully"
+    "subtitle": "There are only 24 hours in a day, you can`t change that, but you can spend your time usefully",
+    "team": "Our team"
   },
   "settings": {
     "newName": "Your name",

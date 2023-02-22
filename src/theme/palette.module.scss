@@ -32,6 +32,7 @@ $color-bg-play-dark: lighten($accent, 20%);
 
 :export {
   primaryMain: $primary-main;
+  primaryMainDarken: darken($primary-main, 15%);
 
   bgLight: $bg-light;
   bgDark: $bg-dark;
