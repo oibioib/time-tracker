@@ -159,7 +159,7 @@ const StatisticsView = () => {
               sx={{
                 maxWidth: 'auto',
               }}>
-              <ProductivityBox />
+              <ProductivityBox statisticsValueY={statisticsValueY} />
             </Paper>
           </>
         ) : null}
