@@ -69,6 +69,11 @@ const ProjectModal = ({
   const { projectsArr } = useAppSelector((state) => state.projectArr);
   const serverUserId = useAppSelector((state) => state.serverUserData.id);
   const defaultParam = { id: '', title: '', color: DEFAULT_COLOR, salary: '' };
+  const chosenProjectId = useAppSelector(
+    (state) => state.timeTracker.projectId
+  );
+
+  console.log(chosenProjectId);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(event.target.value);
@@ -140,13 +145,15 @@ const ProjectModal = ({
         color
       );
     });
-    dispatch(
-      setProjectToTimer({
-        projectId: defaultProjectParam.id,
-        projectTitle: projectName,
-        projectColor: color,
-      })
-    );
+    if (chosenProjectId === defaultProjectParam.id) {
+      dispatch(
+        setProjectToTimer({
+          projectId: defaultProjectParam.id,
+          projectTitle: projectName,
+          projectColor: color,
+        })
+      );
+    }
   };
 
   return (
