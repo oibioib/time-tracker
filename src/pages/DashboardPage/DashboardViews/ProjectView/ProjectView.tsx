@@ -1,3 +1,4 @@
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -5,13 +6,14 @@ import { Box, Grid, Paper, Typography } from '@mui/material';
 
 import { getProjectTimers } from '../../../../api/serverApi';
 import EmptyViewProject from '../../../../components/EmptyView/EmtyViewProject';
+import PDFFIle from '../../../../components/PDFFile/PDFFile';
 import CalendarStatistics from '../../../../components/SelectStatistics';
 import {
   DEFAULT_END_TODAY_TIMESTAMP,
   DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
 } from '../../../../constants/appConstants';
 import { timeStringHelper } from '../../../../helpers/timeString';
-import { useAppDispatch } from '../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import { mainTitleTypography } from '../../../../theme/elementsStyles';
 import { TimerData } from '../../../../types/trackerInterfaces';
@@ -27,6 +29,7 @@ const ProjectView = () => {
   const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
   const [pageTitle, setPageTitle] = useState('');
+  const personData = useAppSelector((state) => state.gitHubFetch.newName);
   const timeStringTotal = timeStringHelper(
     timersArr.reduce((acc, cur) => {
       const sum = acc + +cur.totalTime;
@@ -63,6 +66,27 @@ const ProjectView = () => {
       </Typography>
       <Grid container gap={2}>
         <CalendarStatistics setTimePeriod={setTimePeriod} />
+        <PDFDownloadLink
+          document={
+            <PDFFIle
+              timersArr={timersArr}
+              pageTitle={pageTitle}
+              startDate={startDate}
+              endDate={endDate}
+              personData={personData}
+            />
+          }
+          fileName="FORM">
+          {({ loading }) =>
+            loading ? (
+              <button type="button" disabled>
+                Loding Document...
+              </button>
+            ) : (
+              <button type="button">Download</button>
+            )
+          }
+        </PDFDownloadLink>
         {timersArr.length ? (
           <Grid container mt={1}>
             {timersArr.map(({ id, startTime, title, totalTime }: TimerData) => {
