@@ -32,6 +32,7 @@ const ProjectView = () => {
   const dispatch = useAppDispatch();
   const [pageTitle, setPageTitle] = useState('');
   const personData = useAppSelector((state) => state.gitHubFetch.newName);
+  const gitHubName = useAppSelector((state) => state.gitHubFetch.gitHubName);
   const timeStringTotal = timeStringHelper(
     timersArr.reduce((acc, cur) => {
       const sum = acc + +cur.totalTime;
@@ -74,7 +75,7 @@ const ProjectView = () => {
             pageTitle={pageTitle}
             startDate={startDate}
             endDate={endDate}
-            personData={personData}
+            personData={personData || gitHubName}
           />
         </Suspense>
         {timersArr.length ? (
