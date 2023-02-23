@@ -24,14 +24,22 @@ const SettingsView = () => {
   const gitHubName = useAppSelector((state) => state.gitHubFetch.gitHubName);
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-
+  const [invalid, setInvalid] = useState(true);
   const dispatch = useAppDispatch();
   const [newUserName, setNewUserName] = useState<string>(
     newUserNameStore || gitHubName
   );
+  const [errMessage, setErrMessage] = useState('');
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewUserName(e.target.value.replace(/^\s/, '').replace(/\s+/g, ' '));
+    if (e.target.value.trim()) {
+      setInvalid(false);
+      setErrMessage('');
+    } else {
+      setInvalid(true);
+      setErrMessage(`${t('settings.errorMessage')}`);
+    }
   };
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -46,6 +54,7 @@ const SettingsView = () => {
           dispatch(setErrorMessage('Failed to change name. Try later'));
         }
       })();
+      setInvalid(true);
     }
   };
 
@@ -92,9 +101,13 @@ const SettingsView = () => {
                 label={t(`settings.newName`)}
                 onChange={onChange}
                 defaultValue={newUserName}
+                InputLabelProps={{ shrink: true }}
+                error={Boolean(errMessage)}
+                helperText={errMessage}
               />
               <Button
                 type="submit"
+                disabled={invalid}
                 variant="contained"
                 size="large"
                 color="primary"

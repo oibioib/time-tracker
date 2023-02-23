@@ -2,32 +2,21 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Box,
-  Button,
-  Grid,
-  Modal,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material';
+import { Button, Grid, Modal, Paper, Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 
 import { deleteProject, getUserProjects } from '../../../../api/serverApi';
 import ProjectModal from '../../../../components/ProjectModal/ProjectModal';
-import {
-  DEFAULT_COLOR,
-  HOURS_IN_MILISEC,
-} from '../../../../constants/appConstants';
+import { DEFAULT_COLOR } from '../../../../constants/appConstants';
+import { timeStringHelper } from '../../../../helpers/timeString';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import { setProjectArr } from '../../../../store/projectSlice';
-import { CircleIcon } from '../../../../theme/appIcons';
-import { mainTitleTypography } from '../../../../theme/elementsStyles';
+import { DeleteIcon, EditIcon } from '../../../../theme/appIcons';
+import {
+  iconsStyle,
+  mainTitleTypography,
+} from '../../../../theme/elementsStyles';
 
 const ProjectsView = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,8 +55,8 @@ const ProjectsView = () => {
     })();
   }, [serverUserId, refreshPage, dispatch]);
 
-  const onClickHandler = async (event: React.MouseEvent<HTMLElement>) => {
-    const result = event.target as HTMLElement;
+  const onDeleteHandler = async (event: React.MouseEvent<HTMLElement>) => {
+    const result = event.currentTarget as HTMLElement;
     try {
       await deleteProject(result.id);
     } catch (error) {
@@ -77,7 +66,7 @@ const ProjectsView = () => {
   };
 
   const onChangeHandler = (event: React.MouseEvent<HTMLElement>) => {
-    const result = event.target as HTMLElement;
+    const result = event.currentTarget as HTMLElement;
     setDefaultProjectParam({
       id: result.dataset.id || '',
       title: result.dataset.title || '',
@@ -113,184 +102,123 @@ const ProjectsView = () => {
             + Project
           </Button>
         </Grid>
-        <Grid item>
-          {projectsArr.length ? (
-            <Grid item xs={12}>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        <b>Name</b>
-                      </TableCell>
-                      <TableCell>
-                        <b>Time (Hours)</b>
-                      </TableCell>
-                      <TableCell>
-                        <b>$/hour</b>
-                      </TableCell>
-                      <TableCell>
-                        <b>Options</b>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {projectsArr.map(
-                      ({ id, title, totalTime, color, salary }) => {
-                        return (
-                          <TableRow key={id}>
-                            <TableCell>
-                              <Box
+
+        <Grid
+          item
+          container
+          alignItems="center"
+          direction="column"
+          borderRadius="5px"
+          sx={{
+            width: '100%',
+            gap: { xs: 1, sm: 2 },
+          }}>
+          <Grid item container gap={1}>
+            {projectsArr.length
+              ? projectsArr.map(
+                  ({ id, title, totalTime, color, salary, totalTimers }) => {
+                    return (
+                      <Paper
+                        key={id}
+                        elevation={0}
+                        sx={{
+                          p: { xs: 1, sm: 2 },
+                          width: '100%',
+                          position: 'relative',
+                          overflow: 'hidden',
+                        }}>
+                        <Grid
+                          item
+                          container
+                          xs={12}
+                          alignItems="center"
+                          sx={{
+                            '&::before': {
+                              content: '""',
+                              position: 'absolute',
+                              left: 0,
+                              width: 3,
+                              height: '100%',
+                              backgroundColor: color,
+                            },
+                          }}>
+                          <Grid
+                            item
+                            container
+                            direction="column"
+                            xs={12}
+                            md={10}>
+                            <Grid item mb={1}>
+                              <Typography
+                                component="h3"
+                                variant="h6"
                                 onClick={() => {
                                   navigate(`${id}`);
                                 }}
                                 sx={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  ':hover': { cursor: 'pointer' },
+                                  display: 'inline',
+                                  textDecoration: 'underline',
+                                  cursor: 'pointer',
+                                  transition: '0.2s',
+                                  '&:hover': {
+                                    textDecoration: 'none',
+                                    color: 'accent.main',
+                                  },
                                 }}>
-                                <CircleIcon
-                                  sx={{
-                                    color: { color },
-                                    width: '15px',
-                                  }}
-                                />
-                                <Box>{title}</Box>
-                              </Box>
-                            </TableCell>
-                            <TableCell>
-                              {Math.floor(totalTime / HOURS_IN_MILISEC) ||
-                                '< 0'}
-                            </TableCell>
-                            <TableCell>{salary}</TableCell>
-                            <TableCell>
-                              <Box
-                                color="coral"
-                                id={id}
-                                onClick={onClickHandler}
-                                sx={{ ':hover': { cursor: 'pointer' } }}
-                                mb={1}>
-                                del
-                              </Box>
-                              <Box
-                                data-id={id}
-                                data-title={title}
-                                data-color={color}
-                                data-salary={salary}
-                                onClick={onChangeHandler}
-                                sx={{ ':hover': { cursor: 'pointer' } }}>
-                                change
-                              </Box>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      }
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Grid>
-          ) : (
-            ''
-          )}
-        </Grid>
-      </Grid>
-
-      {/* <Grid container columns={4} sx={{ height: '100%' }}>
-        <Grid item xs={12} my={2}>
-          <Paper>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Box>Projects</Box>
-              <Box>
-                <Button onClick={onOpenHandler} variant="contained">
-                  + Project
-                </Button>
-              </Box>
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Box>Choose month</Box>
-        </Grid>
-        {projectsArr.length ? (
-          <Grid item xs={12}>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <b>Name</b>
-                    </TableCell>
-                    <TableCell>
-                      <b>Time (Hours)</b>
-                    </TableCell>
-                    <TableCell>
-                      <b>$/hour</b>
-                    </TableCell>
-                    <TableCell>
-                      <b>Options</b>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {projectsArr.map(
-                    ({ id, title, totalTime, color, salary }) => {
-                      return (
-                        <TableRow key={id}>
-                          <TableCell>
-                            <Box
-                              onClick={() => {
-                                navigate(`${id}`);
-                              }}
-                              sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                ':hover': { cursor: 'pointer' },
-                              }}>
-                              <CircleIcon
-                                sx={{
-                                  color: { color },
-                                  width: '15px',
-                                }}
-                              />
-                              <Box>{title}</Box>
-                            </Box>
-                          </TableCell>
-                          <TableCell>
-                            {Math.floor(totalTime / HOURS_IN_MILISEC) || '< 0'}
-                          </TableCell>
-                          <TableCell>{salary}</TableCell>
-                          <TableCell>
-                            <Box
-                              color="coral"
+                                {title}
+                              </Typography>
+                            </Grid>
+                            <Grid
+                              item
+                              container
+                              sx={{ gap: { xs: 1, sm: 2, md: 3 } }}>
+                              <Typography component="span" variant="body2">
+                                Time spent:{' '}
+                                <b>{timeStringHelper(+totalTime)}</b>
+                              </Typography>
+                              <Typography component="span" variant="body2">
+                                Total timers: <b>{totalTimers}</b>
+                              </Typography>
+                              <Typography component="span" variant="body2">
+                                Hourly rate: <b>{salary} $</b>
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                          <Grid
+                            item
+                            container
+                            xs={12}
+                            md={2}
+                            alignItems="center"
+                            sx={{
+                              justifyContent: { xs: 'center', sm: 'flex-end' },
+                              mt: { xs: 2, sm: 0 },
+                            }}>
+                            <IconButton
                               id={id}
-                              onClick={onClickHandler}
-                              sx={{ ':hover': { cursor: 'pointer' } }}
-                              mb={1}>
-                              del
-                            </Box>
-                            <Box
+                              onClick={onDeleteHandler}
+                              title="Delete">
+                              <DeleteIcon sx={iconsStyle} />
+                            </IconButton>
+                            <IconButton
                               data-id={id}
                               data-title={title}
                               data-color={color}
                               data-salary={salary}
                               onClick={onChangeHandler}
-                              sx={{ ':hover': { cursor: 'pointer' } }}>
-                              change
-                            </Box>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    }
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                              title="Delete">
+                              <EditIcon sx={iconsStyle} />
+                            </IconButton>
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                    );
+                  }
+                )
+              : null}
           </Grid>
-        ) : (
-          ''
-        )}
-      </Grid> */}
+        </Grid>
+      </Grid>
     </>
   );
 };

@@ -25,6 +25,12 @@ $color-arrow-seconds: #ff6303;
     position: absolute;
   }
 
+  &__wrapper {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+
   &__element {
     background: $color-points;
   }
@@ -86,14 +92,14 @@ $color-arrow-seconds: #ff6303;
     left: 0;
     right: 0;
     margin: 0 auto;
-    animation: arrow-rotate 86400s infinite linear;
+    animation: arrow-rotate 43200s infinite linear;
 
     &::before {
       content: '';
       background: $color-points;
-      height: 83px;
+      height: 62px;
       width: 3px;
-      top: 30px;
+      top: 50px;
     }
   }
 
@@ -108,9 +114,9 @@ $color-arrow-seconds: #ff6303;
     &::before {
       content: '';
       background: $color-points;
-      height: 62px;
-      width: 1px;
-      top: 50px;
+      height: 83px;
+      width: 2px;
+      top: 30px;
     }
   }
 
@@ -125,14 +131,17 @@ $color-arrow-seconds: #ff6303;
     &::before {
       content: '';
       background: $color-arrow-seconds;
-      height: 67px;
+      height: 90px;
       width: 2px;
-      top: 45px;
+      top: 24px;
     }
   }
 }
 
 @keyframes arrow-rotate {
+  from {
+    transform: rotate(0deg);
+  }
   to {
     transform: rotate(360deg);
   }

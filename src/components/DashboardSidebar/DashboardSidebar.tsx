@@ -10,16 +10,6 @@ import {
 } from '../../theme/styledComponents/SidebarButton';
 import UserAvatar from '../UserAvatar';
 
-const activeStyle = {
-  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  borderRadius: '10px',
-  textDecoration: 'none',
-};
-
-const inactiveStyle = {
-  textDecoration: 'none',
-};
-
 const DashboardSidebar = () => {
   const { t } = useTranslation();
   return (
@@ -29,18 +19,16 @@ const DashboardSidebar = () => {
       </Grid>
       <Grid item container sx={{ gap: 1, p: { xs: 1, sm: 2 } }}>
         {DASHBOARD_NAVIGATION.map((item) => (
-          <NavLink
+          <SidebarButton
             key={item.label}
+            component={NavLink}
             to={`${item.route}`}
-            style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
             end>
-            <SidebarButton>
-              {item.icon}
-              <Typography sx={sidebarButtonTypography}>
-                {t(`dashboard.${item.label}`)}
-              </Typography>
-            </SidebarButton>
-          </NavLink>
+            {item.icon}
+            <Typography sx={sidebarButtonTypography}>
+              {t(`dashboard.${item.label}`)}
+            </Typography>
+          </SidebarButton>
         ))}
       </Grid>
     </Grid>

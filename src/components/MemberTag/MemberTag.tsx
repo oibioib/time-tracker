@@ -1,4 +1,4 @@
-import { Button, Link as LinkMui } from '@mui/material';
+import { Button, Link as LinkMui, Typography } from '@mui/material';
 
 import { GitHubIcon } from '../../theme/appIcons';
 
@@ -10,14 +10,17 @@ const MemberTag = ({ gitHubProfile }: ITeamMember) => {
   return (
     <Button
       color="inherit"
-      sx={{ textTransform: 'inherit' }}
       startIcon={<GitHubIcon />}
       component={LinkMui}
       href={`https://github.com/${gitHubProfile}`}
       target="_blank"
       rel="noopener noreferrer"
-      underline="hover">
-      {gitHubProfile}
+      underline="hover"
+      sx={{
+        textTransform: 'inherit',
+        '&:hover': { backgroundColor: 'transparent', color: 'primary.light' },
+      }}>
+      <Typography variant="body1">{gitHubProfile}</Typography>
     </Button>
   );
 };

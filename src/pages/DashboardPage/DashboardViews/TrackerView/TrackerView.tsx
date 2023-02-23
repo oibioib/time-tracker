@@ -5,7 +5,7 @@ import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 
 import { getActiveTimer, getUserTimers } from '../../../../api/serverApi';
 import AddedTask from '../../../../components/AddedTask/AddedTask';
-import EmptyView from '../../../../components/EmptyView/EmptyView';
+import EmptyViewTimers from '../../../../components/EmptyView/EmptyViewTimers';
 import ProjectList from '../../../../components/ProjectList/ProjectList';
 import CalendarStatistics from '../../../../components/SelectStatistics';
 import Timer from '../../../../components/Timer/Timer';
@@ -190,7 +190,6 @@ const TrackerView = () => {
           sx={{
             width: '100%',
             gap: { xs: 1, sm: 2 },
-            // backgroundColor: 'block.main',
           }}>
           <Grid
             item
@@ -277,7 +276,7 @@ const TrackerView = () => {
               );
             })
         ) : (
-          <EmptyView />
+          <EmptyViewTimers />
         )}
         {tasksArr.length >= tasksShowed && (
           <Grid container justifyContent="center">

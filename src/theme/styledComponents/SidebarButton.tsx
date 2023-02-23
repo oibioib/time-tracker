@@ -13,6 +13,9 @@ const SidebarButton = muiStyled(Button)(({ theme }) => {
     },
     display: 'flex',
     justifyContent: 'flex-start',
+    '&.active': {
+      background: theme.palette.primary.dark,
+    },
   };
 }) as typeof Button;
 

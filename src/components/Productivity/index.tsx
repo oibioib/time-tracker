@@ -1,5 +1,6 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import { useTranslation } from 'react-i18next';
 
 import { Grid, Paper, Typography } from '@mui/material';
 
@@ -7,12 +8,14 @@ import { useAppSelector } from '../../hooks/hooks';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const ProductivityBox = () => {
+interface IValueY {
+  statisticsValueY: number[];
+}
+
+const ProductivityBox = ({ statisticsValueY }: IValueY) => {
+  const { t } = useTranslation();
   const intervalTotalData = useAppSelector(
     (state) => state.statistics.dataTotalTime
-  );
-  const statisticsValueY = useAppSelector(
-    (state) => state.statistics.timePeriod
   );
   const [rezStartDate, rezEndDate] = statisticsValueY;
   const sumTotal = intervalTotalData.reduce(
@@ -20,12 +23,15 @@ const ProductivityBox = () => {
     0
   );
   const intervalTime = rezEndDate - rezStartDate;
-  const percent = ((sumTotal * 100) / intervalTime).toFixed(1);
+  const percent = ((sumTotal * 100) / intervalTime).toFixed(2);
   const [allTime, worktime] = [
     100 - Number(percent),
-    ((sumTotal * 100) / intervalTime).toFixed(3),
+    ((sumTotal * 100) / intervalTime).toFixed(2),
   ];
-  const label = ['Time out of work, %', 'Work time, %'];
+  const label = [
+    `${t('statistics.titleAllTime')}`,
+    `${t('statistics.titleWorkTime')}`,
+  ];
 
   const profitData = {
     labels: label,
@@ -49,10 +55,11 @@ const ProductivityBox = () => {
         direction="column">
         <Grid item>
           <Typography variant="body1" mb={2} fontWeight="bold">
-            Your productivity is {worktime}% for the selected period
+            {t('statistics.graphTitleProductivityStart')} {worktime}%{' '}
+            {t('statistics.graphTitleProductivityEnd')}
           </Typography>
         </Grid>
-        <Grid item width={150}>
+        <Grid item maxHeight={400}>
           <Doughnut data={profitData} />
         </Grid>
       </Grid>

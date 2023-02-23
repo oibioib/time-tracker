@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Grid, Paper, Typography } from '@mui/material';
 
-const EmptyViewProject = () => {
+const EmptyViewTimers = () => {
   const { t } = useTranslation();
   return (
     <Grid
@@ -18,13 +18,10 @@ const EmptyViewProject = () => {
         {t('timersInfo.message.noData')}
       </Typography>
       <Typography component="p" variant="body1">
-        {t('timersInfo.message.openTimers')}
-      </Typography>
-      <Typography component="p" variant="body1">
-        {t('timersInfo.message.createTimer')}
+        {t('timersInfo.message.createTimerMore')}
       </Typography>
     </Grid>
   );
 };
 
-export default EmptyViewProject;
+export default EmptyViewTimers;

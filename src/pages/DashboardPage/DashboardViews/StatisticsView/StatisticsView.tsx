@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper/Paper';
 
-import EmptyViewStatistic from '../../../../components/EmptyView/EmptyViewStatistic';
 import ProductivityBox from '../../../../components/Productivity';
 import CalendarStatistics from '../../../../components/SelectStatistics';
 import {
@@ -95,7 +94,6 @@ const StatisticsView = () => {
         data: intervalTotalData.map((data) =>
           convertationToMin(data.totalTime)
         ),
-        // backgroundColor: 'rgba(170, 135, 245, 1)',
         backgroundColor: palette.accent,
       },
     ],
@@ -106,7 +104,6 @@ const StatisticsView = () => {
     datasets: [
       {
         data: intervalData.map((data) => convertationToMin(data.totalTime)),
-        // backgroundColor: intervalData.map(() => generateColor()),
         backgroundColor: intervalData.map(() => palette.accent),
       },
     ],
@@ -144,7 +141,7 @@ const StatisticsView = () => {
                     component="h2"
                     variant="body1"
                     fontWeight="bold">
-                    Your WorkTime on day for selected period
+                    {t('statistics.graphTitleForDay')}
                   </Typography>
                 </Grid>
                 <Grid
@@ -162,7 +159,7 @@ const StatisticsView = () => {
               sx={{
                 maxWidth: 'auto',
               }}>
-              <ProductivityBox />
+              <ProductivityBox statisticsValueY={statisticsValueY} />
             </Paper>
           </>
         ) : null}
@@ -187,7 +184,7 @@ const StatisticsView = () => {
                   component="h2"
                   variant="body1"
                   fontWeight="bold">
-                  Time for each task for selected period
+                  {t('statistics.graphTitleForTasks')}
                 </Typography>
               </Grid>
               <Grid
@@ -201,10 +198,6 @@ const StatisticsView = () => {
             </Grid>
           </Paper>
         ) : null}
-
-        {intervalTotalData.length || intervalData.length ? null : (
-          <EmptyViewStatistic />
-        )}
       </Grid>
     </Grid>
   );
