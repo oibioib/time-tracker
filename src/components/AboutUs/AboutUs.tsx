@@ -21,6 +21,7 @@ const AboutUs = () => {
       container
       justifyContent="center"
       maxWidth={MAX_CONTENT_WIDTH * 0.7}
+      height="min-content"
       gap={7}
       m={2}>
       <Typography component="h3" variant="h4" width="100%" textAlign="center">
@@ -51,7 +52,7 @@ const AboutUs = () => {
                   borderRadius: '50%',
                 }}
                 image={photo}
-                alt="Time Tracker"
+                alt={member}
               />
             </Paper>
             <Typography variant="h6" textAlign="center">
