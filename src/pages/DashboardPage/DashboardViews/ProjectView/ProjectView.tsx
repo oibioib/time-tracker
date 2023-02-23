@@ -1,12 +1,10 @@
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Box, Grid, Paper, Typography } from '@mui/material';
 
 import { getProjectTimers } from '../../../../api/serverApi';
 import EmptyViewProject from '../../../../components/EmptyView/EmtyViewProject';
-import PDFFIle from '../../../../components/PDFFile/PDFFile';
 import CalendarStatistics from '../../../../components/SelectStatistics';
 import {
   DEFAULT_END_TODAY_TIMESTAMP,
@@ -17,6 +15,10 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import { mainTitleTypography } from '../../../../theme/elementsStyles';
 import { TimerData } from '../../../../types/trackerInterfaces';
+
+const PDFDownLoadButton = React.lazy(
+  () => import('../../../../components/PDFDownLoadButton/PDFDownLoadButton')
+);
 
 const ProjectView = () => {
   const { projectId } = useParams();
@@ -66,27 +68,15 @@ const ProjectView = () => {
       </Typography>
       <Grid container gap={2}>
         <CalendarStatistics setTimePeriod={setTimePeriod} />
-        <PDFDownloadLink
-          document={
-            <PDFFIle
-              timersArr={timersArr}
-              pageTitle={pageTitle}
-              startDate={startDate}
-              endDate={endDate}
-              personData={personData}
-            />
-          }
-          fileName="FORM">
-          {({ loading }) =>
-            loading ? (
-              <button type="button" disabled>
-                Loding Document...
-              </button>
-            ) : (
-              <button type="button">Download</button>
-            )
-          }
-        </PDFDownloadLink>
+        <Suspense fallback={<div>Loading...</div>}>
+          <PDFDownLoadButton
+            timersArr={timersArr}
+            pageTitle={pageTitle}
+            startDate={startDate}
+            endDate={endDate}
+            personData={personData}
+          />
+        </Suspense>
         {timersArr.length ? (
           <Grid container mt={1}>
             {timersArr.map(({ id, startTime, title, totalTime }: TimerData) => {
