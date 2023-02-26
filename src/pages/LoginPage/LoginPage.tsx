@@ -97,8 +97,8 @@ const LoginPage = () => {
         },
       }}>
       <Grid item mb={5}>
-        <Typography variant="h4" component="h1">
-          Login via Github
+        <Typography variant="h4" component="h1" textAlign="center">
+          {t('github.login')}
         </Typography>
       </Grid>
       <Grid item>
@@ -106,7 +106,7 @@ const LoginPage = () => {
           size="large"
           variant="contained"
           startIcon={<GitHubIcon />}
-          sx={{ fontSize: '1.4rem' }}
+          sx={{ fontSize: '1.4rem', textAlign: 'center' }}
           href={`https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`}>
           {t('buttons.gitHubLogin')}
         </Button>

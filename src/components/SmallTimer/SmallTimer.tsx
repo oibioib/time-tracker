@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Button from '@mui/material/Button';
 
 import { updateTimer } from '../../api/serverApi';
@@ -31,6 +33,7 @@ const SmallTimer = ({
   setRefreshPage,
   refreshPage,
 }: SmallTimerProps) => {
+  const { t } = useTranslation();
   const isTimerOn = useAppSelector((state) => state.timeTracker.isTimerOn);
   const dispatch = useAppDispatch();
 
@@ -72,7 +75,7 @@ const SmallTimer = ({
       onClick={onClickHandler}
       disabled={isTimerOn}
       sx={iconsStyle}>
-      Resume
+      {t('timers.resumeTimer')}
     </Button>
   );
 };

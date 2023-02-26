@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
 const ErrorPage = () => {
+  const { t } = useTranslation();
   const error = useRouteError();
   if (isRouteErrorResponse(error)) {
     return (
@@ -31,7 +33,7 @@ const ErrorPage = () => {
           {error.status}
         </Typography>
         <Typography component="h2" variant="h3">
-          Oops!
+          {t('notFound.oops')}
         </Typography>
         <Typography component="h3" variant="h5">
           {error.statusText}

@@ -198,7 +198,7 @@ const TrackerView = () => {
             }}>
             <TextField
               required
-              placeholder="What are you working on"
+              placeholder={`${t('timers.workOn')}`}
               value={timerData.timerTitle}
               onChange={onChangeHandler}
               onKeyDown={onKeyDownHandler}
@@ -245,12 +245,10 @@ const TrackerView = () => {
         </Grid>
         <Grid item textAlign="right">
           <Typography sx={{ typography: { xs: 'body2', md: 'body1' } }}>
-            Period total:
-            <b> {timeStringWeek}</b>
+            {t('time.period')}:<b> {timeStringWeek}</b>
           </Typography>
           <Typography sx={{ typography: { xs: 'body2', md: 'body1' } }}>
-            Today total:
-            <b> {timeStringDay}</b>
+            {t('time.today')}:<b> {timeStringDay}</b>
           </Typography>
         </Grid>
       </Grid>
@@ -284,7 +282,7 @@ const TrackerView = () => {
               size="large"
               onClick={showMoreHandler}
               sx={{ fontSize: { sm: '1.2rem' } }}>
-              Show more
+              {t('timers.showMore')}
             </Button>
           </Grid>
         )}

@@ -5,11 +5,11 @@
     "dashboardPage": "Dashboard",
     "gitHubLogin": "GitHub Login",
     "logout": "Logout",
-    "submit": "Submit"
+    "submit": "Save"
   },
   "dashboard": {
     "navigation": "Navigation",
-    "timeTracker": "Time Tracker",
+    "timeTracker": "Timers",
     "projectsView": "Projects",
     "clientsView": "Clients",
     "statistics": "Statistics",
@@ -22,7 +22,7 @@
     "statistics": "Analyze your productivity by day, week. Make conclusions. Time is not just quantity; it's quality"
   },
   "titleCard": {
-    "timer": "Timer",
+    "timer": "Timers",
     "projects": "Projects",
     "clients": "Clients",
     "statistics": "Statistics"
@@ -53,5 +53,40 @@
     "min": "min",
     "titleAllTime": "Time out of work",
     "titleWorkTime": "Work time"
+  },
+  "timers": {
+    "workOn": "What are you working on?",
+    "chooseProject": "Choose a project",
+    "noProject": "No project",
+    "timeSpent": "Time spent",
+    "project": "Project",
+    "deleteTimer": "Delete timer",
+    "resumeTimer": "Resume",
+    "showMore": "Show more",
+    "errors": {
+      "faildGet": "Failed to get timers data, please try again latter"
+    }
+  },
+  "time": {
+    "period": "Period total",
+    "today": "Today total"
+  },
+  "projects": {
+    "addProject": "Add project",
+    "allTimers": "Total timers",
+    "deleteProject": "Delete project",
+    "editProject": "Edit project",
+    "timeSpent": "Time spent",
+    "timeSpentAll": "Total time spent in period",
+    "createNew": "New project",
+    "projectName": "Name",
+    "projectRate": "Hourly rate",
+    "projectColor": "Color"
+  },
+  "github": {
+    "login": "Login via Github"
+  },
+  "notFound": {
+    "oops": "Oops"
   }
 }
