@@ -53,13 +53,17 @@ const ProductivityBox = ({ statisticsValueY }: IValueY) => {
         alignItems="center"
         justifyContent="center"
         direction="column">
-        <Grid item>
-          <Typography variant="body1" mb={2} fontWeight="bold">
+        <Grid item sx={{ px: { xs: 1, sm: 2 } }}>
+          <Typography
+            variant="body1"
+            mb={2}
+            fontWeight="bold"
+            textAlign="center">
             {t('statistics.graphTitleProductivityStart')} {worktime}%{' '}
             {t('statistics.graphTitleProductivityEnd')}
           </Typography>
         </Grid>
-        <Grid item maxHeight={400}>
+        <Grid item sx={{ maxHeight: { xs: 150, sm: 200, md: 400 } }}>
           <Doughnut data={profitData} />
         </Grid>
       </Grid>
