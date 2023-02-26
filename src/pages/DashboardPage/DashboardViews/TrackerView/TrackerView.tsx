@@ -278,7 +278,7 @@ const TrackerView = () => {
         ) : (
           <EmptyViewTimers />
         )}
-        {tasksArr.length >= tasksShowed && (
+        {tasksArr.length > tasksShowed && (
           <Grid container justifyContent="center">
             <Button
               size="large"

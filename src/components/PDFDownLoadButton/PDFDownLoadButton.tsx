@@ -30,15 +30,11 @@ const PDFDownLoadButton = ({
         />
       }
       fileName="FORM">
-      {({ loading }) =>
-        loading ? (
-          <button type="button" disabled>
-            Loding Document...
-          </button>
-        ) : (
-          <button type="button">Download</button>
-        )
-      }
+      {({ loading }) => (
+        <button type="button" disabled={loading}>
+          {loading ? 'Loading Document...' : 'Download'}
+        </button>
+      )}
     </PDFDownloadLink>
   );
 };
