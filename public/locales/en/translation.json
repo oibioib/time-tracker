@@ -83,7 +83,7 @@
     "projectRate": "Hourly rate",
     "projectColor": "Color",
     "downloadInvoice": "Download invoice",
-    "loadingInvoice": "Loading invocie ..."
+    "loadingInvoice": "Loading invoice ..."
   },
   "github": {
     "login": "Login via Github"
