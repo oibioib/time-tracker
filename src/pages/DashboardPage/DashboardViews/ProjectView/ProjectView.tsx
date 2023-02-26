@@ -1,4 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
 import { Box, Grid, Paper, Typography } from '@mui/material';
@@ -21,6 +22,7 @@ const PDFDownLoadButton = React.lazy(
 );
 
 const ProjectView = () => {
+  const { t } = useTranslation();
   const { projectId } = useParams();
   const [timePeriod, setTimePeriod] = useState([
     DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
@@ -79,7 +81,7 @@ const ProjectView = () => {
         </Grid>
         <Grid item textAlign="right">
           <Typography component="h2">
-            Total time spent in period: <b>{timeStringTotal}</b>
+            {t('projects.timeSpentAll')}: <b>{timeStringTotal}</b>
           </Typography>
         </Grid>
       </Grid>
@@ -120,7 +122,8 @@ const ProjectView = () => {
                             month: 'short',
                             day: 'numeric',
                           })}
-                          | Time spent: {timeStringHelper(+totalTime)}
+                          | {t('projects.timeSpent')}:{' '}
+                          {timeStringHelper(+totalTime)}
                         </Typography>
                       </Grid>
                     </Grid>

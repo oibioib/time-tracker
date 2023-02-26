@@ -99,7 +99,7 @@ const ProjectsView = () => {
             onClick={onOpenHandler}
             variant="contained"
             sx={{ fontSize: '1.4rem' }}>
-            + Project
+            {t('projects.addProject')}
           </Button>
         </Grid>
 
@@ -173,14 +173,14 @@ const ProjectsView = () => {
                               container
                               sx={{ gap: { xs: 1, sm: 2, md: 3 } }}>
                               <Typography component="span" variant="body2">
-                                Time spent:{' '}
-                                <b>{timeStringHelper(+totalTime)}</b>
+                                {t('timers.timeSpent')}:
+                                <b> {timeStringHelper(+totalTime)}</b>
                               </Typography>
                               <Typography component="span" variant="body2">
-                                Total timers: <b>{totalTimers}</b>
+                                {t('projects.allTimers')}: <b>{totalTimers}</b>
                               </Typography>
                               <Typography component="span" variant="body2">
-                                Hourly rate: <b>{salary} $</b>
+                                {t('projects.projectRate')}: <b>{salary} $</b>
                               </Typography>
                             </Grid>
                           </Grid>
@@ -197,7 +197,7 @@ const ProjectsView = () => {
                             <IconButton
                               id={id}
                               onClick={onDeleteHandler}
-                              title="Delete">
+                              title={`${t('projects.deleteProject')}`}>
                               <DeleteIcon sx={iconsStyle} />
                             </IconButton>
                             <IconButton
@@ -206,7 +206,7 @@ const ProjectsView = () => {
                               data-color={color}
                               data-salary={salary}
                               onClick={onChangeHandler}
-                              title="Delete">
+                              title={`${t('projects.editProject')}`}>
                               <EditIcon sx={iconsStyle} />
                             </IconButton>
                           </Grid>

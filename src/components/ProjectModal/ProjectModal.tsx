@@ -1,5 +1,6 @@
 import { MuiColorInput } from 'mui-color-input';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 
@@ -59,6 +60,7 @@ const ProjectModal = ({
   defaultProjectParam,
   setDefaultProjectParam,
 }: ProjectModalProps) => {
+  const { t } = useTranslation();
   const [projectName, setProjectName] = useState(defaultProjectParam.title);
   const [errMessage, setErrMessage] = useState('');
   const [color, setColor] = useState(defaultProjectParam.color);
@@ -158,7 +160,7 @@ const ProjectModal = ({
     <Paper sx={style}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography component="span" variant="h6">
-          Create new Project
+          {t('projects.createNew')}
         </Typography>
         <Box onClick={onCloseHandler} mt={-2} mr={-2}>
           <CloseIcon
@@ -178,7 +180,7 @@ const ProjectModal = ({
       <TextField
         required
         error={Boolean(errMessage)}
-        label="Name"
+        label={t('projects.projectName')}
         InputLabelProps={{ shrink: true }}
         value={projectName}
         onChange={onChangeHandler}
@@ -190,7 +192,7 @@ const ProjectModal = ({
         sx={styleTextFild}
       />
       <TextField
-        label="Rate: $/h"
+        label={`${t('projects.projectRate')}: $/h`}
         InputLabelProps={{ shrink: true }}
         type="number"
         onChange={numberHandler}
@@ -200,7 +202,7 @@ const ProjectModal = ({
       />
       <MuiColorInput
         format="hex"
-        label="Color"
+        label={t('projects.projectColor')}
         value={color}
         onChange={colorHandler}
         onKeyDown={onKeyDownHandler}

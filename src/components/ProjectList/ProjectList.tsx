@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Grid, Menu, MenuItem, Tooltip } from '@mui/material';
 
@@ -9,6 +10,7 @@ import { FolderIcon } from '../../theme/appIcons';
 import { iconsStyle } from '../../theme/elementsStyles';
 
 const ProjectList = () => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isToolTipOpen, setIsTookTipOpen] = useState(false);
   const { projectsArr } = useAppSelector((state) => state.projectArr);
@@ -48,7 +50,10 @@ const ProjectList = () => {
   };
 
   return (
-    <Tooltip title="add project" placement="left-start" open={isToolTipOpen}>
+    <Tooltip
+      title={`${t('timers.chooseProject')}`}
+      placement="left-start"
+      open={isToolTipOpen}>
       <Box my="auto" sx={{ ':hover': { cursor: 'pointer' } }}>
         {projectTitle ? (
           <Box onClick={handleClick} sx={{ ':hover': { cursor: 'pointer' } }}>
@@ -98,7 +103,7 @@ const ProjectList = () => {
               onClick={handleClose}
               data-color={color}
               data-title={title}>
-              {title || 'No Project'}
+              {title || t('timers.noProject')}
             </MenuItem>
           ))}
         </Menu>

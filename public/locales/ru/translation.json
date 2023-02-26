@@ -5,11 +5,11 @@
     "dashboardPage": "Панель управления",
     "gitHubLogin": "GitHub авторизация",
     "logout": "Выйти",
-    "submit": "Подтвердить"
+    "submit": "Сохранить"
   },
   "dashboard": {
     "navigation": "Навигация",
-    "timeTracker": "Таймер",
+    "timeTracker": "Таймеры",
     "projectsView": "Проекты",
     "clientsView": "Клиенты",
     "statistics": "Статистика",
@@ -22,7 +22,7 @@
     "statistics": "Анализируй свою продуктивность по дням, неделям. Делай выводы. Время это не просто количество; это и качество"
   },
   "titleCard": {
-    "timer": "Таймер",
+    "timer": "Таймеры",
     "projects": "Проекты",
     "clients": "Клиенты",
     "statistics": "Статистика"
@@ -44,7 +44,7 @@
       "createTimer": "Если у вас еще нет таймеров, создайте первый.",
       "createTimerMore": "Если у вас еще нет таймеров, создайте первый. Или выберите другой временой период."
     }
-  }, 
+  },
   "statistics": {
     "graphTitleForDay": "Время работы по дням за выбранный период",
     "graphTitleProductivityStart": "Продуктивность составляет",
@@ -53,5 +53,40 @@
     "min": "мин",
     "titleAllTime": "Все время, %",
     "titleWorkTime": "Время работы, %"
+  },
+  "timers": {
+    "workOn": "Над чем вы работаете?",
+    "chooseProject": "Выбрать проект",
+    "noProject": "Без проекта",
+    "timeSpent": "Время потрачено",
+    "project": "Проект",
+    "deleteTimer": "Удалить таймер",
+    "resumeTimer": "Продолжить",
+    "showMore": "Показать ещё",
+    "errors": {
+      "faildGet": "Не удалось получить данные таймеров, повторите попытку позже"
+    }
+  },
+  "time": {
+    "period": "Время за период",
+    "today": "Время сегодня"
+  },
+  "projects": {
+    "addProject": "Добавить проект",
+    "allTimers": "Всего таймеров",
+    "deleteProject": "Удалить проект",
+    "editProject": "Редактировать проект",
+    "timeSpent": "Время потрачено",
+    "timeSpentAll": "Время потрачено за период",
+    "createNew": "Новый проект",
+    "projectName": "Название",
+    "projectRate": "Почасовая ставка",
+    "projectColor": "Цвет"
+  },
+  "github": {
+    "login": "Авторизация через GitHub"
+  },
+  "notFound": {
+    "oops": "Ой"
   }
 }
