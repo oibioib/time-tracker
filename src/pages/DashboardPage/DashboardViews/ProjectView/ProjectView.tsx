@@ -12,7 +12,7 @@ import {
   DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
 } from '../../../../constants/appConstants';
 import { timeStringHelper } from '../../../../helpers/timeString';
-import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
+import { useAppDispatch } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import { mainTitleTypography } from '../../../../theme/elementsStyles';
 import { TimerData } from '../../../../types/trackerInterfaces';
@@ -33,8 +33,6 @@ const ProjectView = () => {
   const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
   const [pageTitle, setPageTitle] = useState('');
-  const personData = useAppSelector((state) => state.gitHubFetch.newName);
-  const gitHubName = useAppSelector((state) => state.gitHubFetch.gitHubName);
   const timeStringTotal = timeStringHelper(
     timersArr.reduce((acc, cur) => {
       const sum = acc + +cur.totalTime;
@@ -66,6 +64,16 @@ const ProjectView = () => {
       <Typography component="h1" sx={mainTitleTypography}>
         {pageTitle}
       </Typography>
+      <Grid item mb={2}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <PDFDownLoadButton
+            timersArr={timersArr}
+            pageTitle={pageTitle}
+            startDate={startDate}
+            endDate={endDate}
+          />
+        </Suspense>
+      </Grid>
       <Grid
         item
         container
@@ -76,7 +84,7 @@ const ProjectView = () => {
           justifyContent: { xs: 'center', sm: 'space-between' },
           gap: 2,
         }}>
-        <Grid item sx={{}}>
+        <Grid item>
           <CalendarStatistics setTimePeriod={setTimePeriod} />
         </Grid>
         <Grid item textAlign="right">
@@ -86,15 +94,6 @@ const ProjectView = () => {
         </Grid>
       </Grid>
       <Grid container gap={2}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <PDFDownLoadButton
-            timersArr={timersArr}
-            pageTitle={pageTitle}
-            startDate={startDate}
-            endDate={endDate}
-            personData={personData || gitHubName}
-          />
-        </Suspense>
         {timersArr.length ? (
           <Grid container mt={1}>
             {timersArr.map(({ id, startTime, title, totalTime }: TimerData) => {

@@ -81,7 +81,9 @@
     "createNew": "Новый проект",
     "projectName": "Название",
     "projectRate": "Почасовая ставка",
-    "projectColor": "Цвет"
+    "projectColor": "Цвет",
+    "downloadInvoice": "Скачать инвойс",
+    "loadingInvoice": "Генерация инвойса ..."
   },
   "github": {
     "login": "Авторизация через GitHub"

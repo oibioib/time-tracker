@@ -34,3 +34,10 @@ export interface TimerData {
   isActive: boolean;
   project: ProjectData;
 }
+
+export interface PDFFileProp {
+  timersArr: TimerData[];
+  pageTitle: string;
+  startDate: number;
+  endDate: number;
+}

@@ -8,7 +8,6 @@ import { ROUTES } from './constants';
 import PageLayout from './layouts/PageLayout/PageLayout';
 import { DashboardPage, ErrorPage, LoginPage, MainPage } from './pages';
 import {
-  ClientsView,
   ProjectView,
   ProjectsView,
   SettingsView,
@@ -47,7 +46,6 @@ const router = createBrowserRouter([
             path: `${ROUTES.PROJECTS_VIEW}/${ROUTES.PROJECTS_ID}`,
             element: <ProjectView />,
           },
-          { path: ROUTES.CLIENTS_VIEW, element: <ClientsView /> },
           {
             path: ROUTES.STATISTICS_VIEW,
             element: <StatisticsView />,

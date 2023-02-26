@@ -81,7 +81,9 @@
     "createNew": "New project",
     "projectName": "Name",
     "projectRate": "Hourly rate",
-    "projectColor": "Color"
+    "projectColor": "Color",
+    "downloadInvoice": "Download invoice",
+    "loadingInvoice": "Loading invocie ..."
   },
   "github": {
     "login": "Login via Github"
