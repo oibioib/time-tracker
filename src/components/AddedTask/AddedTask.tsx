@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Menu, MenuItem, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -23,6 +24,7 @@ const AddedTask = ({
   refreshPage,
   project,
 }: TaskArrReduced) => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const helperDate = new Date(taskTimeSec);
@@ -83,7 +85,7 @@ const AddedTask = ({
         </Grid>
         <Grid item>
           <Typography variant="body2">
-            {taskStart} | Time spent: {timeString}
+            {taskStart} | {t('timers.timeSpent')}: {timeString}
           </Typography>
         </Grid>
         <Grid item>
@@ -97,7 +99,7 @@ const AddedTask = ({
                   alignItems: 'center',
                 }}>
                 <Typography component="span" variant="body2" mr={1}>
-                  Project:
+                  {t('timers.project')}:
                 </Typography>
                 <Box
                   sx={{
@@ -118,7 +120,7 @@ const AddedTask = ({
             ) : (
               <Grid container alignItems="center">
                 <Typography component="span" variant="body2" mr={1}>
-                  Project:
+                  {t('timers.project')}:
                 </Typography>
                 <FolderIcon sx={{ ...iconsStyle, fontSize: 18 }} />
               </Grid>
@@ -135,7 +137,7 @@ const AddedTask = ({
             }}>
             {projectToShowArr.map((item) => (
               <MenuItem data-id={item.id} key={item.id} onClick={handleClose}>
-                {item.title || 'No Project'}
+                {item.title || t('timers.noProject')}
               </MenuItem>
             ))}
           </Menu>
@@ -151,7 +153,9 @@ const AddedTask = ({
           justifyContent: { xs: 'center', sm: 'flex-end' },
           mt: { xs: 2, sm: 0 },
         }}>
-        <IconButton onClick={onClickHandler} title="Delete">
+        <IconButton
+          onClick={onClickHandler}
+          title={`${t('timers.deleteTimer')}`}>
           <DeleteIcon sx={iconsStyle} />
         </IconButton>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }} mt={1}>

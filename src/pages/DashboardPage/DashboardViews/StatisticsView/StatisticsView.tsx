@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Grid, Typography } from '@mui/material';
 import Paper from '@mui/material/Paper/Paper';
 
-import ProductivityBox from '../../../../components/Productivity';
+import ProductivityBox from '../../../../components/Productivity/Productivity';
 import CalendarStatistics from '../../../../components/SelectStatistics';
 import {
   DEFAULT_END_TODAY_TIMESTAMP,
@@ -125,7 +125,7 @@ const StatisticsView = () => {
             <Paper
               elevation={0}
               sx={{
-                maxWidth: 'auto',
+                maxWidth: { xs: 'calc(100vw - 90px)', sm: '100%' },
               }}>
               <Grid
                 item
@@ -168,7 +168,7 @@ const StatisticsView = () => {
           <Paper
             elevation={0}
             sx={{
-              maxWidth: 'auto',
+              maxWidth: { xs: 'calc(100vw - 90px)', sm: '100%' },
             }}>
             <Grid
               item
