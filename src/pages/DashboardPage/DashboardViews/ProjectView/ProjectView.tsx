@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
@@ -12,10 +12,14 @@ import {
   DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
 } from '../../../../constants/appConstants';
 import { timeStringHelper } from '../../../../helpers/timeString';
-import { useAppDispatch } from '../../../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
 import { mainTitleTypography } from '../../../../theme/elementsStyles';
 import { TimerData } from '../../../../types/trackerInterfaces';
+
+const PDFDownLoadButton = React.lazy(
+  () => import('../../../../components/PDFDownLoadButton/PDFDownLoadButton')
+);
 
 const ProjectView = () => {
   const { t } = useTranslation();
@@ -29,6 +33,8 @@ const ProjectView = () => {
   const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
   const [pageTitle, setPageTitle] = useState('');
+  const personData = useAppSelector((state) => state.gitHubFetch.newName);
+  const gitHubName = useAppSelector((state) => state.gitHubFetch.gitHubName);
   const timeStringTotal = timeStringHelper(
     timersArr.reduce((acc, cur) => {
       const sum = acc + +cur.totalTime;
@@ -80,6 +86,15 @@ const ProjectView = () => {
         </Grid>
       </Grid>
       <Grid container gap={2}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <PDFDownLoadButton
+            timersArr={timersArr}
+            pageTitle={pageTitle}
+            startDate={startDate}
+            endDate={endDate}
+            personData={personData || gitHubName}
+          />
+        </Suspense>
         {timersArr.length ? (
           <Grid container mt={1}>
             {timersArr.map(({ id, startTime, title, totalTime }: TimerData) => {
