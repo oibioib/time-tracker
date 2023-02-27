@@ -22,7 +22,7 @@ const PDFDownLoadButton = React.lazy(
 );
 
 const ProjectView = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { projectId } = useParams();
   const [timePeriod, setTimePeriod] = useState([
     DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
@@ -115,12 +115,15 @@ const ProjectView = () => {
                       </Grid>
                       <Grid item>
                         <Typography variant="body2">
-                          {startingDate.toLocaleDateString('en-US', {
-                            weekday: 'short',
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                          })}
+                          {startingDate.toLocaleDateString(
+                            `${i18n.language === 'en' ? 'en-US' : 'ru'}`,
+                            {
+                              weekday: 'short',
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                            }
+                          )}
                           | {t('projects.timeSpent')}:{' '}
                           {timeStringHelper(+totalTime)}
                         </Typography>

@@ -6,6 +6,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { useTranslation } from 'react-i18next';
 
 import robotoFontSource from '../../assets/fonts/roboto.ttf';
 import { HOURS_IN_MILISEC } from '../../constants/appConstants';
@@ -39,14 +40,16 @@ const styles = StyleSheet.create({
 });
 
 const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
+  const { i18n } = useTranslation();
+  const languageHelper = `${i18n.language === 'en' ? 'en-US' : 'ru'}`;
   const today = new Date();
   const start = new Date(startDate);
   const end = new Date(endDate);
-  const period = `${start.toLocaleDateString('en-US', {
+  const period = `${start.toLocaleDateString(languageHelper, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
-  })} - ${end.toLocaleDateString('en-US', {
+  })} - ${end.toLocaleDateString(languageHelper, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -70,7 +73,7 @@ const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
         <Text style={{ textAlign: 'right' }}>
           <Text>Date: </Text>
           <Text style={{ fontSize: 14 }}>
-            {today.toLocaleDateString('en-US', {
+            {today.toLocaleDateString(languageHelper, {
               year: 'numeric',
               month: 'short',
               day: 'numeric',

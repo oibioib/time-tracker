@@ -50,7 +50,7 @@ const TrackerView = () => {
   ]);
   const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
       let acc = total;
@@ -112,12 +112,15 @@ const TrackerView = () => {
               return {
                 id,
                 taskName: title,
-                taskStart: new Date(+startTime).toLocaleDateString('en-US', {
-                  weekday: 'short',
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                }),
+                taskStart: new Date(+startTime).toLocaleDateString(
+                  `${i18n.language === 'en' ? 'en-US' : 'ru'}`,
+                  {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  }
+                ),
                 taskTimeSec: +totalTime,
                 project,
               };
@@ -133,7 +136,7 @@ const TrackerView = () => {
         }
       })();
     }
-  }, [refreshPage, serverUserId, dispatch, startDate, endDate]);
+  }, [refreshPage, serverUserId, dispatch, startDate, endDate, i18n.language]);
 
   useEffect(() => {
     if (serverUserId && !timerData.previousTimeStamp) {
