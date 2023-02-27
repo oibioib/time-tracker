@@ -25,7 +25,6 @@ import {
 import {
   convertationToDate,
   convertationToMin,
-  options,
 } from '../../../../helpers/statisticsHelpers';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/hooks';
 import { setErrorMessage } from '../../../../store/errorHandler';
@@ -87,6 +86,22 @@ const StatisticsView = () => {
     dispatch(setErrorMessage(errorGetTimersTime));
   }
 
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        ticks: {
+          callback: (value: number | string) =>
+            `${value} ${t('statistics.min')}`,
+        },
+      },
+    },
+  };
   const totalTimeData = {
     labels: intervalTotalData.map((data) => convertationToDate(data.startTime)),
     datasets: [
