@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { IconButton } from '@mui/material';
 import Grid from '@mui/material/Grid';
@@ -33,6 +34,7 @@ const Timer = ({
   onClickRef,
   setErrMessage,
 }: TimerProps) => {
+  const { t } = useTranslation();
   const timerData = useAppSelector((state) => state.timeTracker);
   const dispatch = useAppDispatch();
   const [sec, setSec] = useState(0);
@@ -88,17 +90,15 @@ const Timer = ({
             projectId
           );
         } catch {
-          dispatch(
-            setErrorMessage('Failed to update timer, please refresh the page')
-          );
+          dispatch(setErrorMessage(`${t('errors.failedToUpdateTimer')}`));
         }
       })();
     }
-  }, [timerTitle, totalTime, isTimerOn, timerId, sec, dispatch, projectId]);
+  }, [timerTitle, totalTime, isTimerOn, timerId, sec, dispatch, projectId, t]);
 
   const onClickHandler = async () => {
     if (!timerTitle.trim()) {
-      setErrMessage('Title can not be empty');
+      setErrMessage(`${t('errors.titleEmpty')}`);
       return;
     }
     if (!isTimerOn && sec === 0 && min === 0 && hours === 0) {
@@ -112,9 +112,7 @@ const Timer = ({
         );
         dispatch(setPreviousTimeStamp(Date.now()));
       } catch (error) {
-        dispatch(
-          setErrorMessage('Failed to create timer, please refresh the page')
-        );
+        dispatch(setErrorMessage(`${t('errors.failedToCreateTimer')}`));
       }
     }
     if (isTimerOn) {
@@ -145,9 +143,7 @@ const Timer = ({
         );
         setRefreshPage(!refreshPage);
       } catch (error) {
-        dispatch(
-          setErrorMessage('Failed to update timer, please refresh the page')
-        );
+        dispatch(setErrorMessage(`${t('errors.failedToUpdateTimer')}`));
       }
     }
     dispatch(setIsTimerOn(!isTimerOn));
