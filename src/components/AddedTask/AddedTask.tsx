@@ -46,10 +46,10 @@ const AddedTask = ({
         await deleteTimer(id);
         setRefreshPage(!refreshPage);
       } else {
-        dispatch(setErrorMessage('Please stop timer, to delete one'));
+        dispatch(setErrorMessage(`${t('errors.stopTimer')}`));
       }
     } catch (error) {
-      dispatch(setErrorMessage('Failed to delete timer'));
+      dispatch(setErrorMessage(`${t('errors.failedToDelete')}`));
     }
   };
 
@@ -66,10 +66,10 @@ const AddedTask = ({
           setRefreshPage(!refreshPage);
         }
       } catch (err) {
-        dispatch(setErrorMessage('Failed to update timer project'));
+        dispatch(setErrorMessage(`${t('errors.failedTpUpdateTimerProject')}`));
       }
     } else {
-      dispatch(setErrorMessage('Please stop timer, to update project'));
+      dispatch(setErrorMessage(`${t('errors.stopTimerToUpdateProject')}`));
     }
 
     setAnchorEl(null);

@@ -216,7 +216,7 @@ const ProjectModal = ({
             variant="contained"
             size="large"
             onClick={onUpdateHandler}>
-            Updated Project
+            {t('projects.updateProject')}
           </Button>
         ) : (
           <Button
@@ -224,7 +224,7 @@ const ProjectModal = ({
             variant="contained"
             size="large"
             onClick={onClickHandler}>
-            Create Project
+            {t('projects.createProject')}
           </Button>
         )}
       </Box>

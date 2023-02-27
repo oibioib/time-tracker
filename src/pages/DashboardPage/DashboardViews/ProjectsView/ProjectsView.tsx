@@ -49,18 +49,18 @@ const ProjectsView = () => {
           const data = await getUserProjects(serverUserId);
           dispatch(setProjectArr(data));
         } catch {
-          dispatch(setErrorMessage('Failed to get user projects'));
+          dispatch(setErrorMessage(`${t('errors.failedToGetProjects')}`));
         }
       }
     })();
-  }, [serverUserId, refreshPage, dispatch]);
+  }, [serverUserId, refreshPage, dispatch, t]);
 
   const onDeleteHandler = async (event: React.MouseEvent<HTMLElement>) => {
     const result = event.currentTarget as HTMLElement;
     try {
       await deleteProject(result.id);
     } catch (error) {
-      dispatch(setErrorMessage('Failed to delete project'));
+      dispatch(setErrorMessage(`${t('errors.failedToDeleteProjects')}`));
     }
     setRefreshPage(!refreshPage);
   };

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 
 import { Box, CircularProgress, Grid } from '@mui/material';
@@ -17,6 +18,7 @@ import { setProjectArr } from '../../store/projectSlice';
 import { setServerUserLogin } from '../../store/serverUserDataSlice';
 
 const DashboardPage = () => {
+  const { t } = useTranslation();
   const userData = useAppSelector((state) => state.gitHubFetch);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,13 +39,11 @@ const DashboardPage = () => {
           );
           setIsLoading(false);
         } catch (error) {
-          dispatch(
-            setErrorMessage('Failed to get data from gitHub. Try later')
-          );
+          dispatch(setErrorMessage(`${t('errors.failedToGetDataGitHub')}`));
         }
       })();
     }
-  }, [userData, dispatch]);
+  }, [userData, dispatch, t]);
 
   useEffect(() => {
     if (userData.id) {
@@ -56,13 +56,11 @@ const DashboardPage = () => {
           dispatch(setGitHubName(data.githubName));
           dispatch(setServerUserLogin(data.id));
         } catch (error) {
-          dispatch(
-            setErrorMessage('Failed to create user. Please try again letter')
-          );
+          dispatch(setErrorMessage(`${t('errors.failedToCreateUser')}`));
         }
       })();
     }
-  }, [userData.id, userData.login, dispatch]);
+  }, [userData.id, userData.login, dispatch, t]);
 
   useEffect(() => {
     if (serverUserId) {
@@ -71,11 +69,11 @@ const DashboardPage = () => {
           const data = await getUserProjects(serverUserId);
           dispatch(setProjectArr(data));
         } catch (error) {
-          dispatch(setErrorMessage('Failed to get user projects'));
+          dispatch(setErrorMessage(`${t('errors.failedToGetProjects')}`));
         }
       })();
     }
-  }, [serverUserId, dispatch]);
+  }, [serverUserId, dispatch, t]);
 
   if (isLoading) {
     return (

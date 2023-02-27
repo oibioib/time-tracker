@@ -22,7 +22,7 @@ const PDFDownLoadButton = React.lazy(
 );
 
 const ProjectView = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { projectId } = useParams();
   const [timePeriod, setTimePeriod] = useState([
     DEFAULT_STARTDAY_PREV_WEEK_TIMESTAMP,
@@ -49,11 +49,11 @@ const ProjectView = () => {
           setTimersArr(data.timers);
           setIsTimersData(true);
         } catch (error) {
-          dispatch(setErrorMessage("Failed to get Project's timers"));
+          dispatch(setErrorMessage(`${t('errors.failedToGetProjectsTimers')}`));
         }
       }
     })();
-  }, [projectId, startDate, endDate, dispatch]);
+  }, [projectId, startDate, endDate, dispatch, t]);
 
   if (!isTimersData) {
     return <Box> </Box>;
@@ -115,12 +115,15 @@ const ProjectView = () => {
                       </Grid>
                       <Grid item>
                         <Typography variant="body2">
-                          {startingDate.toLocaleDateString('en-US', {
-                            weekday: 'short',
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                          })}
+                          {startingDate.toLocaleDateString(
+                            `${i18n.language === 'en' ? 'en-US' : 'ru'}`,
+                            {
+                              weekday: 'short',
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                            }
+                          )}
                           | {t('projects.timeSpent')}:{' '}
                           {timeStringHelper(+totalTime)}
                         </Typography>

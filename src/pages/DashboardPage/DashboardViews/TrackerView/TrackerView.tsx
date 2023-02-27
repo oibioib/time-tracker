@@ -50,7 +50,7 @@ const TrackerView = () => {
   ]);
   const [startDate, endDate] = timePeriod;
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const taskArrReducer = (arr: AddedTaskData[]) => {
     const result = arr.reduce((total, task) => {
       let acc = total;
@@ -112,12 +112,15 @@ const TrackerView = () => {
               return {
                 id,
                 taskName: title,
-                taskStart: new Date(+startTime).toLocaleDateString('en-US', {
-                  weekday: 'short',
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                }),
+                taskStart: new Date(+startTime).toLocaleDateString(
+                  `${i18n.language === 'en' ? 'en-US' : 'ru'}`,
+                  {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  }
+                ),
                 taskTimeSec: +totalTime,
                 project,
               };
@@ -125,15 +128,19 @@ const TrackerView = () => {
           setTasksArr(dataArr);
           setIsTimersData(true);
         } catch (error) {
-          dispatch(
-            setErrorMessage(
-              'Failed to get timers data, please try again latter'
-            )
-          );
+          dispatch(setErrorMessage(`${t('errors.failedToGetTimers')}`));
         }
       })();
     }
-  }, [refreshPage, serverUserId, dispatch, startDate, endDate]);
+  }, [
+    refreshPage,
+    serverUserId,
+    dispatch,
+    startDate,
+    endDate,
+    i18n.language,
+    t,
+  ]);
 
   useEffect(() => {
     if (serverUserId && !timerData.previousTimeStamp) {
@@ -161,15 +168,11 @@ const TrackerView = () => {
             }
           }
         } catch (error) {
-          dispatch(
-            setErrorMessage(
-              'Failed to get active timer, please try again latter'
-            )
-          );
+          dispatch(setErrorMessage(`${t('errors.failedToGetActiveTimers')}`));
         }
       })();
     }
-  }, [serverUserId, dispatch, timerData.previousTimeStamp]);
+  }, [serverUserId, dispatch, timerData.previousTimeStamp, t]);
 
   if (!isTimersData) {
     return <Box> </Box>;

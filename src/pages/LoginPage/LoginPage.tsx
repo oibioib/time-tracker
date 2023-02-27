@@ -32,11 +32,11 @@ const LoginPage = () => {
           localStorage.setItem(LOCAL_STORAGE_KEY, data.access_token);
           setRefresh(!refresh);
         } catch (error) {
-          dispatch(setErrorMessage('Failed to get gitHubToken'));
+          dispatch(setErrorMessage(`${t('login.gitHubToken')}`));
         }
       })();
     }
-  }, [gitHubCode, localStorageToken, navigate, dispatch, refresh]);
+  }, [gitHubCode, localStorageToken, navigate, dispatch, refresh, t]);
 
   useEffect(() => {
     if (localStorageToken) {
@@ -53,11 +53,11 @@ const LoginPage = () => {
           navigate('/tracker');
           setIsLoading(false);
         } catch (error) {
-          dispatch(setErrorMessage('Failed to get gitHub user data'));
+          dispatch(setErrorMessage(`${t('login.gitHubData')}`));
         }
       })();
     }
-  }, [localStorageToken, dispatch, navigate]);
+  }, [localStorageToken, dispatch, navigate, t]);
 
   if (isLoading) {
     return (
