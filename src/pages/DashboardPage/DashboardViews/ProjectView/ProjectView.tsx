@@ -49,11 +49,11 @@ const ProjectView = () => {
           setTimersArr(data.timers);
           setIsTimersData(true);
         } catch (error) {
-          dispatch(setErrorMessage("Failed to get Project's timers"));
+          dispatch(setErrorMessage(`${t('errors.failedToGetProjectsTimers')}`));
         }
       }
     })();
-  }, [projectId, startDate, endDate, dispatch]);
+  }, [projectId, startDate, endDate, dispatch, t]);
 
   if (!isTimersData) {
     return <Box> </Box>;

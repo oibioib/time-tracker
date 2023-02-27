@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 });
 
 const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const languageHelper = `${i18n.language === 'en' ? 'en-US' : 'ru'}`;
   const today = new Date();
   const start = new Date(startDate);
@@ -59,10 +59,10 @@ const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
     <Document>
       <Page size="A4" style={styles.page}>
         <Text style={styles.titleContainer}>
-          <Text style={styles.reportTitle}>Invoice</Text>
+          <Text style={styles.reportTitle}>{t('DPFFile.invoice')}</Text>
         </Text>
         <Text style={{ textAlign: 'right', marginTop: 36 }}>
-          <Text>No: </Text>
+          <Text>{t('DPFFile.no')}: </Text>
           <Text
             style={{
               fontSize: 14,
@@ -71,7 +71,7 @@ const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
           </Text>
         </Text>
         <Text style={{ textAlign: 'right' }}>
-          <Text>Date: </Text>
+          <Text>{t('DPFFile.date')}: </Text>
           <Text style={{ fontSize: 14 }}>
             {today.toLocaleDateString(languageHelper, {
               year: 'numeric',
@@ -80,13 +80,15 @@ const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
             })}
           </Text>
         </Text>
-        <Text style={{ marginTop: 20 }}>Project: {pageTitle}</Text>
+        <Text style={{ marginTop: 20 }}>
+          {t('DPFFile.project')}: {pageTitle}
+        </Text>
         <Text>
           <Text style={{ fontSize: 14 }}>{period}</Text>
         </Text>
         <View style={{ marginTop: 40, display: 'flex', flexDirection: 'row' }}>
           <Text style={{ backgroundColor: 'grey', width: '60%' }}>
-            Completed works
+            {t('DPFFile.completedWorks')}
           </Text>
           <Text
             style={{
@@ -94,7 +96,7 @@ const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
               width: '10%',
               textAlign: 'center',
             }}>
-            Hours
+            {t('DPFFile.hours')}
           </Text>
           <Text
             style={{
@@ -102,7 +104,7 @@ const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
               width: '15%',
               textAlign: 'center',
             }}>
-            $/H
+            {t('DPFFile.perH')}
           </Text>
           <Text
             style={{
@@ -110,7 +112,7 @@ const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
               width: '15%',
               textAlign: 'center',
             }}>
-            Total
+            {t('DPFFile.total')}
           </Text>
         </View>
         {timersArr.map(({ project, id, totalTime, title }) => {
@@ -134,7 +136,9 @@ const PDFFIle = ({ timersArr, pageTitle, startDate, endDate }: PDFFileProp) => {
           );
         })}
         <View style={{ marginTop: 20, display: 'flex', flexDirection: 'row' }}>
-          <Text style={{ width: '85%', fontSize: 14 }}>Total amount</Text>
+          <Text style={{ width: '85%', fontSize: 14 }}>
+            {t('DPFFile.totalAmount')}
+          </Text>
           <Text style={{ width: '15%', textAlign: 'center', fontSize: 14 }}>
             {`${timersArr
               .reduce((acc, cur) => {

@@ -128,15 +128,19 @@ const TrackerView = () => {
           setTasksArr(dataArr);
           setIsTimersData(true);
         } catch (error) {
-          dispatch(
-            setErrorMessage(
-              'Failed to get timers data, please try again latter'
-            )
-          );
+          dispatch(setErrorMessage(`${t('errors.failedToGetTimers')}`));
         }
       })();
     }
-  }, [refreshPage, serverUserId, dispatch, startDate, endDate, i18n.language]);
+  }, [
+    refreshPage,
+    serverUserId,
+    dispatch,
+    startDate,
+    endDate,
+    i18n.language,
+    t,
+  ]);
 
   useEffect(() => {
     if (serverUserId && !timerData.previousTimeStamp) {
@@ -164,15 +168,11 @@ const TrackerView = () => {
             }
           }
         } catch (error) {
-          dispatch(
-            setErrorMessage(
-              'Failed to get active timer, please try again latter'
-            )
-          );
+          dispatch(setErrorMessage(`${t('errors.failedToGetActiveTimers')}`));
         }
       })();
     }
-  }, [serverUserId, dispatch, timerData.previousTimeStamp]);
+  }, [serverUserId, dispatch, timerData.previousTimeStamp, t]);
 
   if (!isTimersData) {
     return <Box> </Box>;

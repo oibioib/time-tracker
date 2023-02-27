@@ -62,10 +62,7 @@
     "project": "Project",
     "deleteTimer": "Delete timer",
     "resumeTimer": "Resume",
-    "showMore": "Show more",
-    "errors": {
-      "faildGet": "Failed to get timers data, please try again latter"
-    }
+    "showMore": "Show more"
   },
   "time": {
     "period": "Period total",
@@ -83,12 +80,43 @@
     "projectRate": "Hourly rate",
     "projectColor": "Color",
     "downloadInvoice": "Download invoice",
-    "loadingInvoice": "Loading invoice ..."
+    "loadingInvoice": "Loading invoice ...",
+    "updateProject": "Updated Project",
+    "createProject": "Create Project"
   },
   "github": {
     "login": "Login via Github"
   },
   "notFound": {
     "oops": "Oops"
+  },
+  "errors": {
+    "failedToGetTimers": "Failed to get timers data, please try again latter",
+    "failedToGetActiveTimers": "Failed to get active timer, please try again latter",
+    "stopTimer": "Please stop timer, to delete one",
+    "failedToDelete": "Failed to delete timer",
+    "failedTpUpdateTimerProject": "Failed to update timer project",
+    "stopTimerToUpdateProject": "Please stop timer, to update project",
+    "failedToResumeTimer": "Failed to resume timer",
+    "failedToGetProjects": "Failed to get user projects",
+    "failedToDeleteProjects": "Failed to delete project",
+    "failedToGetProjectsTimers": "Failed to get Project's timers",
+    "failedToGetDataGitHub": "Failed to get data from gitHub. Try later",
+    "failedToCreateUser": "Failed to create user. Please try again letter"
+  },
+  "DPFFile": {
+    "no": "No",
+    "invoice": "Invoice",
+    "date": "Date",
+    "project": "Project",
+    "completedWorks": "completed works",
+    "hours": "Hours",
+    "perH": "$/H",
+    "total": "Total",
+    "totalAmount": "Total amount"
+  },
+  "login": {
+    "gitHubToken": "Failed to get gitHubToken",
+    "gitHubData": "Failed to get gitHub user data"
   }
 }

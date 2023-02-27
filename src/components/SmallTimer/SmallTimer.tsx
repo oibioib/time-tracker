@@ -64,7 +64,7 @@ const SmallTimer = ({
       );
       setRefreshPage(!refreshPage);
     } catch (error) {
-      dispatch(setErrorMessage('Failed to resume time tracker'));
+      dispatch(setErrorMessage(`${t('errors.failedToResumeTimer')}`));
     }
     return undefined;
   };
