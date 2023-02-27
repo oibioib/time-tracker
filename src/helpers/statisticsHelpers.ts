@@ -15,19 +15,3 @@ export const generateColor = () => {
   }
   return `#${code}`;
 };
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-  scales: {
-    y: {
-      ticks: {
-        callback: (value: number | string) => `${value} min`,
-      },
-    },
-  },
-};

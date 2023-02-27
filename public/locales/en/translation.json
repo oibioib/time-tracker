@@ -16,10 +16,10 @@
     "settings": "Settings"
   },
   "description": {
-    "timer": "Control your time. It will help you increase your productivity. Improve your time management skills",
-    "projects": "Keep a list of projects. This can help you stay organized and prioritize. Our brains are better at sorted toDO lists",
-    "clients": "Keep a list of clients. Create client cards, know who trusts you. Important information in one place",
-    "statistics": "Analyze your productivity by day, week. Make conclusions. Time is not just quantity; it's quality"
+    "timer": "Control your time. It will help you increase your productivity. Improve your time management skills.",
+    "projects": "Keep a list of projects. This can help you stay organized and prioritize. Our brains are better at sorted toDO lists.",
+    "clients": "Keep a list of clients. Create client cards, know who trusts you. Important information in one place.",
+    "statistics": "Analyze your productivity by day, week. Make conclusions. Time is not just quantity, it's quality."
   },
   "titleCard": {
     "timer": "Timers",
@@ -109,7 +109,7 @@
     "invoice": "Invoice",
     "date": "Date",
     "project": "Project",
-    "completedWorks": "completed works",
+    "completedWorks": "Completed works",
     "hours": "Hours",
     "perH": "$/H",
     "total": "Total",
