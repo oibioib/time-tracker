@@ -102,7 +102,12 @@
     "failedToDeleteProjects": "Failed to delete project",
     "failedToGetProjectsTimers": "Failed to get Project's timers",
     "failedToGetDataGitHub": "Failed to get data from gitHub. Try later",
-    "failedToCreateUser": "Failed to create user. Please try again letter"
+    "failedToCreateUser": "Failed to create user. Please try again letter",
+    "failedToUpdateTimer": "Failed to update timer, please refresh the page",
+    "titleEmpty": "Title can not be empty",
+    "failedToCreateTimer": "Failed to create timer, please refresh the page",
+    "titleExist": "The name is already existed",
+    "failedToCreateProject": "Failed to create Project"
   },
   "DPFFile": {
     "no": "No",

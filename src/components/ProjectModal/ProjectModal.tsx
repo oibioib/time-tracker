@@ -98,18 +98,18 @@ const ProjectModal = ({
         )
         .find((project: ProjectData) => project.title === projectName)
     ) {
-      setErrMessage('The name is already existed');
+      setErrMessage(`${t('errors.titleExist')}`);
       return;
     }
     if (projectName.trim() === '') {
-      setErrMessage('The name can not be empty');
+      setErrMessage(`${t('errors.titleEmpty')}`);
       return;
     }
     if (!errMessage) {
       try {
         await func();
       } catch (error) {
-        dispatch(setErrorMessage('Failed to create Project'));
+        dispatch(setErrorMessage(`${t('errors.failedToCreateProject')}`));
       }
     }
     setRefreshPage(!refreshPage);
