@@ -53,7 +53,7 @@ const ProjectsView = () => {
         }
       }
     })();
-  }, [serverUserId, refreshPage, dispatch]);
+  }, [serverUserId, refreshPage, dispatch, t]);
 
   const onDeleteHandler = async (event: React.MouseEvent<HTMLElement>) => {
     const result = event.currentTarget as HTMLElement;

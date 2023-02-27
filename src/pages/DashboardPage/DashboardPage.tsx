@@ -43,7 +43,7 @@ const DashboardPage = () => {
         }
       })();
     }
-  }, [userData, dispatch]);
+  }, [userData, dispatch, t]);
 
   useEffect(() => {
     if (userData.id) {
@@ -60,7 +60,7 @@ const DashboardPage = () => {
         }
       })();
     }
-  }, [userData.id, userData.login, dispatch]);
+  }, [userData.id, userData.login, dispatch, t]);
 
   useEffect(() => {
     if (serverUserId) {
@@ -73,7 +73,7 @@ const DashboardPage = () => {
         }
       })();
     }
-  }, [serverUserId, dispatch]);
+  }, [serverUserId, dispatch, t]);
 
   if (isLoading) {
     return (
