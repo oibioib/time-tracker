@@ -1,0 +1,127 @@
+{
+  "buttons": {
+    "loginPage": "Login",
+    "mainPage": "Main",
+    "dashboardPage": "Dashboard",
+    "gitHubLogin": "GitHub Login",
+    "logout": "Logout",
+    "submit": "Save"
+  },
+  "dashboard": {
+    "navigation": "Navigation",
+    "timeTracker": "Timers",
+    "projectsView": "Projects",
+    "clientsView": "Clients",
+    "statistics": "Statistics",
+    "settings": "Settings"
+  },
+  "description": {
+    "timer": "Control your time. It will help you increase your productivity. Improve your time management skills.",
+    "projects": "Keep a list of projects. This can help you stay organized and prioritize. Our brains are better at sorted toDO lists.",
+    "clients": "Keep a list of clients. Create client cards, know who trusts you. Important information in one place.",
+    "statistics": "Analyze your productivity by day, week. Make conclusions. Time is not just quantity, it's quality."
+  },
+  "titleCard": {
+    "timer": "Timers",
+    "projects": "Projects",
+    "clients": "Clients",
+    "statistics": "Statistics"
+  },
+  "mainPage": {
+    "title": "Time Tracker is app that let's you easily track your time",
+    "subtitle": "There are only 24 hours in a day, you can`t change that, but you can spend your time usefully",
+    "team": "Our team"
+  },
+  "settings": {
+    "newName": "Your name",
+    "successMessage": "Name is changed!",
+    "errorMessage": "The name can not be empty"
+  },
+  "timersInfo": {
+    "message": {
+      "noData": "No data for selected period!",
+      "openTimers": "Open Timers and add a project to one of your timers or change the duration.",
+      "createTimer": "If you don't have timers yet, simple your first one.",
+      "createTimerMore": "If you don't have timers yet, simple your first one. Or select a different time period."
+    }
+  },
+  "statistics": {
+    "graphTitleForDay": "WorkTime on day for the selected period",
+    "graphTitleProductivityStart": "Productivity is",
+    "graphTitleProductivityEnd": "for the selected period",
+    "graphTitleForTasks": "Time for each task for the selected period",
+    "min": "min",
+    "titleAllTime": "Time out of work",
+    "titleWorkTime": "Work time"
+  },
+  "timers": {
+    "workOn": "What are you working on?",
+    "chooseProject": "Choose a project",
+    "noProject": "No project",
+    "timeSpent": "Time spent",
+    "project": "Project",
+    "deleteTimer": "Delete timer",
+    "resumeTimer": "Resume",
+    "showMore": "Show more"
+  },
+  "time": {
+    "period": "Period total",
+    "today": "Today total"
+  },
+  "projects": {
+    "addProject": "Add project",
+    "allTimers": "Total timers",
+    "deleteProject": "Delete project",
+    "editProject": "Edit project",
+    "timeSpent": "Time spent",
+    "timeSpentAll": "Total time spent in period",
+    "createNew": "New project",
+    "projectName": "Name",
+    "projectRate": "Hourly rate",
+    "projectColor": "Color",
+    "downloadInvoice": "Download invoice",
+    "loadingInvoice": "Loading invoice ...",
+    "updateProject": "Updated Project",
+    "createProject": "Create Project"
+  },
+  "github": {
+    "login": "Login via Github"
+  },
+  "notFound": {
+    "oops": "Oops"
+  },
+  "errors": {
+    "failedToGetTimers": "Failed to get timers data, please try again latter",
+    "failedToGetActiveTimers": "Failed to get active timer, please try again latter",
+    "stopTimer": "Please stop timer, to delete one",
+    "failedToDelete": "Failed to delete timer",
+    "failedTpUpdateTimerProject": "Failed to update timer project",
+    "stopTimerToUpdateProject": "Please stop timer, to update project",
+    "failedToResumeTimer": "Failed to resume timer",
+    "failedToGetProjects": "Failed to get user projects",
+    "failedToDeleteProjects": "Failed to delete project",
+    "failedToGetProjectsTimers": "Failed to get Project's timers",
+    "failedToGetDataGitHub": "Failed to get data from gitHub. Try later",
+    "failedToCreateUser": "Failed to create user. Please try again letter",
+    "failedToUpdateTimer": "Failed to update timer, please refresh the page",
+    "titleEmpty": "Title can not be empty",
+    "failedToCreateTimer": "Failed to create timer, please refresh the page",
+    "titleExist": "The name is already existed",
+    "failedToCreateProject": "Failed to create Project"
+  },
+  "DPFFile": {
+    "no": "No",
+    "invoice": "Invoice",
+    "date": "Date",
+    "project": "Project",
+    "completedWorks": "Completed works",
+    "hours": "Hours",
+    "perH": "$/H",
+    "total": "Total",
+    "totalAmount": "Total amount"
+  },
+  "login": {
+    "gitHubToken": "Failed to get gitHubToken",
+    "gitHubData": "Failed to get gitHub user data"
+  }
+}

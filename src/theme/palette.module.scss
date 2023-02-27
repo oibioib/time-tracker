@@ -1,0 +1,59 @@
+$primary-main: #5b5f97;
+$primary-main-light: lighten($primary-main, 20%);
+
+$bg-light: #ffffff;
+$bg-dark: #303035;
+
+$bg-paper-light: #f1f1f1;
+$bg-paper-dark: #424248;
+
+$text-light: #000000de;
+$text-dark: #e6e6e6;
+
+$accent: #ff7f50;
+$accent-light: lighten($accent, 25%);
+
+$main-radius: 5;
+
+$input-border-dark: #ffffff3b;
+$input-border-light: #0000003b;
+
+$input-border-dark-hover: #e6e6e6;
+$input-border-light-hover: #000000de;
+
+$folder-ico-color: #858585;
+$folder-ico-color-hover: lighten($folder-ico-color, 15%);
+
+$block-bg-light: #eeeeee;
+$block-bg-dark: #57575c;
+
+$color-bg-play-light: lighten($accent, 25%);
+$color-bg-play-dark: lighten($accent, 20%);
+
+:export {
+  primaryMain: $primary-main;
+  primaryMainDarken: darken($primary-main, 15%);
+
+  bgLight: $bg-light;
+  bgDark: $bg-dark;
+
+  bgPaperLight: $bg-paper-light;
+  bgPaperDark: $bg-paper-dark;
+
+  textLight: $text-light;
+  textDark: $text-dark;
+
+  accent: $accent;
+  accentLight: $accent-light;
+
+  folderIcoColor: $folder-ico-color;
+  folderIcoColorHover: $folder-ico-color-hover;
+
+  blockBgLight: $block-bg-light;
+  blockBgDark: $block-bg-dark;
+
+  colorBgPlayLight: $color-bg-play-light;
+  colorBgPlayDark: $color-bg-play-dark;
+
+  mainRadius: $main-radius;
+}
